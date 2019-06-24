@@ -1,0 +1,2833 @@
+ARM GAS  /tmp/ccBzEjTs.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.syntax unified
+  17              		.file	"rtx_timer.c"
+  18              		.text
+  19              	.Ltext0:
+  20              		.cfi_sections	.debug_frame
+  21              		.section	.text.TimerInsert,"ax",%progbits
+  22              		.align	2
+  23              		.thumb
+  24              		.thumb_func
+  26              	TimerInsert:
+  27              	.LFB174:
+  28              		.file 1 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c"
+   1:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /*
+   2:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  * Copyright (c) 2013-2018 Arm Limited. All rights reserved.
+   3:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  *
+   4:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  * SPDX-License-Identifier: Apache-2.0
+   5:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  *
+   6:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+   7:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  * not use this file except in compliance with the License.
+   8:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  * You may obtain a copy of the License at
+   9:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  *
+  10:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  * www.apache.org/licenses/LICENSE-2.0
+  11:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  *
+  12:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  * Unless required by applicable law or agreed to in writing, software
+  13:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  14:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  15:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  * See the License for the specific language governing permissions and
+  16:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  * limitations under the License.
+  17:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  *
+  18:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  * -----------------------------------------------------------------------------
+  19:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  *
+  20:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  * Project:     CMSIS-RTOS RTX
+  21:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  * Title:       Timer functions
+  22:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  *
+  23:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  * -----------------------------------------------------------------------------
+  24:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****  */
+  25:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+  26:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** #include "rtx_lib.h"
+  27:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+  28:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+  29:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** //  OS Runtime Object Memory Usage
+  30:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** #if ((defined(OS_OBJ_MEM_USAGE) && (OS_OBJ_MEM_USAGE != 0)))
+ARM GAS  /tmp/ccBzEjTs.s 			page 2
+
+
+  31:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** osRtxObjectMemUsage_t osRtxTimerMemUsage \
+  32:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** __attribute__((section(".data.os.timer.obj"))) =
+  33:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** { 0U, 0U, 0U };
+  34:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** #endif
+  35:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+  36:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+  37:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** //  ==== Helper functions ====
+  38:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+  39:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// Insert Timer into the Timer List sorted by Time.
+  40:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// \param[in]  timer           timer object.
+  41:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// \param[in]  tick            timer tick.
+  42:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** static void TimerInsert (os_timer_t *timer, uint32_t tick) {
+  29              		.loc 1 42 0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34              	.LVL0:
+  35 0000 10B4     		push	{r4}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 4
+  38              		.cfi_offset 4, -4
+  39              	.LVL1:
+  43:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   os_timer_t *prev, *next;
+  44:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+  45:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   prev = NULL;
+  46:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   next = osRtxInfo.timer.list;
+  40              		.loc 1 46 0
+  41 0002 0D4B     		ldr	r3, .L9
+  42 0004 5B6C     		ldr	r3, [r3, #68]
+  43              	.LVL2:
+  45:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   next = osRtxInfo.timer.list;
+  44              		.loc 1 45 0
+  45 0006 0024     		movs	r4, #0
+  47:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   while ((next != NULL) && (next->tick <= tick)) {
+  46              		.loc 1 47 0
+  47 0008 02E0     		b	.L2
+  48              	.LVL3:
+  49              	.L4:
+  48:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     tick -= next->tick;
+  50              		.loc 1 48 0
+  51 000a 891A     		subs	r1, r1, r2
+  52              	.LVL4:
+  49:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     prev  = next;
+  53              		.loc 1 49 0
+  54 000c 1C46     		mov	r4, r3
+  50:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     next  = next->next;
+  55              		.loc 1 50 0
+  56 000e DB68     		ldr	r3, [r3, #12]
+  57              	.LVL5:
+  58              	.L2:
+  47:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     tick -= next->tick;
+  59              		.loc 1 47 0
+  60 0010 13B1     		cbz	r3, .L3
+  47:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     tick -= next->tick;
+  61              		.loc 1 47 0 is_stmt 0 discriminator 1
+  62 0012 1A69     		ldr	r2, [r3, #16]
+ARM GAS  /tmp/ccBzEjTs.s 			page 3
+
+
+  63 0014 9142     		cmp	r1, r2
+  64 0016 F8D2     		bcs	.L4
+  65              	.L3:
+  51:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+  52:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   timer->tick = tick;
+  66              		.loc 1 52 0 is_stmt 1
+  67 0018 0161     		str	r1, [r0, #16]
+  53:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   timer->prev = prev;
+  68              		.loc 1 53 0
+  69 001a 8460     		str	r4, [r0, #8]
+  54:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   timer->next = next;
+  70              		.loc 1 54 0
+  71 001c C360     		str	r3, [r0, #12]
+  55:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if (next != NULL) {
+  72              		.loc 1 55 0
+  73 001e 1BB1     		cbz	r3, .L5
+  56:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     next->tick -= timer->tick;
+  74              		.loc 1 56 0
+  75 0020 1A69     		ldr	r2, [r3, #16]
+  76 0022 511A     		subs	r1, r2, r1
+  77              	.LVL6:
+  78 0024 1961     		str	r1, [r3, #16]
+  79              	.LVL7:
+  57:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     next->prev  = timer;
+  80              		.loc 1 57 0
+  81 0026 9860     		str	r0, [r3, #8]
+  82              	.L5:
+  58:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+  59:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if (prev != NULL) {
+  83              		.loc 1 59 0
+  84 0028 0CB1     		cbz	r4, .L6
+  60:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     prev->next = timer;
+  85              		.loc 1 60 0
+  86 002a E060     		str	r0, [r4, #12]
+  87 002c 01E0     		b	.L1
+  88              	.L6:
+  61:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   } else {
+  62:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     osRtxInfo.timer.list = timer;
+  89              		.loc 1 62 0
+  90 002e 024B     		ldr	r3, .L9
+  91              	.LVL8:
+  92 0030 5864     		str	r0, [r3, #68]
+  93              	.L1:
+  63:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+  64:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** }
+  94              		.loc 1 64 0
+  95 0032 5DF8044B 		ldr	r4, [sp], #4
+  96              	.LCFI1:
+  97              		.cfi_restore 4
+  98              		.cfi_def_cfa_offset 0
+  99              	.LVL9:
+ 100 0036 7047     		bx	lr
+ 101              	.L10:
+ 102              		.align	2
+ 103              	.L9:
+ 104 0038 00000000 		.word	osRtxInfo
+ 105              		.cfi_endproc
+ARM GAS  /tmp/ccBzEjTs.s 			page 4
+
+
+ 106              	.LFE174:
+ 108              		.section	.text.TimerRemove,"ax",%progbits
+ 109              		.align	2
+ 110              		.thumb
+ 111              		.thumb_func
+ 113              	TimerRemove:
+ 114              	.LFB175:
+  65:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+  66:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// Remove Timer from the Timer List.
+  67:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// \param[in]  timer           timer object.
+  68:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** static void TimerRemove (const os_timer_t *timer) {
+ 115              		.loc 1 68 0
+ 116              		.cfi_startproc
+ 117              		@ args = 0, pretend = 0, frame = 0
+ 118              		@ frame_needed = 0, uses_anonymous_args = 0
+ 119              		@ link register save eliminated.
+ 120              	.LVL10:
+  69:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+  70:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if (timer->next != NULL) {
+ 121              		.loc 1 70 0
+ 122 0000 C368     		ldr	r3, [r0, #12]
+ 123 0002 33B1     		cbz	r3, .L12
+  71:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     timer->next->tick += timer->tick;
+ 124              		.loc 1 71 0
+ 125 0004 0269     		ldr	r2, [r0, #16]
+ 126 0006 1969     		ldr	r1, [r3, #16]
+ 127 0008 0A44     		add	r2, r2, r1
+ 128 000a 1A61     		str	r2, [r3, #16]
+  72:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     timer->next->prev  = timer->prev;
+ 129              		.loc 1 72 0
+ 130 000c C368     		ldr	r3, [r0, #12]
+ 131 000e 8268     		ldr	r2, [r0, #8]
+ 132 0010 9A60     		str	r2, [r3, #8]
+ 133              	.L12:
+  73:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+  74:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if (timer->prev != NULL) {
+ 134              		.loc 1 74 0
+ 135 0012 8368     		ldr	r3, [r0, #8]
+ 136 0014 13B1     		cbz	r3, .L13
+  75:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     timer->prev->next  = timer->next;
+ 137              		.loc 1 75 0
+ 138 0016 C268     		ldr	r2, [r0, #12]
+ 139 0018 DA60     		str	r2, [r3, #12]
+ 140 001a 7047     		bx	lr
+ 141              	.L13:
+  76:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   } else {
+  77:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     osRtxInfo.timer.list = timer->next;
+ 142              		.loc 1 77 0
+ 143 001c C268     		ldr	r2, [r0, #12]
+ 144 001e 014B     		ldr	r3, .L15
+ 145 0020 5A64     		str	r2, [r3, #68]
+ 146 0022 7047     		bx	lr
+ 147              	.L16:
+ 148              		.align	2
+ 149              	.L15:
+ 150 0024 00000000 		.word	osRtxInfo
+ 151              		.cfi_endproc
+ARM GAS  /tmp/ccBzEjTs.s 			page 5
+
+
+ 152              	.LFE175:
+ 154              		.section	.text.TimerUnlink,"ax",%progbits
+ 155              		.align	2
+ 156              		.thumb
+ 157              		.thumb_func
+ 159              	TimerUnlink:
+ 160              	.LFB176:
+  78:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+  79:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** }
+  80:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+  81:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// Unlink Timer from the Timer List Head.
+  82:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// \param[in]  timer           timer object.
+  83:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** static void TimerUnlink (const os_timer_t *timer) {
+ 161              		.loc 1 83 0
+ 162              		.cfi_startproc
+ 163              		@ args = 0, pretend = 0, frame = 0
+ 164              		@ frame_needed = 0, uses_anonymous_args = 0
+ 165              		@ link register save eliminated.
+ 166              	.LVL11:
+  84:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+  85:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if (timer->next != NULL) {
+ 167              		.loc 1 85 0
+ 168 0000 C368     		ldr	r3, [r0, #12]
+ 169 0002 0BB1     		cbz	r3, .L18
+  86:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     timer->next->prev = timer->prev;
+ 170              		.loc 1 86 0
+ 171 0004 8268     		ldr	r2, [r0, #8]
+ 172 0006 9A60     		str	r2, [r3, #8]
+ 173              	.L18:
+  87:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+  88:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   osRtxInfo.timer.list = timer->next;
+ 174              		.loc 1 88 0
+ 175 0008 C268     		ldr	r2, [r0, #12]
+ 176 000a 014B     		ldr	r3, .L19
+ 177 000c 5A64     		str	r2, [r3, #68]
+ 178 000e 7047     		bx	lr
+ 179              	.L20:
+ 180              		.align	2
+ 181              	.L19:
+ 182 0010 00000000 		.word	osRtxInfo
+ 183              		.cfi_endproc
+ 184              	.LFE176:
+ 186              		.section	.text.osRtxTimerTick,"ax",%progbits
+ 187              		.align	2
+ 188              		.thumb
+ 189              		.thumb_func
+ 191              	osRtxTimerTick:
+ 192              	.LFB177:
+  89:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** }
+  90:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+  91:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+  92:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** //  ==== Library functions ====
+  93:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+  94:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// Timer Tick (called each SysTick).
+  95:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** static void osRtxTimerTick (void) {
+ 193              		.loc 1 95 0
+ 194              		.cfi_startproc
+ARM GAS  /tmp/ccBzEjTs.s 			page 6
+
+
+ 195              		@ args = 0, pretend = 0, frame = 0
+ 196              		@ frame_needed = 0, uses_anonymous_args = 0
+ 197 0000 10B5     		push	{r4, lr}
+ 198              	.LCFI2:
+ 199              		.cfi_def_cfa_offset 8
+ 200              		.cfi_offset 4, -8
+ 201              		.cfi_offset 14, -4
+  96:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   os_timer_t *timer;
+  97:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   osStatus_t  status;
+  98:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+  99:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   timer = osRtxInfo.timer.list;
+ 202              		.loc 1 99 0
+ 203 0002 144B     		ldr	r3, .L29
+ 204 0004 5C6C     		ldr	r4, [r3, #68]
+ 205              	.LVL12:
+ 100:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if (timer == NULL) {
+ 206              		.loc 1 100 0
+ 207 0006 1CB3     		cbz	r4, .L21
+ 101:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     //lint -e{904} "Return statement before end of function" [MISRA Note 1]
+ 102:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     return;
+ 103:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 104:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 105:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   timer->tick--;
+ 208              		.loc 1 105 0
+ 209 0008 2369     		ldr	r3, [r4, #16]
+ 210 000a 013B     		subs	r3, r3, #1
+ 211 000c 2361     		str	r3, [r4, #16]
+ 106:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   while ((timer != NULL) && (timer->tick == 0U)) {
+ 212              		.loc 1 106 0
+ 213 000e 1BE0     		b	.L23
+ 214              	.L27:
+ 107:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     TimerUnlink(timer);
+ 215              		.loc 1 107 0
+ 216 0010 2046     		mov	r0, r4
+ 217 0012 FFF7FEFF 		bl	TimerUnlink
+ 218              	.LVL13:
+ 108:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     status = osMessageQueuePut(osRtxInfo.timer.mq, &timer->finfo, 0U, 0U);
+ 219              		.loc 1 108 0
+ 220 0016 0023     		movs	r3, #0
+ 221 0018 1A46     		mov	r2, r3
+ 222 001a 04F11801 		add	r1, r4, #24
+ 223 001e 0D48     		ldr	r0, .L29
+ 224 0020 C06C     		ldr	r0, [r0, #76]
+ 225 0022 FFF7FEFF 		bl	osMessageQueuePut
+ 226              	.LVL14:
+ 109:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     if (status != osOK) {
+ 227              		.loc 1 109 0
+ 228 0026 18B1     		cbz	r0, .L24
+ 110:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       (void)osRtxErrorNotify(osRtxErrorTimerQueueOverflow, timer);
+ 229              		.loc 1 110 0
+ 230 0028 2146     		mov	r1, r4
+ 231 002a 0320     		movs	r0, #3
+ 232              	.LVL15:
+ 233 002c FFF7FEFF 		bl	osRtxErrorNotify
+ 234              	.LVL16:
+ 235              	.L24:
+ 111:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     }
+ARM GAS  /tmp/ccBzEjTs.s 			page 7
+
+
+ 112:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     if (timer->type == osRtxTimerPeriodic) {
+ 236              		.loc 1 112 0
+ 237 0030 E378     		ldrb	r3, [r4, #3]	@ zero_extendqisi2
+ 238 0032 012B     		cmp	r3, #1
+ 239 0034 04D1     		bne	.L25
+ 113:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       TimerInsert(timer, timer->load);
+ 240              		.loc 1 113 0
+ 241 0036 6169     		ldr	r1, [r4, #20]
+ 242 0038 2046     		mov	r0, r4
+ 243 003a FFF7FEFF 		bl	TimerInsert
+ 244              	.LVL17:
+ 245 003e 01E0     		b	.L26
+ 246              	.L25:
+ 114:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     } else {
+ 115:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       timer->state = osRtxTimerStopped;
+ 247              		.loc 1 115 0
+ 248 0040 0123     		movs	r3, #1
+ 249 0042 6370     		strb	r3, [r4, #1]
+ 250              	.L26:
+ 116:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     }
+ 117:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     timer = osRtxInfo.timer.list;
+ 251              		.loc 1 117 0
+ 252 0044 034B     		ldr	r3, .L29
+ 253 0046 5C6C     		ldr	r4, [r3, #68]
+ 254              	.LVL18:
+ 255              	.L23:
+ 106:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     TimerUnlink(timer);
+ 256              		.loc 1 106 0
+ 257 0048 14B1     		cbz	r4, .L21
+ 106:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     TimerUnlink(timer);
+ 258              		.loc 1 106 0 is_stmt 0 discriminator 1
+ 259 004a 2369     		ldr	r3, [r4, #16]
+ 260 004c 002B     		cmp	r3, #0
+ 261 004e DFD0     		beq	.L27
+ 262              	.L21:
+ 263 0050 10BD     		pop	{r4, pc}
+ 264              	.LVL19:
+ 265              	.L30:
+ 266 0052 00BF     		.align	2
+ 267              	.L29:
+ 268 0054 00000000 		.word	osRtxInfo
+ 269              		.cfi_endproc
+ 270              	.LFE177:
+ 272              		.section	.text.svcRtxTimerNew,"ax",%progbits
+ 273              		.align	2
+ 274              		.thumb
+ 275              		.thumb_func
+ 277              	svcRtxTimerNew:
+ 278              	.LFB179:
+ 118:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 119:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** }
+ 120:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 121:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// Timer Thread
+ 122:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** __WEAK void osRtxTimerThread (void *argument) {
+ 123:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   os_timer_finfo_t finfo;
+ 124:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   osStatus_t       status;
+ 125:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   (void)           argument;
+ARM GAS  /tmp/ccBzEjTs.s 			page 8
+
+
+ 126:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 127:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   osRtxInfo.timer.mq = osRtxMessageQueueId(
+ 128:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     osMessageQueueNew(osRtxConfig.timer_mq_mcnt, sizeof(os_timer_finfo_t), osRtxConfig.timer_mq_att
+ 129:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   );
+ 130:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if (osRtxInfo.timer.mq == NULL) {
+ 131:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     //lint -e{904} "Return statement before end of function" [MISRA Note 1]
+ 132:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     return;
+ 133:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 134:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   osRtxInfo.timer.tick = osRtxTimerTick;
+ 135:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   for (;;) {
+ 136:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     //lint -e{934} "Taking address of near auto variable"
+ 137:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     status = osMessageQueueGet(osRtxInfo.timer.mq, &finfo, NULL, osWaitForever);
+ 138:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     if (status == osOK) {
+ 139:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       EvrRtxTimerCallback(finfo.func, finfo.arg);
+ 140:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       (finfo.func)(finfo.arg);
+ 141:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     }
+ 142:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 143:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** }
+ 144:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 145:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** //  ==== Service Calls ====
+ 146:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 147:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// Create and Initialize a timer.
+ 148:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// \note API identical to osTimerNew
+ 149:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** static osTimerId_t svcRtxTimerNew (osTimerFunc_t func, osTimerType_t type, void *argument, const os
+ 279              		.loc 1 149 0 is_stmt 1
+ 280              		.cfi_startproc
+ 281              		@ args = 0, pretend = 0, frame = 0
+ 282              		@ frame_needed = 0, uses_anonymous_args = 0
+ 283              	.LVL20:
+ 284 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 285              	.LCFI3:
+ 286              		.cfi_def_cfa_offset 24
+ 287              		.cfi_offset 4, -24
+ 288              		.cfi_offset 5, -20
+ 289              		.cfi_offset 6, -16
+ 290              		.cfi_offset 7, -12
+ 291              		.cfi_offset 8, -8
+ 292              		.cfi_offset 14, -4
+ 150:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   os_timer_t *timer;
+ 151:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   uint8_t     flags;
+ 152:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   const char *name;
+ 153:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 154:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   // Check parameters
+ 155:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if ((func == NULL) || ((type != osTimerOnce) && (type != osTimerPeriodic))) {
+ 293              		.loc 1 155 0
+ 294 0004 20B1     		cbz	r0, .L32
+ 295 0006 0D46     		mov	r5, r1
+ 296 0008 1746     		mov	r7, r2
+ 297 000a 8046     		mov	r8, r0
+ 298              		.loc 1 155 0 is_stmt 0 discriminator 1
+ 299 000c 0129     		cmp	r1, #1
+ 300 000e 07D9     		bls	.L33
+ 301              	.L32:
+ 156:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     EvrRtxTimerError(NULL, (int32_t)osErrorParameter);
+ 302              		.loc 1 156 0 is_stmt 1
+ 303 0010 6FF00301 		mvn	r1, #3
+ 304              	.LVL21:
+ARM GAS  /tmp/ccBzEjTs.s 			page 9
+
+
+ 305 0014 0020     		movs	r0, #0
+ 306              	.LVL22:
+ 307 0016 FFF7FEFF 		bl	EvrRtxTimerError
+ 308              	.LVL23:
+ 157:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     //lint -e{904} "Return statement before end of function" [MISRA Note 1]
+ 158:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     return NULL;
+ 309              		.loc 1 158 0
+ 310 001a 0020     		movs	r0, #0
+ 311 001c BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 312              	.LVL24:
+ 313              	.L33:
+ 159:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 160:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 161:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   // Process attributes
+ 162:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if (attr != NULL) {
+ 314              		.loc 1 162 0
+ 315 0020 D3B1     		cbz	r3, .L41
+ 163:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     name  = attr->name;
+ 316              		.loc 1 163 0
+ 317 0022 1E68     		ldr	r6, [r3]
+ 318              	.LVL25:
+ 164:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     //lint -e{9079} "conversion from pointer to void to pointer to other type" [MISRA Note 6]
+ 165:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     timer = attr->cb_mem;
+ 319              		.loc 1 165 0
+ 320 0024 9C68     		ldr	r4, [r3, #8]
+ 321              	.LVL26:
+ 166:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     if (timer != NULL) {
+ 322              		.loc 1 166 0
+ 323 0026 6CB1     		cbz	r4, .L36
+ 167:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       //lint -e(923) -e(9078) "cast from pointer to unsigned int" [MISRA Note 7]
+ 168:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       if ((((uint32_t)timer & 3U) != 0U) || (attr->cb_size < sizeof(os_timer_t))) {
+ 324              		.loc 1 168 0
+ 325 0028 14F0030F 		tst	r4, #3
+ 326 002c 02D1     		bne	.L37
+ 327              		.loc 1 168 0 is_stmt 0 discriminator 1
+ 328 002e DB68     		ldr	r3, [r3, #12]
+ 329              	.LVL27:
+ 330 0030 1F2B     		cmp	r3, #31
+ 331 0032 13D8     		bhi	.L35
+ 332              	.L37:
+ 169:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****         EvrRtxTimerError(NULL, osRtxErrorInvalidControlBlock);
+ 333              		.loc 1 169 0 is_stmt 1
+ 334 0034 6FF00801 		mvn	r1, #8
+ 335              	.LVL28:
+ 336 0038 0020     		movs	r0, #0
+ 337              	.LVL29:
+ 338 003a FFF7FEFF 		bl	EvrRtxTimerError
+ 339              	.LVL30:
+ 170:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****         //lint -e{904} "Return statement before end of function" [MISRA Note 1]
+ 171:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****         return NULL;
+ 340              		.loc 1 171 0
+ 341 003e 0020     		movs	r0, #0
+ 342 0040 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 343              	.LVL31:
+ 344              	.L36:
+ 172:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       }
+ 173:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     } else {
+ARM GAS  /tmp/ccBzEjTs.s 			page 10
+
+
+ 174:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       if (attr->cb_size != 0U) {
+ 345              		.loc 1 174 0
+ 346 0044 DB68     		ldr	r3, [r3, #12]
+ 347              	.LVL32:
+ 348 0046 4BB1     		cbz	r3, .L35
+ 175:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****         EvrRtxTimerError(NULL, osRtxErrorInvalidControlBlock);
+ 349              		.loc 1 175 0
+ 350 0048 6FF00801 		mvn	r1, #8
+ 351              	.LVL33:
+ 352 004c 0020     		movs	r0, #0
+ 353              	.LVL34:
+ 354 004e FFF7FEFF 		bl	EvrRtxTimerError
+ 355              	.LVL35:
+ 176:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****         //lint -e{904} "Return statement before end of function" [MISRA Note 1]
+ 177:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****         return NULL;
+ 356              		.loc 1 177 0
+ 357 0052 0020     		movs	r0, #0
+ 358 0054 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 359              	.LVL36:
+ 360              	.L41:
+ 178:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       }
+ 179:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     }
+ 180:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   } else {
+ 181:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     name  = NULL;
+ 361              		.loc 1 181 0
+ 362 0058 0026     		movs	r6, #0
+ 182:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     timer = NULL;
+ 363              		.loc 1 182 0
+ 364 005a 3446     		mov	r4, r6
+ 365              	.LVL37:
+ 366              	.L35:
+ 183:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 184:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 185:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   // Allocate object memory if not provided
+ 186:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if (timer == NULL) {
+ 367              		.loc 1 186 0
+ 368 005c 94B9     		cbnz	r4, .L42
+ 187:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     if (osRtxInfo.mpi.timer != NULL) {
+ 369              		.loc 1 187 0
+ 370 005e 194B     		ldr	r3, .L44
+ 371 0060 D3F88C00 		ldr	r0, [r3, #140]
+ 372              	.LVL38:
+ 373 0064 20B1     		cbz	r0, .L39
+ 188:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       //lint -e{9079} "conversion from pointer to void to pointer to other type" [MISRA Note 5]
+ 189:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       timer = osRtxMemoryPoolAlloc(osRtxInfo.mpi.timer);
+ 374              		.loc 1 189 0
+ 375 0066 FFF7FEFF 		bl	osRtxMemoryPoolAlloc
+ 376              	.LVL39:
+ 377 006a 0446     		mov	r4, r0
+ 378              	.LVL40:
+ 190:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     } else {
+ 191:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       //lint -e{9079} "conversion from pointer to void to pointer to other type" [MISRA Note 5]
+ 192:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       timer = osRtxMemoryAlloc(osRtxInfo.mem.common, sizeof(os_timer_t), 1U);
+ 193:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     }
+ 194:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** #if (defined(OS_OBJ_MEM_USAGE) && (OS_OBJ_MEM_USAGE != 0))
+ 195:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     if (timer != NULL) {
+ 196:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       uint32_t used;
+ARM GAS  /tmp/ccBzEjTs.s 			page 11
+
+
+ 197:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       osRtxTimerMemUsage.cnt_alloc++;
+ 198:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       used = osRtxTimerMemUsage.cnt_alloc - osRtxTimerMemUsage.cnt_free;
+ 199:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       if (osRtxTimerMemUsage.max_used < used) {
+ 200:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****         osRtxTimerMemUsage.max_used = used;
+ 201:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       }
+ 202:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     }
+ 203:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** #endif
+ 204:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     flags = osRtxFlagSystemObject;
+ 379              		.loc 1 204 0
+ 380 006c 0123     		movs	r3, #1
+ 381 006e 0AE0     		b	.L38
+ 382              	.LVL41:
+ 383              	.L39:
+ 192:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     }
+ 384              		.loc 1 192 0
+ 385 0070 0122     		movs	r2, #1
+ 386              	.LVL42:
+ 387 0072 2021     		movs	r1, #32
+ 388              	.LVL43:
+ 389 0074 134B     		ldr	r3, .L44
+ 390 0076 D3F88000 		ldr	r0, [r3, #128]
+ 391 007a FFF7FEFF 		bl	osRtxMemoryAlloc
+ 392              	.LVL44:
+ 393 007e 0446     		mov	r4, r0
+ 394              	.LVL45:
+ 395              		.loc 1 204 0
+ 396 0080 0123     		movs	r3, #1
+ 397 0082 00E0     		b	.L38
+ 398              	.LVL46:
+ 399              	.L42:
+ 205:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   } else {
+ 206:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     flags = 0U;
+ 400              		.loc 1 206 0
+ 401 0084 0023     		movs	r3, #0
+ 402              	.LVL47:
+ 403              	.L38:
+ 207:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 208:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 209:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if (timer != NULL) {
+ 404              		.loc 1 209 0
+ 405 0086 ACB1     		cbz	r4, .L40
+ 210:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     // Initialize control block
+ 211:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     timer->id         = osRtxIdTimer;
+ 406              		.loc 1 211 0
+ 407 0088 0222     		movs	r2, #2
+ 408 008a 2270     		strb	r2, [r4]
+ 212:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     timer->state      = osRtxTimerStopped;
+ 409              		.loc 1 212 0
+ 410 008c 0122     		movs	r2, #1
+ 411 008e 6270     		strb	r2, [r4, #1]
+ 213:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     timer->flags      = flags;
+ 412              		.loc 1 213 0
+ 413 0090 A370     		strb	r3, [r4, #2]
+ 214:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     timer->type       = (uint8_t)type;
+ 414              		.loc 1 214 0
+ 415 0092 E570     		strb	r5, [r4, #3]
+ 215:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     timer->name       = name;
+ARM GAS  /tmp/ccBzEjTs.s 			page 12
+
+
+ 416              		.loc 1 215 0
+ 417 0094 6660     		str	r6, [r4, #4]
+ 216:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     timer->prev       = NULL;
+ 418              		.loc 1 216 0
+ 419 0096 0023     		movs	r3, #0
+ 420              	.LVL48:
+ 421 0098 A360     		str	r3, [r4, #8]
+ 217:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     timer->next       = NULL;
+ 422              		.loc 1 217 0
+ 423 009a E360     		str	r3, [r4, #12]
+ 218:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     timer->tick       = 0U;
+ 424              		.loc 1 218 0
+ 425 009c 2361     		str	r3, [r4, #16]
+ 219:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     timer->load       = 0U;
+ 426              		.loc 1 219 0
+ 427 009e 6361     		str	r3, [r4, #20]
+ 220:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     timer->finfo.func = func;
+ 428              		.loc 1 220 0
+ 429 00a0 C4F81880 		str	r8, [r4, #24]
+ 221:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     timer->finfo.arg  = argument;
+ 430              		.loc 1 221 0
+ 431 00a4 E761     		str	r7, [r4, #28]
+ 222:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 223:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     EvrRtxTimerCreated(timer, timer->name);
+ 432              		.loc 1 223 0
+ 433 00a6 3146     		mov	r1, r6
+ 434 00a8 2046     		mov	r0, r4
+ 435 00aa FFF7FEFF 		bl	EvrRtxTimerCreated
+ 436              	.LVL49:
+ 224:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   } else {
+ 225:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     EvrRtxTimerError(NULL, (int32_t)osErrorNoMemory);
+ 226:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 227:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 228:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   return timer;
+ 437              		.loc 1 228 0
+ 438 00ae 2046     		mov	r0, r4
+ 439 00b0 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 440              	.LVL50:
+ 441              	.L40:
+ 225:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 442              		.loc 1 225 0
+ 443 00b4 6FF00401 		mvn	r1, #4
+ 444 00b8 0020     		movs	r0, #0
+ 445 00ba FFF7FEFF 		bl	EvrRtxTimerError
+ 446              	.LVL51:
+ 447              		.loc 1 228 0
+ 448 00be 2046     		mov	r0, r4
+ 229:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** }
+ 449              		.loc 1 229 0
+ 450 00c0 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 451              	.LVL52:
+ 452              	.L45:
+ 453              		.align	2
+ 454              	.L44:
+ 455 00c4 00000000 		.word	osRtxInfo
+ 456              		.cfi_endproc
+ 457              	.LFE179:
+ARM GAS  /tmp/ccBzEjTs.s 			page 13
+
+
+ 459              		.section	.text.svcRtxTimerGetName,"ax",%progbits
+ 460              		.align	2
+ 461              		.thumb
+ 462              		.thumb_func
+ 464              	svcRtxTimerGetName:
+ 465              	.LFB180:
+ 230:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 231:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// Get name of a timer.
+ 232:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// \note API identical to osTimerGetName
+ 233:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** static const char *svcRtxTimerGetName (osTimerId_t timer_id) {
+ 466              		.loc 1 233 0
+ 467              		.cfi_startproc
+ 468              		@ args = 0, pretend = 0, frame = 0
+ 469              		@ frame_needed = 0, uses_anonymous_args = 0
+ 470              	.LVL53:
+ 471 0000 10B5     		push	{r4, lr}
+ 472              	.LCFI4:
+ 473              		.cfi_def_cfa_offset 8
+ 474              		.cfi_offset 4, -8
+ 475              		.cfi_offset 14, -4
+ 234:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   os_timer_t *timer = osRtxTimerId(timer_id);
+ 235:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 236:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   // Check parameters
+ 237:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if ((timer == NULL) || (timer->id != osRtxIdTimer)) {
+ 476              		.loc 1 237 0
+ 477 0002 0446     		mov	r4, r0
+ 478 0004 10B1     		cbz	r0, .L47
+ 479              		.loc 1 237 0 is_stmt 0 discriminator 1
+ 480 0006 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 481 0008 022B     		cmp	r3, #2
+ 482 000a 05D0     		beq	.L48
+ 483              	.L47:
+ 238:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     EvrRtxTimerGetName(timer, NULL);
+ 484              		.loc 1 238 0 is_stmt 1
+ 485 000c 0021     		movs	r1, #0
+ 486 000e 2046     		mov	r0, r4
+ 487              	.LVL54:
+ 488 0010 FFF7FEFF 		bl	EvrRtxTimerGetName
+ 489              	.LVL55:
+ 239:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     //lint -e{904} "Return statement before end of function" [MISRA Note 1]
+ 240:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     return NULL;
+ 490              		.loc 1 240 0
+ 491 0014 0020     		movs	r0, #0
+ 492 0016 10BD     		pop	{r4, pc}
+ 493              	.LVL56:
+ 494              	.L48:
+ 241:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 242:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 243:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   EvrRtxTimerGetName(timer, timer->name);
+ 495              		.loc 1 243 0
+ 496 0018 4168     		ldr	r1, [r0, #4]
+ 497 001a FFF7FEFF 		bl	EvrRtxTimerGetName
+ 498              	.LVL57:
+ 244:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 245:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   return timer->name;
+ 499              		.loc 1 245 0
+ 500 001e 6068     		ldr	r0, [r4, #4]
+ARM GAS  /tmp/ccBzEjTs.s 			page 14
+
+
+ 246:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** }
+ 501              		.loc 1 246 0
+ 502 0020 10BD     		pop	{r4, pc}
+ 503              		.cfi_endproc
+ 504              	.LFE180:
+ 506 0022 00BF     		.section	.text.svcRtxTimerStart,"ax",%progbits
+ 507              		.align	2
+ 508              		.thumb
+ 509              		.thumb_func
+ 511              	svcRtxTimerStart:
+ 512              	.LFB181:
+ 247:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 248:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// Start or restart a timer.
+ 249:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// \note API identical to osTimerStart
+ 250:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** static osStatus_t svcRtxTimerStart (osTimerId_t timer_id, uint32_t ticks) {
+ 513              		.loc 1 250 0
+ 514              		.cfi_startproc
+ 515              		@ args = 0, pretend = 0, frame = 0
+ 516              		@ frame_needed = 0, uses_anonymous_args = 0
+ 517              	.LVL58:
+ 518 0000 38B5     		push	{r3, r4, r5, lr}
+ 519              	.LCFI5:
+ 520              		.cfi_def_cfa_offset 16
+ 521              		.cfi_offset 3, -16
+ 522              		.cfi_offset 4, -12
+ 523              		.cfi_offset 5, -8
+ 524              		.cfi_offset 14, -4
+ 251:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   os_timer_t *timer = osRtxTimerId(timer_id);
+ 252:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 253:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   // Check parameters
+ 254:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if ((timer == NULL) || (timer->id != osRtxIdTimer) || (ticks == 0U)) {
+ 525              		.loc 1 254 0
+ 526 0002 0446     		mov	r4, r0
+ 527 0004 20B1     		cbz	r0, .L52
+ 528 0006 0D46     		mov	r5, r1
+ 529              		.loc 1 254 0 is_stmt 0 discriminator 1
+ 530 0008 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 531 000a 022B     		cmp	r3, #2
+ 532 000c 00D1     		bne	.L52
+ 533              		.loc 1 254 0 discriminator 2
+ 534 000e 39B9     		cbnz	r1, .L53
+ 535              	.L52:
+ 255:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     EvrRtxTimerError(timer, (int32_t)osErrorParameter);
+ 536              		.loc 1 255 0 is_stmt 1
+ 537 0010 6FF00301 		mvn	r1, #3
+ 538              	.LVL59:
+ 539 0014 2046     		mov	r0, r4
+ 540              	.LVL60:
+ 541 0016 FFF7FEFF 		bl	EvrRtxTimerError
+ 542              	.LVL61:
+ 256:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     //lint -e{904} "Return statement before end of function" [MISRA Note 1]
+ 257:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     return osErrorParameter;
+ 543              		.loc 1 257 0
+ 544 001a 6FF00300 		mvn	r0, #3
+ 545 001e 38BD     		pop	{r3, r4, r5, pc}
+ 546              	.LVL62:
+ 547              	.L53:
+ARM GAS  /tmp/ccBzEjTs.s 			page 15
+
+
+ 258:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 259:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 260:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if (timer->state == osRtxTimerRunning) {
+ 548              		.loc 1 260 0
+ 549 0020 4378     		ldrb	r3, [r0, #1]	@ zero_extendqisi2
+ 550 0022 022B     		cmp	r3, #2
+ 551 0024 02D1     		bne	.L55
+ 261:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     TimerRemove(timer);
+ 552              		.loc 1 261 0
+ 553 0026 FFF7FEFF 		bl	TimerRemove
+ 554              	.LVL63:
+ 555 002a 0CE0     		b	.L56
+ 556              	.LVL64:
+ 557              	.L55:
+ 262:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   } else {
+ 263:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     if (osRtxInfo.timer.tick == NULL) {
+ 558              		.loc 1 263 0
+ 559 002c 0A4B     		ldr	r3, .L59
+ 560 002e 1B6D     		ldr	r3, [r3, #80]
+ 561 0030 33B9     		cbnz	r3, .L57
+ 264:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       EvrRtxTimerError(timer, (int32_t)osErrorResource);
+ 562              		.loc 1 264 0
+ 563 0032 6FF00201 		mvn	r1, #2
+ 564              	.LVL65:
+ 565 0036 FFF7FEFF 		bl	EvrRtxTimerError
+ 566              	.LVL66:
+ 265:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       //lint -e{904} "Return statement before end of function" [MISRA Note 1]
+ 266:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       return osErrorResource;
+ 567              		.loc 1 266 0
+ 568 003a 6FF00200 		mvn	r0, #2
+ 569 003e 38BD     		pop	{r3, r4, r5, pc}
+ 570              	.LVL67:
+ 571              	.L57:
+ 267:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     } else {
+ 268:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       timer->state = osRtxTimerRunning;
+ 572              		.loc 1 268 0
+ 573 0040 0223     		movs	r3, #2
+ 574 0042 4370     		strb	r3, [r0, #1]
+ 269:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       timer->load  = ticks;
+ 575              		.loc 1 269 0
+ 576 0044 6161     		str	r1, [r4, #20]
+ 577              	.LVL68:
+ 578              	.L56:
+ 270:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     }
+ 271:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 272:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 273:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   TimerInsert(timer, ticks);
+ 579              		.loc 1 273 0
+ 580 0046 2946     		mov	r1, r5
+ 581 0048 2046     		mov	r0, r4
+ 582 004a FFF7FEFF 		bl	TimerInsert
+ 583              	.LVL69:
+ 274:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 275:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   EvrRtxTimerStarted(timer);
+ 584              		.loc 1 275 0
+ 585 004e 2046     		mov	r0, r4
+ 586 0050 FFF7FEFF 		bl	EvrRtxTimerStarted
+ARM GAS  /tmp/ccBzEjTs.s 			page 16
+
+
+ 587              	.LVL70:
+ 276:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 277:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   return osOK;
+ 588              		.loc 1 277 0
+ 589 0054 0020     		movs	r0, #0
+ 278:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** }
+ 590              		.loc 1 278 0
+ 591 0056 38BD     		pop	{r3, r4, r5, pc}
+ 592              	.LVL71:
+ 593              	.L60:
+ 594              		.align	2
+ 595              	.L59:
+ 596 0058 00000000 		.word	osRtxInfo
+ 597              		.cfi_endproc
+ 598              	.LFE181:
+ 600              		.section	.text.svcRtxTimerStop,"ax",%progbits
+ 601              		.align	2
+ 602              		.thumb
+ 603              		.thumb_func
+ 605              	svcRtxTimerStop:
+ 606              	.LFB182:
+ 279:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 280:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// Stop a timer.
+ 281:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// \note API identical to osTimerStop
+ 282:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** static osStatus_t svcRtxTimerStop (osTimerId_t timer_id) {
+ 607              		.loc 1 282 0
+ 608              		.cfi_startproc
+ 609              		@ args = 0, pretend = 0, frame = 0
+ 610              		@ frame_needed = 0, uses_anonymous_args = 0
+ 611              	.LVL72:
+ 612 0000 10B5     		push	{r4, lr}
+ 613              	.LCFI6:
+ 614              		.cfi_def_cfa_offset 8
+ 615              		.cfi_offset 4, -8
+ 616              		.cfi_offset 14, -4
+ 283:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   os_timer_t *timer = osRtxTimerId(timer_id);
+ 284:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 285:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   // Check parameters
+ 286:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if ((timer == NULL) || (timer->id != osRtxIdTimer)) {
+ 617              		.loc 1 286 0
+ 618 0002 0446     		mov	r4, r0
+ 619 0004 10B1     		cbz	r0, .L62
+ 620              		.loc 1 286 0 is_stmt 0 discriminator 1
+ 621 0006 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 622 0008 022B     		cmp	r3, #2
+ 623 000a 07D0     		beq	.L63
+ 624              	.L62:
+ 287:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     EvrRtxTimerError(timer, (int32_t)osErrorParameter);
+ 625              		.loc 1 287 0 is_stmt 1
+ 626 000c 6FF00301 		mvn	r1, #3
+ 627 0010 2046     		mov	r0, r4
+ 628              	.LVL73:
+ 629 0012 FFF7FEFF 		bl	EvrRtxTimerError
+ 630              	.LVL74:
+ 288:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     //lint -e{904} "Return statement before end of function" [MISRA Note 1]
+ 289:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     return osErrorParameter;
+ 631              		.loc 1 289 0
+ARM GAS  /tmp/ccBzEjTs.s 			page 17
+
+
+ 632 0016 6FF00300 		mvn	r0, #3
+ 633 001a 10BD     		pop	{r4, pc}
+ 634              	.LVL75:
+ 635              	.L63:
+ 290:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 291:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 292:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   // Check object state
+ 293:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if (timer->state != osRtxTimerRunning) {
+ 636              		.loc 1 293 0
+ 637 001c 4378     		ldrb	r3, [r0, #1]	@ zero_extendqisi2
+ 638 001e 022B     		cmp	r3, #2
+ 639 0020 06D0     		beq	.L65
+ 294:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     EvrRtxTimerError(timer, (int32_t)osErrorResource);
+ 640              		.loc 1 294 0
+ 641 0022 6FF00201 		mvn	r1, #2
+ 642 0026 FFF7FEFF 		bl	EvrRtxTimerError
+ 643              	.LVL76:
+ 295:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     //lint -e{904} "Return statement before end of function" [MISRA Note 1]
+ 296:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     return osErrorResource;
+ 644              		.loc 1 296 0
+ 645 002a 6FF00200 		mvn	r0, #2
+ 646 002e 10BD     		pop	{r4, pc}
+ 647              	.LVL77:
+ 648              	.L65:
+ 297:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 298:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 299:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   timer->state = osRtxTimerStopped;
+ 649              		.loc 1 299 0
+ 650 0030 0123     		movs	r3, #1
+ 651 0032 4370     		strb	r3, [r0, #1]
+ 300:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 301:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   TimerRemove(timer);
+ 652              		.loc 1 301 0
+ 653 0034 FFF7FEFF 		bl	TimerRemove
+ 654              	.LVL78:
+ 302:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 303:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   EvrRtxTimerStopped(timer);
+ 655              		.loc 1 303 0
+ 656 0038 2046     		mov	r0, r4
+ 657 003a FFF7FEFF 		bl	EvrRtxTimerStopped
+ 658              	.LVL79:
+ 304:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 305:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   return osOK;
+ 659              		.loc 1 305 0
+ 660 003e 0020     		movs	r0, #0
+ 306:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** }
+ 661              		.loc 1 306 0
+ 662 0040 10BD     		pop	{r4, pc}
+ 663              		.cfi_endproc
+ 664              	.LFE182:
+ 666 0042 00BF     		.section	.text.svcRtxTimerIsRunning,"ax",%progbits
+ 667              		.align	2
+ 668              		.thumb
+ 669              		.thumb_func
+ 671              	svcRtxTimerIsRunning:
+ 672              	.LFB183:
+ 307:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ARM GAS  /tmp/ccBzEjTs.s 			page 18
+
+
+ 308:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// Check if a timer is running.
+ 309:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// \note API identical to osTimerIsRunning
+ 310:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** static uint32_t svcRtxTimerIsRunning (osTimerId_t timer_id) {
+ 673              		.loc 1 310 0
+ 674              		.cfi_startproc
+ 675              		@ args = 0, pretend = 0, frame = 0
+ 676              		@ frame_needed = 0, uses_anonymous_args = 0
+ 677              	.LVL80:
+ 678 0000 08B5     		push	{r3, lr}
+ 679              	.LCFI7:
+ 680              		.cfi_def_cfa_offset 8
+ 681              		.cfi_offset 3, -8
+ 682              		.cfi_offset 14, -4
+ 311:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   os_timer_t *timer = osRtxTimerId(timer_id);
+ 312:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   uint32_t    is_running;
+ 313:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 314:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   // Check parameters
+ 315:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if ((timer == NULL) || (timer->id != osRtxIdTimer)) {
+ 683              		.loc 1 315 0
+ 684 0002 0346     		mov	r3, r0
+ 685 0004 10B1     		cbz	r0, .L68
+ 686              		.loc 1 315 0 is_stmt 0 discriminator 1
+ 687 0006 0278     		ldrb	r2, [r0]	@ zero_extendqisi2
+ 688 0008 022A     		cmp	r2, #2
+ 689 000a 05D0     		beq	.L69
+ 690              	.L68:
+ 316:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     EvrRtxTimerIsRunning(timer, 0U);
+ 691              		.loc 1 316 0 is_stmt 1
+ 692 000c 0021     		movs	r1, #0
+ 693 000e 1846     		mov	r0, r3
+ 694              	.LVL81:
+ 695 0010 FFF7FEFF 		bl	EvrRtxTimerIsRunning
+ 696              	.LVL82:
+ 317:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     //lint -e{904} "Return statement before end of function" [MISRA Note 1]
+ 318:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     return 0U;
+ 697              		.loc 1 318 0
+ 698 0014 0020     		movs	r0, #0
+ 699 0016 08BD     		pop	{r3, pc}
+ 700              	.LVL83:
+ 701              	.L69:
+ 319:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 320:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 321:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if (timer->state == osRtxTimerRunning) {
+ 702              		.loc 1 321 0
+ 703 0018 4278     		ldrb	r2, [r0, #1]	@ zero_extendqisi2
+ 704 001a 022A     		cmp	r2, #2
+ 705 001c 04D1     		bne	.L71
+ 322:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     EvrRtxTimerIsRunning(timer, 1U);
+ 706              		.loc 1 322 0
+ 707 001e 0121     		movs	r1, #1
+ 708 0020 FFF7FEFF 		bl	EvrRtxTimerIsRunning
+ 709              	.LVL84:
+ 323:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     is_running = 1U;
+ 710              		.loc 1 323 0
+ 711 0024 0120     		movs	r0, #1
+ 712 0026 08BD     		pop	{r3, pc}
+ 713              	.LVL85:
+ARM GAS  /tmp/ccBzEjTs.s 			page 19
+
+
+ 714              	.L71:
+ 324:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   } else {
+ 325:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     EvrRtxTimerIsRunning(timer, 0U);
+ 715              		.loc 1 325 0
+ 716 0028 0021     		movs	r1, #0
+ 717 002a FFF7FEFF 		bl	EvrRtxTimerIsRunning
+ 718              	.LVL86:
+ 326:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     is_running = 0;
+ 719              		.loc 1 326 0
+ 720 002e 0020     		movs	r0, #0
+ 327:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 328:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 329:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   return is_running;
+ 330:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** }
+ 721              		.loc 1 330 0
+ 722 0030 08BD     		pop	{r3, pc}
+ 723              		.cfi_endproc
+ 724              	.LFE183:
+ 726 0032 00BF     		.section	.text.svcRtxTimerDelete,"ax",%progbits
+ 727              		.align	2
+ 728              		.thumb
+ 729              		.thumb_func
+ 731              	svcRtxTimerDelete:
+ 732              	.LFB184:
+ 331:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 332:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// Delete a timer.
+ 333:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// \note API identical to osTimerDelete
+ 334:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** static osStatus_t svcRtxTimerDelete (osTimerId_t timer_id) {
+ 733              		.loc 1 334 0
+ 734              		.cfi_startproc
+ 735              		@ args = 0, pretend = 0, frame = 0
+ 736              		@ frame_needed = 0, uses_anonymous_args = 0
+ 737              	.LVL87:
+ 738 0000 10B5     		push	{r4, lr}
+ 739              	.LCFI8:
+ 740              		.cfi_def_cfa_offset 8
+ 741              		.cfi_offset 4, -8
+ 742              		.cfi_offset 14, -4
+ 335:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   os_timer_t *timer = osRtxTimerId(timer_id);
+ 336:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 337:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   // Check parameters
+ 338:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if ((timer == NULL) || (timer->id != osRtxIdTimer)) {
+ 743              		.loc 1 338 0
+ 744 0002 0446     		mov	r4, r0
+ 745 0004 10B1     		cbz	r0, .L74
+ 746              		.loc 1 338 0 is_stmt 0 discriminator 1
+ 747 0006 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 748 0008 022B     		cmp	r3, #2
+ 749 000a 07D0     		beq	.L75
+ 750              	.L74:
+ 339:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     EvrRtxTimerError(timer, (int32_t)osErrorParameter);
+ 751              		.loc 1 339 0 is_stmt 1
+ 752 000c 6FF00301 		mvn	r1, #3
+ 753 0010 2046     		mov	r0, r4
+ 754              	.LVL88:
+ 755 0012 FFF7FEFF 		bl	EvrRtxTimerError
+ 756              	.LVL89:
+ARM GAS  /tmp/ccBzEjTs.s 			page 20
+
+
+ 340:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     //lint -e{904} "Return statement before end of function" [MISRA Note 1]
+ 341:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     return osErrorParameter;
+ 757              		.loc 1 341 0
+ 758 0016 6FF00300 		mvn	r0, #3
+ 759 001a 10BD     		pop	{r4, pc}
+ 760              	.LVL90:
+ 761              	.L75:
+ 342:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 343:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 344:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if (timer->state == osRtxTimerRunning) {
+ 762              		.loc 1 344 0
+ 763 001c 4378     		ldrb	r3, [r0, #1]	@ zero_extendqisi2
+ 764 001e 022B     		cmp	r3, #2
+ 765 0020 01D1     		bne	.L77
+ 345:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     TimerRemove(timer);
+ 766              		.loc 1 345 0
+ 767 0022 FFF7FEFF 		bl	TimerRemove
+ 768              	.LVL91:
+ 769              	.L77:
+ 346:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 347:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 348:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   // Mark object as inactive and invalid
+ 349:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   timer->state = osRtxTimerInactive;
+ 770              		.loc 1 349 0
+ 771 0026 0023     		movs	r3, #0
+ 772 0028 6370     		strb	r3, [r4, #1]
+ 350:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   timer->id    = osRtxIdInvalid;
+ 773              		.loc 1 350 0
+ 774 002a 2370     		strb	r3, [r4]
+ 351:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 352:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   // Free object memory
+ 353:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if ((timer->flags & osRtxFlagSystemObject) != 0U) {
+ 775              		.loc 1 353 0
+ 776 002c A378     		ldrb	r3, [r4, #2]	@ zero_extendqisi2
+ 777 002e 13F0010F 		tst	r3, #1
+ 778 0032 0DD0     		beq	.L78
+ 354:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     if (osRtxInfo.mpi.timer != NULL) {
+ 779              		.loc 1 354 0
+ 780 0034 094B     		ldr	r3, .L81
+ 781 0036 D3F88C00 		ldr	r0, [r3, #140]
+ 782 003a 18B1     		cbz	r0, .L79
+ 355:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       (void)osRtxMemoryPoolFree(osRtxInfo.mpi.timer, timer);
+ 783              		.loc 1 355 0
+ 784 003c 2146     		mov	r1, r4
+ 785 003e FFF7FEFF 		bl	osRtxMemoryPoolFree
+ 786              	.LVL92:
+ 787 0042 05E0     		b	.L78
+ 788              	.L79:
+ 356:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     } else {
+ 357:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       (void)osRtxMemoryFree(osRtxInfo.mem.common, timer);
+ 789              		.loc 1 357 0
+ 790 0044 2146     		mov	r1, r4
+ 791 0046 054B     		ldr	r3, .L81
+ 792 0048 D3F88000 		ldr	r0, [r3, #128]
+ 793 004c FFF7FEFF 		bl	osRtxMemoryFree
+ 794              	.LVL93:
+ 795              	.L78:
+ARM GAS  /tmp/ccBzEjTs.s 			page 21
+
+
+ 358:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     }
+ 359:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** #if (defined(OS_OBJ_MEM_USAGE) && (OS_OBJ_MEM_USAGE != 0))
+ 360:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     osRtxTimerMemUsage.cnt_free++;
+ 361:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** #endif
+ 362:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 363:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 364:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   EvrRtxTimerDestroyed(timer);
+ 796              		.loc 1 364 0
+ 797 0050 2046     		mov	r0, r4
+ 798 0052 FFF7FEFF 		bl	EvrRtxTimerDestroyed
+ 799              	.LVL94:
+ 365:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 366:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   return osOK;
+ 800              		.loc 1 366 0
+ 801 0056 0020     		movs	r0, #0
+ 367:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** }
+ 802              		.loc 1 367 0
+ 803 0058 10BD     		pop	{r4, pc}
+ 804              	.LVL95:
+ 805              	.L82:
+ 806 005a 00BF     		.align	2
+ 807              	.L81:
+ 808 005c 00000000 		.word	osRtxInfo
+ 809              		.cfi_endproc
+ 810              	.LFE184:
+ 812              		.section	.text.osRtxTimerThread,"ax",%progbits
+ 813              		.align	2
+ 814              		.weak	osRtxTimerThread
+ 815              		.thumb
+ 816              		.thumb_func
+ 818              	osRtxTimerThread:
+ 819              	.LFB178:
+ 122:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   os_timer_finfo_t finfo;
+ 820              		.loc 1 122 0
+ 821              		.cfi_startproc
+ 822              		@ args = 0, pretend = 0, frame = 8
+ 823              		@ frame_needed = 0, uses_anonymous_args = 0
+ 824              	.LVL96:
+ 825 0000 00B5     		push	{lr}
+ 826              	.LCFI9:
+ 827              		.cfi_def_cfa_offset 4
+ 828              		.cfi_offset 14, -4
+ 829 0002 83B0     		sub	sp, sp, #12
+ 830              	.LCFI10:
+ 831              		.cfi_def_cfa_offset 16
+ 127:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     osMessageQueueNew(osRtxConfig.timer_mq_mcnt, sizeof(os_timer_finfo_t), osRtxConfig.timer_mq_att
+ 832              		.loc 1 127 0
+ 833 0004 0F4B     		ldr	r3, .L88
+ 834 0006 1A6E     		ldr	r2, [r3, #96]
+ 835 0008 0821     		movs	r1, #8
+ 836 000a 586E     		ldr	r0, [r3, #100]
+ 837              	.LVL97:
+ 838 000c FFF7FEFF 		bl	osMessageQueueNew
+ 839              	.LVL98:
+ 840 0010 0D4B     		ldr	r3, .L88+4
+ 841 0012 D864     		str	r0, [r3, #76]
+ 130:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     //lint -e{904} "Return statement before end of function" [MISRA Note 1]
+ARM GAS  /tmp/ccBzEjTs.s 			page 22
+
+
+ 842              		.loc 1 130 0
+ 843 0014 98B1     		cbz	r0, .L83
+ 134:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   for (;;) {
+ 844              		.loc 1 134 0
+ 845 0016 0D4A     		ldr	r2, .L88+8
+ 846 0018 1A65     		str	r2, [r3, #80]
+ 847              	.L85:
+ 137:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     if (status == osOK) {
+ 848              		.loc 1 137 0
+ 849 001a 4FF0FF33 		mov	r3, #-1
+ 850 001e 0022     		movs	r2, #0
+ 851 0020 6946     		mov	r1, sp
+ 852 0022 0948     		ldr	r0, .L88+4
+ 853 0024 C06C     		ldr	r0, [r0, #76]
+ 854 0026 FFF7FEFF 		bl	osMessageQueueGet
+ 855              	.LVL99:
+ 138:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       EvrRtxTimerCallback(finfo.func, finfo.arg);
+ 856              		.loc 1 138 0
+ 857 002a 0028     		cmp	r0, #0
+ 858 002c F5D1     		bne	.L85
+ 139:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****       (finfo.func)(finfo.arg);
+ 859              		.loc 1 139 0
+ 860 002e 0199     		ldr	r1, [sp, #4]
+ 861 0030 0098     		ldr	r0, [sp]
+ 862              	.LVL100:
+ 863 0032 FFF7FEFF 		bl	EvrRtxTimerCallback
+ 864              	.LVL101:
+ 140:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     }
+ 865              		.loc 1 140 0
+ 866 0036 0198     		ldr	r0, [sp, #4]
+ 867 0038 009B     		ldr	r3, [sp]
+ 868 003a 9847     		blx	r3
+ 869              	.LVL102:
+ 870 003c EDE7     		b	.L85
+ 871              	.L83:
+ 143:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 872              		.loc 1 143 0
+ 873 003e 03B0     		add	sp, sp, #12
+ 874              	.LCFI11:
+ 875              		.cfi_def_cfa_offset 4
+ 876              		@ sp needed
+ 877 0040 5DF804FB 		ldr	pc, [sp], #4
+ 878              	.L89:
+ 879              		.align	2
+ 880              	.L88:
+ 881 0044 00000000 		.word	osRtxConfig
+ 882 0048 00000000 		.word	osRtxInfo
+ 883 004c 00000000 		.word	osRtxTimerTick
+ 884              		.cfi_endproc
+ 885              	.LFE178:
+ 887              		.section	.text.osTimerNew,"ax",%progbits
+ 888              		.align	2
+ 889              		.global	osTimerNew
+ 890              		.thumb
+ 891              		.thumb_func
+ 893              	osTimerNew:
+ 894              	.LFB191:
+ARM GAS  /tmp/ccBzEjTs.s 			page 23
+
+
+ 368:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 369:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** //  Service Calls definitions
+ 370:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** //lint ++flb "Library Begin" [MISRA Note 11]
+ 371:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** SVC0_4(TimerNew,       osTimerId_t,  osTimerFunc_t, osTimerType_t, void *, const osTimerAttr_t *)
+ 372:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** SVC0_1(TimerGetName,   const char *, osTimerId_t)
+ 373:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** SVC0_2(TimerStart,     osStatus_t,   osTimerId_t, uint32_t)
+ 374:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** SVC0_1(TimerStop,      osStatus_t,   osTimerId_t)
+ 375:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** SVC0_1(TimerIsRunning, uint32_t,     osTimerId_t)
+ 376:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** SVC0_1(TimerDelete,    osStatus_t,   osTimerId_t)
+ 377:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** //lint --flb "Library End"
+ 378:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 379:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 380:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** //  ==== Public API ====
+ 381:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 382:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// Create and Initialize a timer.
+ 383:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** osTimerId_t osTimerNew (osTimerFunc_t func, osTimerType_t type, void *argument, const osTimerAttr_t
+ 895              		.loc 1 383 0
+ 896              		.cfi_startproc
+ 897              		@ args = 0, pretend = 0, frame = 0
+ 898              		@ frame_needed = 0, uses_anonymous_args = 0
+ 899              	.LVL103:
+ 900 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 901              	.LCFI12:
+ 902              		.cfi_def_cfa_offset 24
+ 903              		.cfi_offset 3, -24
+ 904              		.cfi_offset 4, -20
+ 905              		.cfi_offset 5, -16
+ 906              		.cfi_offset 6, -12
+ 907              		.cfi_offset 7, -8
+ 908              		.cfi_offset 14, -4
+ 909 0002 0746     		mov	r7, r0
+ 910 0004 0E46     		mov	r6, r1
+ 911 0006 1546     		mov	r5, r2
+ 912 0008 1C46     		mov	r4, r3
+ 384:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   osTimerId_t timer_id;
+ 385:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 386:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   EvrRtxTimerNew(func, type, argument, attr);
+ 913              		.loc 1 386 0
+ 914 000a FFF7FEFF 		bl	EvrRtxTimerNew
+ 915              	.LVL104:
+ 916              	.LBB104:
+ 917              	.LBB105:
+ 918              	.LBB106:
+ 919              		.file 2 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h"
+   1:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**************************************************************************//**
+   2:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * @file     cmsis_gcc.h
+   3:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * @brief    CMSIS compiler GCC header file
+   4:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * @version  V5.0.4
+   5:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * @date     09. April 2018
+   6:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  ******************************************************************************/
+   7:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /*
+   8:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * Copyright (c) 2009-2018 Arm Limited. All rights reserved.
+   9:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  *
+  10:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * SPDX-License-Identifier: Apache-2.0
+  11:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  *
+  12:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+  13:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * not use this file except in compliance with the License.
+ARM GAS  /tmp/ccBzEjTs.s 			page 24
+
+
+  14:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * You may obtain a copy of the License at
+  15:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  *
+  16:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * www.apache.org/licenses/LICENSE-2.0
+  17:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  *
+  18:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * Unless required by applicable law or agreed to in writing, software
+  19:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  20:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  21:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * See the License for the specific language governing permissions and
+  22:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * limitations under the License.
+  23:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+  24:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+  25:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef __CMSIS_GCC_H
+  26:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #define __CMSIS_GCC_H
+  27:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+  28:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /* ignore some GCC warnings */
+  29:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #pragma GCC diagnostic push
+  30:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wsign-conversion"
+  31:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wconversion"
+  32:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wunused-parameter"
+  33:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+  34:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /* Fallback for __has_builtin */
+  35:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef __has_builtin
+  36:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __has_builtin(x) (0)
+  37:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  38:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+  39:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /* CMSIS compiler specific defines */
+  40:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __ASM
+  41:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __ASM                                  __asm
+  42:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  43:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __INLINE
+  44:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __INLINE                               inline
+  45:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  46:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __STATIC_INLINE
+  47:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __STATIC_INLINE                        static inline
+  48:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  49:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __STATIC_FORCEINLINE                 
+  50:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __STATIC_FORCEINLINE                   __attribute__((always_inline)) static inline
+  51:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif                                           
+  52:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __NO_RETURN
+  53:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __NO_RETURN                            __attribute__((__noreturn__))
+  54:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  55:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __USED
+  56:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __USED                                 __attribute__((used))
+  57:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  58:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __WEAK
+  59:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __WEAK                                 __attribute__((weak))
+  60:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  61:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __PACKED
+  62:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __PACKED                               __attribute__((packed, aligned(1)))
+  63:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  64:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __PACKED_STRUCT
+  65:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __PACKED_STRUCT                        struct __attribute__((packed, aligned(1)))
+  66:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  67:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __PACKED_UNION
+  68:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __PACKED_UNION                         union __attribute__((packed, aligned(1)))
+  69:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  70:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32        /* deprecated */
+ARM GAS  /tmp/ccBzEjTs.s 			page 25
+
+
+  71:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  72:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  73:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  74:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   struct __attribute__((packed)) T_UINT32 { uint32_t v; };
+  75:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  76:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32(x)                  (((struct T_UINT32 *)(x))->v)
+  77:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  78:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT16_WRITE
+  79:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  80:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  81:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  82:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT16_WRITE { uint16_t v; };
+  83:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  84:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT16_WRITE(addr, val)    (void)((((struct T_UINT16_WRITE *)(void *)(addr))-
+  85:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  86:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT16_READ
+  87:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  88:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  89:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  90:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT16_READ { uint16_t v; };
+  91:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  92:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT16_READ(addr)          (((const struct T_UINT16_READ *)(const void *)(add
+  93:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  94:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32_WRITE
+  95:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  96:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  97:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  98:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT32_WRITE { uint32_t v; };
+  99:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+ 100:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32_WRITE(addr, val)    (void)((((struct T_UINT32_WRITE *)(void *)(addr))-
+ 101:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 102:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32_READ
+ 103:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+ 104:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+ 105:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+ 106:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT32_READ { uint32_t v; };
+ 107:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+ 108:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32_READ(addr)          (((const struct T_UINT32_READ *)(const void *)(add
+ 109:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 110:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __ALIGNED
+ 111:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __ALIGNED(x)                           __attribute__((aligned(x)))
+ 112:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 113:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __RESTRICT
+ 114:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __RESTRICT                             __restrict
+ 115:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 116:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 117:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 118:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /* ###########################  Core Function Access  ########################### */
+ 119:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /** \ingroup  CMSIS_Core_FunctionInterface
+ 120:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****     \defgroup CMSIS_Core_RegAccFunctions CMSIS Core Register Access Functions
+ 121:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   @{
+ 122:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 123:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 124:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 125:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Enable IRQ Interrupts
+ 126:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Enables IRQ interrupts by clearing the I-bit in the CPSR.
+ 127:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
+ARM GAS  /tmp/ccBzEjTs.s 			page 26
+
+
+ 128:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 129:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __enable_irq(void)
+ 130:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 131:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("cpsie i" : : : "memory");
+ 132:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 133:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 134:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 135:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 136:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Disable IRQ Interrupts
+ 137:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Disables IRQ interrupts by setting the I-bit in the CPSR.
+ 138:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
+ 139:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 140:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __disable_irq(void)
+ 141:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 142:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("cpsid i" : : : "memory");
+ 143:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 144:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 145:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 146:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 147:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get Control Register
+ 148:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the content of the Control Register.
+ 149:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               Control Register value
+ 150:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 151:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_CONTROL(void)
+ 152:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 153:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 154:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 155:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, control" : "=r" (result) );
+ 156:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 157:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 158:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 159:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 160:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 161:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 162:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get Control Register (non-secure)
+ 163:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the content of the non-secure Control Register when in secure mode.
+ 164:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               non-secure Control Register value
+ 165:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 166:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __TZ_get_CONTROL_NS(void)
+ 167:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 168:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 169:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 170:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, control_ns" : "=r" (result) );
+ 171:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 172:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 173:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 174:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 175:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 176:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 177:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Set Control Register
+ 178:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Writes the given value to the Control Register.
+ 179:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \param [in]    control  Control Register value to set
+ 180:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 181:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __set_CONTROL(uint32_t control)
+ 182:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 183:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MSR control, %0" : : "r" (control) : "memory");
+ 184:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ARM GAS  /tmp/ccBzEjTs.s 			page 27
+
+
+ 185:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 186:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 187:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 188:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 189:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Set Control Register (non-secure)
+ 190:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Writes the given value to the non-secure Control Register when in secure state.
+ 191:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \param [in]    control  Control Register value to set
+ 192:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 193:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __TZ_set_CONTROL_NS(uint32_t control)
+ 194:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 195:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MSR control_ns, %0" : : "r" (control) : "memory");
+ 196:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 197:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 198:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 199:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 200:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 201:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get IPSR Register
+ 202:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the content of the IPSR Register.
+ 203:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               IPSR Register value
+ 204:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 205:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_IPSR(void)
+ 206:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 207:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 208:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 209:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, ipsr" : "=r" (result) );
+ 920              		.loc 2 209 0
+ 921              		.syntax unified
+ 922              	@ 209 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 923 000e EFF30583 		MRS r3, ipsr
+ 924              	@ 0 "" 2
+ 925              		.thumb
+ 926              		.syntax unified
+ 927              	.LBE106:
+ 928              	.LBE105:
+ 929              	.LBE104:
+ 387:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if (IsIrqMode() || IsIrqMasked()) {
+ 930              		.loc 1 387 0
+ 931 0012 53B9     		cbnz	r3, .L91
+ 932              	.LBB107:
+ 933              	.LBB108:
+ 934              	.LBB109:
+ 935              	.LBB110:
+ 210:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 211:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 212:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 213:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 214:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 215:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get APSR Register
+ 216:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the content of the APSR Register.
+ 217:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               APSR Register value
+ 218:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 219:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_APSR(void)
+ 220:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 221:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 222:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 223:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, apsr" : "=r" (result) );
+ 224:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ARM GAS  /tmp/ccBzEjTs.s 			page 28
+
+
+ 225:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 226:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 227:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 228:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 229:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get xPSR Register
+ 230:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the content of the xPSR Register.
+ 231:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               xPSR Register value
+ 232:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 233:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_xPSR(void)
+ 234:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 235:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 236:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 237:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, xpsr" : "=r" (result) );
+ 238:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 239:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 240:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 241:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 242:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 243:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get Process Stack Pointer
+ 244:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the current value of the Process Stack Pointer (PSP).
+ 245:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               PSP Register value
+ 246:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 247:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_PSP(void)
+ 248:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 249:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 250:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 251:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, psp"  : "=r" (result) );
+ 252:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 253:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 254:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 255:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 256:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 257:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 258:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get Process Stack Pointer (non-secure)
+ 259:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the current value of the non-secure Process Stack Pointer (PSP) when in secure s
+ 260:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               PSP Register value
+ 261:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 262:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __TZ_get_PSP_NS(void)
+ 263:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 264:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 265:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 266:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, psp_ns"  : "=r" (result) );
+ 267:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 268:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 269:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 270:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 271:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 272:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 273:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Set Process Stack Pointer
+ 274:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Assigns the given value to the Process Stack Pointer (PSP).
+ 275:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \param [in]    topOfProcStack  Process Stack Pointer value to set
+ 276:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 277:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __set_PSP(uint32_t topOfProcStack)
+ 278:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 279:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MSR psp, %0" : : "r" (topOfProcStack) : );
+ 280:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 281:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ARM GAS  /tmp/ccBzEjTs.s 			page 29
+
+
+ 282:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 283:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 284:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 285:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Set Process Stack Pointer (non-secure)
+ 286:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Assigns the given value to the non-secure Process Stack Pointer (PSP) when in secure sta
+ 287:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \param [in]    topOfProcStack  Process Stack Pointer value to set
+ 288:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 289:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __TZ_set_PSP_NS(uint32_t topOfProcStack)
+ 290:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 291:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MSR psp_ns, %0" : : "r" (topOfProcStack) : );
+ 292:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 293:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 294:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 295:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 296:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 297:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get Main Stack Pointer
+ 298:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the current value of the Main Stack Pointer (MSP).
+ 299:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               MSP Register value
+ 300:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 301:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_MSP(void)
+ 302:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 303:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 304:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 305:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, msp" : "=r" (result) );
+ 306:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 307:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 308:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 309:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 310:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 311:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 312:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get Main Stack Pointer (non-secure)
+ 313:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the current value of the non-secure Main Stack Pointer (MSP) when in secure stat
+ 314:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               MSP Register value
+ 315:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 316:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __TZ_get_MSP_NS(void)
+ 317:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 318:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 319:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 320:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, msp_ns" : "=r" (result) );
+ 321:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 322:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 323:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 324:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 325:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 326:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 327:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Set Main Stack Pointer
+ 328:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Assigns the given value to the Main Stack Pointer (MSP).
+ 329:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \param [in]    topOfMainStack  Main Stack Pointer value to set
+ 330:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 331:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __set_MSP(uint32_t topOfMainStack)
+ 332:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 333:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MSR msp, %0" : : "r" (topOfMainStack) : );
+ 334:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 335:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 336:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 337:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 338:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ARM GAS  /tmp/ccBzEjTs.s 			page 30
+
+
+ 339:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Set Main Stack Pointer (non-secure)
+ 340:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Assigns the given value to the non-secure Main Stack Pointer (MSP) when in secure state.
+ 341:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \param [in]    topOfMainStack  Main Stack Pointer value to set
+ 342:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 343:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __TZ_set_MSP_NS(uint32_t topOfMainStack)
+ 344:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 345:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MSR msp_ns, %0" : : "r" (topOfMainStack) : );
+ 346:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 347:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 348:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 349:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 350:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 351:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 352:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get Stack Pointer (non-secure)
+ 353:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the current value of the non-secure Stack Pointer (SP) when in secure state.
+ 354:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               SP Register value
+ 355:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 356:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __TZ_get_SP_NS(void)
+ 357:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 358:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 359:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 360:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, sp_ns" : "=r" (result) );
+ 361:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 362:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 363:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 364:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 365:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 366:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Set Stack Pointer (non-secure)
+ 367:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Assigns the given value to the non-secure Stack Pointer (SP) when in secure state.
+ 368:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \param [in]    topOfStack  Stack Pointer value to set
+ 369:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 370:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __TZ_set_SP_NS(uint32_t topOfStack)
+ 371:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 372:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MSR sp_ns, %0" : : "r" (topOfStack) : );
+ 373:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 374:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 375:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 376:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 377:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 378:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get Priority Mask
+ 379:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the current state of the priority mask bit from the Priority Mask Register.
+ 380:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               Priority Mask value
+ 381:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 382:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_PRIMASK(void)
+ 383:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 384:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 385:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 386:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, primask" : "=r" (result) :: "memory");
+ 936              		.loc 2 386 0
+ 937              		.syntax unified
+ 938              	@ 386 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 939 0014 EFF31083 		MRS r3, primask
+ 940              	@ 0 "" 2
+ 941              		.thumb
+ 942              		.syntax unified
+ 943              	.LBE110:
+ 944              	.LBE109:
+ARM GAS  /tmp/ccBzEjTs.s 			page 31
+
+
+ 945              		.file 3 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h"
+   1:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /*
+   2:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * Copyright (c) 2013-2018 Arm Limited. All rights reserved.
+   3:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  *
+   4:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * SPDX-License-Identifier: Apache-2.0
+   5:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  *
+   6:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+   7:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * not use this file except in compliance with the License.
+   8:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * You may obtain a copy of the License at
+   9:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  *
+  10:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * www.apache.org/licenses/LICENSE-2.0
+  11:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  *
+  12:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * Unless required by applicable law or agreed to in writing, software
+  13:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  14:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  15:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * See the License for the specific language governing permissions and
+  16:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * limitations under the License.
+  17:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  *
+  18:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * -----------------------------------------------------------------------------
+  19:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  *
+  20:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * Project:     CMSIS-RTOS RTX
+  21:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * Title:       Cortex-M Core definitions
+  22:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  *
+  23:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * -----------------------------------------------------------------------------
+  24:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  */
+  25:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  26:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef RTX_CORE_CM_H_
+  27:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define RTX_CORE_CM_H_
+  28:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  29:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef RTX_CORE_C_H_
+  30:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #include "RTE_Components.h"
+  31:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #include CMSIS_device_header
+  32:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  33:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  34:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #include <stdbool.h>
+  35:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** typedef bool bool_t;
+  36:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define FALSE                   ((bool_t)0)
+  37:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define TRUE                    ((bool_t)1)
+  38:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  39:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  RTE_CMSIS_RTOS2_RTX5_ARMV8M_NS
+  40:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define DOMAIN_NS               1
+  41:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  42:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  43:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef DOMAIN_NS
+  44:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define DOMAIN_NS               0
+  45:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  46:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  47:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if    (DOMAIN_NS == 1)
+  48:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if   ((!defined(__ARM_ARCH_8M_BASE__) || (__ARM_ARCH_8M_BASE__ == 0)) && \
+  49:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****        (!defined(__ARM_ARCH_8M_MAIN__) || (__ARM_ARCH_8M_MAIN__ == 0)))
+  50:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #error "Non-secure domain requires ARMv8-M Architecture!"
+  51:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  52:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  53:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  54:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef EXCLUSIVE_ACCESS
+  55:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if    ((defined(__ARM_ARCH_7M__)      && (__ARM_ARCH_7M__      != 0)) || \
+  56:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****         (defined(__ARM_ARCH_7EM__)     && (__ARM_ARCH_7EM__     != 0)) || \
+ARM GAS  /tmp/ccBzEjTs.s 			page 32
+
+
+  57:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****         (defined(__ARM_ARCH_8M_BASE__) && (__ARM_ARCH_8M_BASE__ != 0)) || \
+  58:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****         (defined(__ARM_ARCH_8M_MAIN__) && (__ARM_ARCH_8M_MAIN__ != 0)))
+  59:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define EXCLUSIVE_ACCESS        1
+  60:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+  61:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define EXCLUSIVE_ACCESS        0
+  62:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  63:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  64:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  65:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define OS_TICK_HANDLER         SysTick_Handler
+  66:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  67:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// xPSR_Initialization Value
+  68:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  privileged      true=privileged, false=unprivileged
+  69:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  thumb           true=Thumb, false=ARM
+  70:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return                     xPSR Init Value
+  71:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE uint32_t xPSR_InitVal (bool_t privileged, bool_t thumb) {
+  72:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   (void)privileged;
+  73:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   (void)thumb;
+  74:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return (0x01000000U);
+  75:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+  76:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  77:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** // Stack Frame:
+  78:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //  - Extended: S16-S31, R4-R11, R0-R3, R12, LR, PC, xPSR, S0-S15, FPSCR
+  79:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //  - Basic:             R4-R11, R0-R3, R12, LR, PC, xPSR
+  80:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  81:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Stack Frame Initialization Value (EXC_RETURN[7..0])
+  82:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if (DOMAIN_NS == 1)
+  83:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define STACK_FRAME_INIT_VAL    0xBCU
+  84:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+  85:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define STACK_FRAME_INIT_VAL    0xFDU
+  86:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  87:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  88:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Stack Offset of Register R0
+  89:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  stack_frame     Stack Frame (EXC_RETURN[7..0])
+  90:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return                     R0 Offset
+  91:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE uint32_t StackOffsetR0 (uint8_t stack_frame) {
+  92:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if (__FPU_USED == 1U)
+  93:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return (((stack_frame & 0x10U) == 0U) ? ((16U+8U)*4U) : (8U*4U));
+  94:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+  95:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   (void)stack_frame;
+  96:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return (8U*4U);
+  97:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  98:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+  99:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 100:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 101:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //  ==== Core functions ====
+ 102:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 103:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //lint -sem(__get_CONTROL, pure)
+ 104:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //lint -sem(__get_IPSR,    pure)
+ 105:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //lint -sem(__get_PRIMASK, pure)
+ 106:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //lint -sem(__get_BASEPRI, pure)
+ 107:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 108:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Check if running Privileged
+ 109:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return     true=privileged, false=unprivileged
+ 110:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE bool_t IsPrivileged (void) {
+ 111:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return ((__get_CONTROL() & 1U) == 0U);
+ 112:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 113:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ARM GAS  /tmp/ccBzEjTs.s 			page 33
+
+
+ 114:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Check if in IRQ Mode
+ 115:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return     true=IRQ, false=thread
+ 116:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE bool_t IsIrqMode (void) {
+ 117:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return (__get_IPSR() != 0U);
+ 118:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 119:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 120:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Check if IRQ is Masked
+ 121:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return     true=masked, false=not masked
+ 122:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE bool_t IsIrqMasked (void) {
+ 123:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if   ((defined(__ARM_ARCH_7M__)      && (__ARM_ARCH_7M__      != 0)) || \
+ 124:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****        (defined(__ARM_ARCH_7EM__)     && (__ARM_ARCH_7EM__     != 0)) || \
+ 125:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****        (defined(__ARM_ARCH_8M_MAIN__) && (__ARM_ARCH_8M_MAIN__ != 0)))
+ 126:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return ((__get_PRIMASK() != 0U) || (__get_BASEPRI() != 0U));
+ 946              		.loc 3 126 0
+ 947 0018 1BB9     		cbnz	r3, .L95
+ 948              	.LBB111:
+ 949              	.LBB112:
+ 387:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 388:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 389:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 390:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 391:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 392:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 393:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get Priority Mask (non-secure)
+ 394:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the current state of the non-secure priority mask bit from the Priority Mask Reg
+ 395:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               Priority Mask value
+ 396:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 397:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __TZ_get_PRIMASK_NS(void)
+ 398:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 399:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 400:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 401:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, primask_ns" : "=r" (result) :: "memory");
+ 402:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 403:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 404:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 405:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 406:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 407:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 408:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Set Priority Mask
+ 409:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Assigns the given value to the Priority Mask Register.
+ 410:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \param [in]    priMask  Priority Mask
+ 411:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 412:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __set_PRIMASK(uint32_t priMask)
+ 413:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 414:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MSR primask, %0" : : "r" (priMask) : "memory");
+ 415:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 416:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 417:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 418:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 419:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 420:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Set Priority Mask (non-secure)
+ 421:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Assigns the given value to the non-secure Priority Mask Register when in secure state.
+ 422:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \param [in]    priMask  Priority Mask
+ 423:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 424:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __TZ_set_PRIMASK_NS(uint32_t priMask)
+ 425:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 426:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MSR primask_ns, %0" : : "r" (priMask) : "memory");
+ARM GAS  /tmp/ccBzEjTs.s 			page 34
+
+
+ 427:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 428:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 429:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 430:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 431:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #if ((defined (__ARM_ARCH_7M__      ) && (__ARM_ARCH_7M__      == 1)) || \
+ 432:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****      (defined (__ARM_ARCH_7EM__     ) && (__ARM_ARCH_7EM__     == 1)) || \
+ 433:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****      (defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1))    )
+ 434:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 435:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Enable FIQ
+ 436:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Enables FIQ interrupts by clearing the F-bit in the CPSR.
+ 437:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
+ 438:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 439:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __enable_fault_irq(void)
+ 440:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 441:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("cpsie f" : : : "memory");
+ 442:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 443:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 444:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 445:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 446:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Disable FIQ
+ 447:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Disables FIQ interrupts by setting the F-bit in the CPSR.
+ 448:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
+ 449:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 450:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __disable_fault_irq(void)
+ 451:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 452:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("cpsid f" : : : "memory");
+ 453:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 454:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 455:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 456:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 457:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get Base Priority
+ 458:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the current value of the Base Priority register.
+ 459:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               Base Priority register value
+ 460:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 461:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_BASEPRI(void)
+ 462:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 463:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 464:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 465:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, basepri" : "=r" (result) );
+ 950              		.loc 2 465 0
+ 951              		.syntax unified
+ 952              	@ 465 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 953 001a EFF31183 		MRS r3, basepri
+ 954              	@ 0 "" 2
+ 955              		.thumb
+ 956              		.syntax unified
+ 957              	.LBE112:
+ 958              	.LBE111:
+ 959              		.loc 3 126 0
+ 960 001e 13B9     		cbnz	r3, .L96
+ 961 0020 02E0     		b	.L92
+ 962              	.L95:
+ 963 0022 0123     		movs	r3, #1
+ 964 0024 00E0     		b	.L92
+ 965              	.L96:
+ 966 0026 0123     		movs	r3, #1
+ 967              	.L92:
+ARM GAS  /tmp/ccBzEjTs.s 			page 35
+
+
+ 968              	.LBE108:
+ 969              	.LBE107:
+ 970              		.loc 1 387 0
+ 971 0028 33B1     		cbz	r3, .L93
+ 972              	.L91:
+ 388:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     EvrRtxTimerError(NULL, (int32_t)osErrorISR);
+ 973              		.loc 1 388 0
+ 974 002a 6FF00501 		mvn	r1, #5
+ 975 002e 0020     		movs	r0, #0
+ 976 0030 FFF7FEFF 		bl	EvrRtxTimerError
+ 977              	.LVL105:
+ 389:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     timer_id = NULL;
+ 978              		.loc 1 389 0
+ 979 0034 0020     		movs	r0, #0
+ 980 0036 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 981              	.LVL106:
+ 982              	.L93:
+ 983              	.LBB113:
+ 984              	.LBB114:
+ 371:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** SVC0_1(TimerGetName,   const char *, osTimerId_t)
+ 985              		.loc 1 371 0
+ 986 0038 3846     		mov	r0, r7
+ 987 003a 3146     		mov	r1, r6
+ 988 003c 2A46     		mov	r2, r5
+ 989 003e 2346     		mov	r3, r4
+ 990 0040 DFF804C0 		ldr	ip, .L98
+ 991              		.syntax unified
+ 992              	@ 371 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c" 1
+ 993 0044 00DF     		svc 0
+ 994              	@ 0 "" 2
+ 995              	.LVL107:
+ 996              		.thumb
+ 997              		.syntax unified
+ 998              	.LBE114:
+ 999              	.LBE113:
+ 390:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   } else {
+ 391:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     timer_id = __svcTimerNew(func, type, argument, attr);
+ 392:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 393:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   return timer_id;
+ 394:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** }
+ 1000              		.loc 1 394 0
+ 1001 0046 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 1002              	.LVL108:
+ 1003              	.L99:
+ 1004              		.align	2
+ 1005              	.L98:
+ 1006 0048 00000000 		.word	svcRtxTimerNew
+ 1007              		.cfi_endproc
+ 1008              	.LFE191:
+ 1010              		.section	.text.osTimerGetName,"ax",%progbits
+ 1011              		.align	2
+ 1012              		.global	osTimerGetName
+ 1013              		.thumb
+ 1014              		.thumb_func
+ 1016              	osTimerGetName:
+ 1017              	.LFB192:
+ 395:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ARM GAS  /tmp/ccBzEjTs.s 			page 36
+
+
+ 396:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// Get name of a timer.
+ 397:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** const char *osTimerGetName (osTimerId_t timer_id) {
+ 1018              		.loc 1 397 0
+ 1019              		.cfi_startproc
+ 1020              		@ args = 0, pretend = 0, frame = 0
+ 1021              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1022              	.LVL109:
+ 1023 0000 08B5     		push	{r3, lr}
+ 1024              	.LCFI13:
+ 1025              		.cfi_def_cfa_offset 8
+ 1026              		.cfi_offset 3, -8
+ 1027              		.cfi_offset 14, -4
+ 1028              	.LBB115:
+ 1029              	.LBB116:
+ 1030              	.LBB117:
+ 209:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 1031              		.loc 2 209 0
+ 1032              		.syntax unified
+ 1033              	@ 209 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 1034 0002 EFF30583 		MRS r3, ipsr
+ 1035              	@ 0 "" 2
+ 1036              		.thumb
+ 1037              		.syntax unified
+ 1038              	.LBE117:
+ 1039              	.LBE116:
+ 1040              	.LBE115:
+ 398:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   const char *name;
+ 399:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 400:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if (IsIrqMode() || IsIrqMasked()) {
+ 1041              		.loc 1 400 0
+ 1042 0006 53B9     		cbnz	r3, .L101
+ 1043              	.LBB118:
+ 1044              	.LBB119:
+ 1045              	.LBB120:
+ 1046              	.LBB121:
+ 386:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 1047              		.loc 2 386 0
+ 1048              		.syntax unified
+ 1049              	@ 386 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 1050 0008 EFF31083 		MRS r3, primask
+ 1051              	@ 0 "" 2
+ 1052              		.thumb
+ 1053              		.syntax unified
+ 1054              	.LBE121:
+ 1055              	.LBE120:
+ 1056              		.loc 3 126 0
+ 1057 000c 1BB9     		cbnz	r3, .L105
+ 1058              	.LBB122:
+ 1059              	.LBB123:
+ 1060              		.loc 2 465 0
+ 1061              		.syntax unified
+ 1062              	@ 465 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 1063 000e EFF31183 		MRS r3, basepri
+ 1064              	@ 0 "" 2
+ 1065              		.thumb
+ 1066              		.syntax unified
+ 1067              	.LBE123:
+ARM GAS  /tmp/ccBzEjTs.s 			page 37
+
+
+ 1068              	.LBE122:
+ 1069              		.loc 3 126 0
+ 1070 0012 13B9     		cbnz	r3, .L106
+ 1071 0014 02E0     		b	.L102
+ 1072              	.L105:
+ 1073 0016 0123     		movs	r3, #1
+ 1074 0018 00E0     		b	.L102
+ 1075              	.L106:
+ 1076 001a 0123     		movs	r3, #1
+ 1077              	.L102:
+ 1078              	.LBE119:
+ 1079              	.LBE118:
+ 1080              		.loc 1 400 0
+ 1081 001c 23B1     		cbz	r3, .L103
+ 1082              	.L101:
+ 401:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     EvrRtxTimerGetName(timer_id, NULL);
+ 1083              		.loc 1 401 0
+ 1084 001e 0021     		movs	r1, #0
+ 1085 0020 FFF7FEFF 		bl	EvrRtxTimerGetName
+ 1086              	.LVL110:
+ 402:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     name = NULL;
+ 1087              		.loc 1 402 0
+ 1088 0024 0020     		movs	r0, #0
+ 1089 0026 08BD     		pop	{r3, pc}
+ 1090              	.LVL111:
+ 1091              	.L103:
+ 1092              	.LBB124:
+ 1093              	.LBB125:
+ 372:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** SVC0_2(TimerStart,     osStatus_t,   osTimerId_t, uint32_t)
+ 1094              		.loc 1 372 0
+ 1095 0028 DFF804C0 		ldr	ip, .L108
+ 1096              		.syntax unified
+ 1097              	@ 372 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c" 1
+ 1098 002c 00DF     		svc 0
+ 1099              	@ 0 "" 2
+ 1100              	.LVL112:
+ 1101              		.thumb
+ 1102              		.syntax unified
+ 1103              	.LBE125:
+ 1104              	.LBE124:
+ 403:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   } else {
+ 404:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     name = __svcTimerGetName(timer_id);
+ 405:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 406:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   return name;
+ 407:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** }
+ 1105              		.loc 1 407 0
+ 1106 002e 08BD     		pop	{r3, pc}
+ 1107              	.L109:
+ 1108              		.align	2
+ 1109              	.L108:
+ 1110 0030 00000000 		.word	svcRtxTimerGetName
+ 1111              		.cfi_endproc
+ 1112              	.LFE192:
+ 1114              		.section	.text.osTimerStart,"ax",%progbits
+ 1115              		.align	2
+ 1116              		.global	osTimerStart
+ 1117              		.thumb
+ARM GAS  /tmp/ccBzEjTs.s 			page 38
+
+
+ 1118              		.thumb_func
+ 1120              	osTimerStart:
+ 1121              	.LFB193:
+ 408:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 409:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// Start or restart a timer.
+ 410:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** osStatus_t osTimerStart (osTimerId_t timer_id, uint32_t ticks) {
+ 1122              		.loc 1 410 0
+ 1123              		.cfi_startproc
+ 1124              		@ args = 0, pretend = 0, frame = 0
+ 1125              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1126              	.LVL113:
+ 1127 0000 38B5     		push	{r3, r4, r5, lr}
+ 1128              	.LCFI14:
+ 1129              		.cfi_def_cfa_offset 16
+ 1130              		.cfi_offset 3, -16
+ 1131              		.cfi_offset 4, -12
+ 1132              		.cfi_offset 5, -8
+ 1133              		.cfi_offset 14, -4
+ 1134 0002 0446     		mov	r4, r0
+ 1135 0004 0D46     		mov	r5, r1
+ 411:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   osStatus_t status;
+ 412:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 413:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   EvrRtxTimerStart(timer_id, ticks);
+ 1136              		.loc 1 413 0
+ 1137 0006 FFF7FEFF 		bl	EvrRtxTimerStart
+ 1138              	.LVL114:
+ 1139              	.LBB126:
+ 1140              	.LBB127:
+ 1141              	.LBB128:
+ 209:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 1142              		.loc 2 209 0
+ 1143              		.syntax unified
+ 1144              	@ 209 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 1145 000a EFF30583 		MRS r3, ipsr
+ 1146              	@ 0 "" 2
+ 1147              		.thumb
+ 1148              		.syntax unified
+ 1149              	.LBE128:
+ 1150              	.LBE127:
+ 1151              	.LBE126:
+ 414:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if (IsIrqMode() || IsIrqMasked()) {
+ 1152              		.loc 1 414 0
+ 1153 000e 53B9     		cbnz	r3, .L111
+ 1154              	.LBB129:
+ 1155              	.LBB130:
+ 1156              	.LBB131:
+ 1157              	.LBB132:
+ 386:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 1158              		.loc 2 386 0
+ 1159              		.syntax unified
+ 1160              	@ 386 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 1161 0010 EFF31083 		MRS r3, primask
+ 1162              	@ 0 "" 2
+ 1163              		.thumb
+ 1164              		.syntax unified
+ 1165              	.LBE132:
+ 1166              	.LBE131:
+ARM GAS  /tmp/ccBzEjTs.s 			page 39
+
+
+ 1167              		.loc 3 126 0
+ 1168 0014 1BB9     		cbnz	r3, .L115
+ 1169              	.LBB133:
+ 1170              	.LBB134:
+ 1171              		.loc 2 465 0
+ 1172              		.syntax unified
+ 1173              	@ 465 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 1174 0016 EFF31183 		MRS r3, basepri
+ 1175              	@ 0 "" 2
+ 1176              		.thumb
+ 1177              		.syntax unified
+ 1178              	.LBE134:
+ 1179              	.LBE133:
+ 1180              		.loc 3 126 0
+ 1181 001a 13B9     		cbnz	r3, .L116
+ 1182 001c 02E0     		b	.L112
+ 1183              	.L115:
+ 1184 001e 0123     		movs	r3, #1
+ 1185 0020 00E0     		b	.L112
+ 1186              	.L116:
+ 1187 0022 0123     		movs	r3, #1
+ 1188              	.L112:
+ 1189              	.LBE130:
+ 1190              	.LBE129:
+ 1191              		.loc 1 414 0
+ 1192 0024 3BB1     		cbz	r3, .L113
+ 1193              	.L111:
+ 415:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     EvrRtxTimerError(timer_id, (int32_t)osErrorISR);
+ 1194              		.loc 1 415 0
+ 1195 0026 6FF00501 		mvn	r1, #5
+ 1196 002a 2046     		mov	r0, r4
+ 1197 002c FFF7FEFF 		bl	EvrRtxTimerError
+ 1198              	.LVL115:
+ 416:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     status = osErrorISR;
+ 1199              		.loc 1 416 0
+ 1200 0030 6FF00500 		mvn	r0, #5
+ 1201 0034 38BD     		pop	{r3, r4, r5, pc}
+ 1202              	.LVL116:
+ 1203              	.L113:
+ 1204              	.LBB135:
+ 1205              	.LBB136:
+ 373:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** SVC0_1(TimerStop,      osStatus_t,   osTimerId_t)
+ 1206              		.loc 1 373 0
+ 1207 0036 2046     		mov	r0, r4
+ 1208 0038 2946     		mov	r1, r5
+ 1209 003a DFF808C0 		ldr	ip, .L118
+ 1210              		.syntax unified
+ 1211              	@ 373 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c" 1
+ 1212 003e 00DF     		svc 0
+ 1213              	@ 0 "" 2
+ 1214              	.LVL117:
+ 1215              		.thumb
+ 1216              		.syntax unified
+ 1217              	.LBE136:
+ 1218              	.LBE135:
+ 417:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   } else {
+ 418:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     status = __svcTimerStart(timer_id, ticks);
+ARM GAS  /tmp/ccBzEjTs.s 			page 40
+
+
+ 419:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 420:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   return status;
+ 421:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** }
+ 1219              		.loc 1 421 0
+ 1220 0040 38BD     		pop	{r3, r4, r5, pc}
+ 1221              	.LVL118:
+ 1222              	.L119:
+ 1223 0042 00BF     		.align	2
+ 1224              	.L118:
+ 1225 0044 00000000 		.word	svcRtxTimerStart
+ 1226              		.cfi_endproc
+ 1227              	.LFE193:
+ 1229              		.section	.text.osTimerStop,"ax",%progbits
+ 1230              		.align	2
+ 1231              		.global	osTimerStop
+ 1232              		.thumb
+ 1233              		.thumb_func
+ 1235              	osTimerStop:
+ 1236              	.LFB194:
+ 422:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 423:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// Stop a timer.
+ 424:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** osStatus_t osTimerStop (osTimerId_t timer_id) {
+ 1237              		.loc 1 424 0
+ 1238              		.cfi_startproc
+ 1239              		@ args = 0, pretend = 0, frame = 0
+ 1240              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1241              	.LVL119:
+ 1242 0000 10B5     		push	{r4, lr}
+ 1243              	.LCFI15:
+ 1244              		.cfi_def_cfa_offset 8
+ 1245              		.cfi_offset 4, -8
+ 1246              		.cfi_offset 14, -4
+ 1247 0002 0446     		mov	r4, r0
+ 425:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   osStatus_t status;
+ 426:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 427:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   EvrRtxTimerStop(timer_id);
+ 1248              		.loc 1 427 0
+ 1249 0004 FFF7FEFF 		bl	EvrRtxTimerStop
+ 1250              	.LVL120:
+ 1251              	.LBB137:
+ 1252              	.LBB138:
+ 1253              	.LBB139:
+ 209:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 1254              		.loc 2 209 0
+ 1255              		.syntax unified
+ 1256              	@ 209 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 1257 0008 EFF30583 		MRS r3, ipsr
+ 1258              	@ 0 "" 2
+ 1259              		.thumb
+ 1260              		.syntax unified
+ 1261              	.LBE139:
+ 1262              	.LBE138:
+ 1263              	.LBE137:
+ 428:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if (IsIrqMode() || IsIrqMasked()) {
+ 1264              		.loc 1 428 0
+ 1265 000c 53B9     		cbnz	r3, .L121
+ 1266              	.LBB140:
+ARM GAS  /tmp/ccBzEjTs.s 			page 41
+
+
+ 1267              	.LBB141:
+ 1268              	.LBB142:
+ 1269              	.LBB143:
+ 386:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 1270              		.loc 2 386 0
+ 1271              		.syntax unified
+ 1272              	@ 386 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 1273 000e EFF31083 		MRS r3, primask
+ 1274              	@ 0 "" 2
+ 1275              		.thumb
+ 1276              		.syntax unified
+ 1277              	.LBE143:
+ 1278              	.LBE142:
+ 1279              		.loc 3 126 0
+ 1280 0012 1BB9     		cbnz	r3, .L125
+ 1281              	.LBB144:
+ 1282              	.LBB145:
+ 1283              		.loc 2 465 0
+ 1284              		.syntax unified
+ 1285              	@ 465 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 1286 0014 EFF31183 		MRS r3, basepri
+ 1287              	@ 0 "" 2
+ 1288              		.thumb
+ 1289              		.syntax unified
+ 1290              	.LBE145:
+ 1291              	.LBE144:
+ 1292              		.loc 3 126 0
+ 1293 0018 13B9     		cbnz	r3, .L126
+ 1294 001a 02E0     		b	.L122
+ 1295              	.L125:
+ 1296 001c 0123     		movs	r3, #1
+ 1297 001e 00E0     		b	.L122
+ 1298              	.L126:
+ 1299 0020 0123     		movs	r3, #1
+ 1300              	.L122:
+ 1301              	.LBE141:
+ 1302              	.LBE140:
+ 1303              		.loc 1 428 0
+ 1304 0022 3BB1     		cbz	r3, .L123
+ 1305              	.L121:
+ 429:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     EvrRtxTimerError(timer_id, (int32_t)osErrorISR);
+ 1306              		.loc 1 429 0
+ 1307 0024 6FF00501 		mvn	r1, #5
+ 1308 0028 2046     		mov	r0, r4
+ 1309 002a FFF7FEFF 		bl	EvrRtxTimerError
+ 1310              	.LVL121:
+ 430:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     status = osErrorISR;
+ 1311              		.loc 1 430 0
+ 1312 002e 6FF00500 		mvn	r0, #5
+ 1313 0032 10BD     		pop	{r4, pc}
+ 1314              	.LVL122:
+ 1315              	.L123:
+ 1316              	.LBB146:
+ 1317              	.LBB147:
+ 374:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** SVC0_1(TimerIsRunning, uint32_t,     osTimerId_t)
+ 1318              		.loc 1 374 0
+ 1319 0034 2046     		mov	r0, r4
+ARM GAS  /tmp/ccBzEjTs.s 			page 42
+
+
+ 1320 0036 DFF808C0 		ldr	ip, .L128
+ 1321              		.syntax unified
+ 1322              	@ 374 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c" 1
+ 1323 003a 00DF     		svc 0
+ 1324              	@ 0 "" 2
+ 1325              	.LVL123:
+ 1326              		.thumb
+ 1327              		.syntax unified
+ 1328              	.LBE147:
+ 1329              	.LBE146:
+ 431:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   } else {
+ 432:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     status = __svcTimerStop(timer_id);
+ 433:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 434:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   return status;
+ 435:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** }
+ 1330              		.loc 1 435 0
+ 1331 003c 10BD     		pop	{r4, pc}
+ 1332              	.LVL124:
+ 1333              	.L129:
+ 1334 003e 00BF     		.align	2
+ 1335              	.L128:
+ 1336 0040 00000000 		.word	svcRtxTimerStop
+ 1337              		.cfi_endproc
+ 1338              	.LFE194:
+ 1340              		.section	.text.osTimerIsRunning,"ax",%progbits
+ 1341              		.align	2
+ 1342              		.global	osTimerIsRunning
+ 1343              		.thumb
+ 1344              		.thumb_func
+ 1346              	osTimerIsRunning:
+ 1347              	.LFB195:
+ 436:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 437:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// Check if a timer is running.
+ 438:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** uint32_t osTimerIsRunning (osTimerId_t timer_id) {
+ 1348              		.loc 1 438 0
+ 1349              		.cfi_startproc
+ 1350              		@ args = 0, pretend = 0, frame = 0
+ 1351              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1352              	.LVL125:
+ 1353 0000 08B5     		push	{r3, lr}
+ 1354              	.LCFI16:
+ 1355              		.cfi_def_cfa_offset 8
+ 1356              		.cfi_offset 3, -8
+ 1357              		.cfi_offset 14, -4
+ 1358              	.LBB148:
+ 1359              	.LBB149:
+ 1360              	.LBB150:
+ 209:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 1361              		.loc 2 209 0
+ 1362              		.syntax unified
+ 1363              	@ 209 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 1364 0002 EFF30583 		MRS r3, ipsr
+ 1365              	@ 0 "" 2
+ 1366              		.thumb
+ 1367              		.syntax unified
+ 1368              	.LBE150:
+ 1369              	.LBE149:
+ARM GAS  /tmp/ccBzEjTs.s 			page 43
+
+
+ 1370              	.LBE148:
+ 439:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   uint32_t is_running;
+ 440:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 441:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if (IsIrqMode() || IsIrqMasked()) {
+ 1371              		.loc 1 441 0
+ 1372 0006 53B9     		cbnz	r3, .L131
+ 1373              	.LBB151:
+ 1374              	.LBB152:
+ 1375              	.LBB153:
+ 1376              	.LBB154:
+ 386:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 1377              		.loc 2 386 0
+ 1378              		.syntax unified
+ 1379              	@ 386 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 1380 0008 EFF31083 		MRS r3, primask
+ 1381              	@ 0 "" 2
+ 1382              		.thumb
+ 1383              		.syntax unified
+ 1384              	.LBE154:
+ 1385              	.LBE153:
+ 1386              		.loc 3 126 0
+ 1387 000c 1BB9     		cbnz	r3, .L135
+ 1388              	.LBB155:
+ 1389              	.LBB156:
+ 1390              		.loc 2 465 0
+ 1391              		.syntax unified
+ 1392              	@ 465 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 1393 000e EFF31183 		MRS r3, basepri
+ 1394              	@ 0 "" 2
+ 1395              		.thumb
+ 1396              		.syntax unified
+ 1397              	.LBE156:
+ 1398              	.LBE155:
+ 1399              		.loc 3 126 0
+ 1400 0012 13B9     		cbnz	r3, .L136
+ 1401 0014 02E0     		b	.L132
+ 1402              	.L135:
+ 1403 0016 0123     		movs	r3, #1
+ 1404 0018 00E0     		b	.L132
+ 1405              	.L136:
+ 1406 001a 0123     		movs	r3, #1
+ 1407              	.L132:
+ 1408              	.LBE152:
+ 1409              	.LBE151:
+ 1410              		.loc 1 441 0
+ 1411 001c 23B1     		cbz	r3, .L133
+ 1412              	.L131:
+ 442:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     EvrRtxTimerIsRunning(timer_id, 0U);
+ 1413              		.loc 1 442 0
+ 1414 001e 0021     		movs	r1, #0
+ 1415 0020 FFF7FEFF 		bl	EvrRtxTimerIsRunning
+ 1416              	.LVL126:
+ 443:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     is_running = 0U;
+ 1417              		.loc 1 443 0
+ 1418 0024 0020     		movs	r0, #0
+ 1419 0026 08BD     		pop	{r3, pc}
+ 1420              	.LVL127:
+ARM GAS  /tmp/ccBzEjTs.s 			page 44
+
+
+ 1421              	.L133:
+ 1422              	.LBB157:
+ 1423              	.LBB158:
+ 375:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** SVC0_1(TimerDelete,    osStatus_t,   osTimerId_t)
+ 1424              		.loc 1 375 0
+ 1425 0028 DFF804C0 		ldr	ip, .L138
+ 1426              		.syntax unified
+ 1427              	@ 375 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c" 1
+ 1428 002c 00DF     		svc 0
+ 1429              	@ 0 "" 2
+ 1430              	.LVL128:
+ 1431              		.thumb
+ 1432              		.syntax unified
+ 1433              	.LBE158:
+ 1434              	.LBE157:
+ 444:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   } else {
+ 445:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     is_running = __svcTimerIsRunning(timer_id);
+ 446:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 447:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   return is_running;
+ 448:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** }
+ 1435              		.loc 1 448 0
+ 1436 002e 08BD     		pop	{r3, pc}
+ 1437              	.L139:
+ 1438              		.align	2
+ 1439              	.L138:
+ 1440 0030 00000000 		.word	svcRtxTimerIsRunning
+ 1441              		.cfi_endproc
+ 1442              	.LFE195:
+ 1444              		.section	.text.osTimerDelete,"ax",%progbits
+ 1445              		.align	2
+ 1446              		.global	osTimerDelete
+ 1447              		.thumb
+ 1448              		.thumb_func
+ 1450              	osTimerDelete:
+ 1451              	.LFB196:
+ 449:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 450:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** /// Delete a timer.
+ 451:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** osStatus_t osTimerDelete (osTimerId_t timer_id) {
+ 1452              		.loc 1 451 0
+ 1453              		.cfi_startproc
+ 1454              		@ args = 0, pretend = 0, frame = 0
+ 1455              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1456              	.LVL129:
+ 1457 0000 10B5     		push	{r4, lr}
+ 1458              	.LCFI17:
+ 1459              		.cfi_def_cfa_offset 8
+ 1460              		.cfi_offset 4, -8
+ 1461              		.cfi_offset 14, -4
+ 1462 0002 0446     		mov	r4, r0
+ 452:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   osStatus_t status;
+ 453:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** 
+ 454:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   EvrRtxTimerDelete(timer_id);
+ 1463              		.loc 1 454 0
+ 1464 0004 FFF7FEFF 		bl	EvrRtxTimerDelete
+ 1465              	.LVL130:
+ 1466              	.LBB159:
+ 1467              	.LBB160:
+ARM GAS  /tmp/ccBzEjTs.s 			page 45
+
+
+ 1468              	.LBB161:
+ 209:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 1469              		.loc 2 209 0
+ 1470              		.syntax unified
+ 1471              	@ 209 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 1472 0008 EFF30583 		MRS r3, ipsr
+ 1473              	@ 0 "" 2
+ 1474              		.thumb
+ 1475              		.syntax unified
+ 1476              	.LBE161:
+ 1477              	.LBE160:
+ 1478              	.LBE159:
+ 455:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   if (IsIrqMode() || IsIrqMasked()) {
+ 1479              		.loc 1 455 0
+ 1480 000c 53B9     		cbnz	r3, .L141
+ 1481              	.LBB162:
+ 1482              	.LBB163:
+ 1483              	.LBB164:
+ 1484              	.LBB165:
+ 386:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 1485              		.loc 2 386 0
+ 1486              		.syntax unified
+ 1487              	@ 386 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 1488 000e EFF31083 		MRS r3, primask
+ 1489              	@ 0 "" 2
+ 1490              		.thumb
+ 1491              		.syntax unified
+ 1492              	.LBE165:
+ 1493              	.LBE164:
+ 1494              		.loc 3 126 0
+ 1495 0012 1BB9     		cbnz	r3, .L145
+ 1496              	.LBB166:
+ 1497              	.LBB167:
+ 1498              		.loc 2 465 0
+ 1499              		.syntax unified
+ 1500              	@ 465 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 1501 0014 EFF31183 		MRS r3, basepri
+ 1502              	@ 0 "" 2
+ 1503              		.thumb
+ 1504              		.syntax unified
+ 1505              	.LBE167:
+ 1506              	.LBE166:
+ 1507              		.loc 3 126 0
+ 1508 0018 13B9     		cbnz	r3, .L146
+ 1509 001a 02E0     		b	.L142
+ 1510              	.L145:
+ 1511 001c 0123     		movs	r3, #1
+ 1512 001e 00E0     		b	.L142
+ 1513              	.L146:
+ 1514 0020 0123     		movs	r3, #1
+ 1515              	.L142:
+ 1516              	.LBE163:
+ 1517              	.LBE162:
+ 1518              		.loc 1 455 0
+ 1519 0022 3BB1     		cbz	r3, .L143
+ 1520              	.L141:
+ 456:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     EvrRtxTimerError(timer_id, (int32_t)osErrorISR);
+ARM GAS  /tmp/ccBzEjTs.s 			page 46
+
+
+ 1521              		.loc 1 456 0
+ 1522 0024 6FF00501 		mvn	r1, #5
+ 1523 0028 2046     		mov	r0, r4
+ 1524 002a FFF7FEFF 		bl	EvrRtxTimerError
+ 1525              	.LVL131:
+ 457:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     status = osErrorISR;
+ 1526              		.loc 1 457 0
+ 1527 002e 6FF00500 		mvn	r0, #5
+ 1528 0032 10BD     		pop	{r4, pc}
+ 1529              	.LVL132:
+ 1530              	.L143:
+ 1531              	.LBB168:
+ 1532              	.LBB169:
+ 376:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** //lint --flb "Library End"
+ 1533              		.loc 1 376 0
+ 1534 0034 2046     		mov	r0, r4
+ 1535 0036 DFF808C0 		ldr	ip, .L148
+ 1536              		.syntax unified
+ 1537              	@ 376 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c" 1
+ 1538 003a 00DF     		svc 0
+ 1539              	@ 0 "" 2
+ 1540              	.LVL133:
+ 1541              		.thumb
+ 1542              		.syntax unified
+ 1543              	.LBE169:
+ 1544              	.LBE168:
+ 458:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   } else {
+ 459:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****     status = __svcTimerDelete(timer_id);
+ 460:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   }
+ 461:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c ****   return status;
+ 462:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_timer.c **** }
+ 1545              		.loc 1 462 0
+ 1546 003c 10BD     		pop	{r4, pc}
+ 1547              	.LVL134:
+ 1548              	.L149:
+ 1549 003e 00BF     		.align	2
+ 1550              	.L148:
+ 1551 0040 00000000 		.word	svcRtxTimerDelete
+ 1552              		.cfi_endproc
+ 1553              	.LFE196:
+ 1555              		.text
+ 1556              	.Letext0:
+ 1557              		.file 4 "/usr/include/newlib/machine/_default_types.h"
+ 1558              		.file 5 "/usr/include/newlib/sys/_stdint.h"
+ 1559              		.file 6 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/Include/cmsis_os2.h"
+ 1560              		.file 7 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Include/rtx_os.h"
+ 1561              		.file 8 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h"
+ 1562              		.file 9 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/core_cm4.h"
+ 1563              		.file 10 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Include/rtx_evr.h"
+ARM GAS  /tmp/ccBzEjTs.s 			page 47
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 rtx_timer.c
+     /tmp/ccBzEjTs.s:22     .text.TimerInsert:0000000000000000 $t
+     /tmp/ccBzEjTs.s:26     .text.TimerInsert:0000000000000000 TimerInsert
+     /tmp/ccBzEjTs.s:104    .text.TimerInsert:0000000000000038 $d
+     /tmp/ccBzEjTs.s:109    .text.TimerRemove:0000000000000000 $t
+     /tmp/ccBzEjTs.s:113    .text.TimerRemove:0000000000000000 TimerRemove
+     /tmp/ccBzEjTs.s:150    .text.TimerRemove:0000000000000024 $d
+     /tmp/ccBzEjTs.s:155    .text.TimerUnlink:0000000000000000 $t
+     /tmp/ccBzEjTs.s:159    .text.TimerUnlink:0000000000000000 TimerUnlink
+     /tmp/ccBzEjTs.s:182    .text.TimerUnlink:0000000000000010 $d
+     /tmp/ccBzEjTs.s:187    .text.osRtxTimerTick:0000000000000000 $t
+     /tmp/ccBzEjTs.s:191    .text.osRtxTimerTick:0000000000000000 osRtxTimerTick
+     /tmp/ccBzEjTs.s:268    .text.osRtxTimerTick:0000000000000054 $d
+     /tmp/ccBzEjTs.s:273    .text.svcRtxTimerNew:0000000000000000 $t
+     /tmp/ccBzEjTs.s:277    .text.svcRtxTimerNew:0000000000000000 svcRtxTimerNew
+     /tmp/ccBzEjTs.s:455    .text.svcRtxTimerNew:00000000000000c4 $d
+     /tmp/ccBzEjTs.s:460    .text.svcRtxTimerGetName:0000000000000000 $t
+     /tmp/ccBzEjTs.s:464    .text.svcRtxTimerGetName:0000000000000000 svcRtxTimerGetName
+     /tmp/ccBzEjTs.s:507    .text.svcRtxTimerStart:0000000000000000 $t
+     /tmp/ccBzEjTs.s:511    .text.svcRtxTimerStart:0000000000000000 svcRtxTimerStart
+     /tmp/ccBzEjTs.s:596    .text.svcRtxTimerStart:0000000000000058 $d
+     /tmp/ccBzEjTs.s:601    .text.svcRtxTimerStop:0000000000000000 $t
+     /tmp/ccBzEjTs.s:605    .text.svcRtxTimerStop:0000000000000000 svcRtxTimerStop
+     /tmp/ccBzEjTs.s:667    .text.svcRtxTimerIsRunning:0000000000000000 $t
+     /tmp/ccBzEjTs.s:671    .text.svcRtxTimerIsRunning:0000000000000000 svcRtxTimerIsRunning
+     /tmp/ccBzEjTs.s:727    .text.svcRtxTimerDelete:0000000000000000 $t
+     /tmp/ccBzEjTs.s:731    .text.svcRtxTimerDelete:0000000000000000 svcRtxTimerDelete
+     /tmp/ccBzEjTs.s:808    .text.svcRtxTimerDelete:000000000000005c $d
+     /tmp/ccBzEjTs.s:813    .text.osRtxTimerThread:0000000000000000 $t
+     /tmp/ccBzEjTs.s:818    .text.osRtxTimerThread:0000000000000000 osRtxTimerThread
+     /tmp/ccBzEjTs.s:881    .text.osRtxTimerThread:0000000000000044 $d
+     /tmp/ccBzEjTs.s:888    .text.osTimerNew:0000000000000000 $t
+     /tmp/ccBzEjTs.s:893    .text.osTimerNew:0000000000000000 osTimerNew
+     /tmp/ccBzEjTs.s:1006   .text.osTimerNew:0000000000000048 $d
+     /tmp/ccBzEjTs.s:1011   .text.osTimerGetName:0000000000000000 $t
+     /tmp/ccBzEjTs.s:1016   .text.osTimerGetName:0000000000000000 osTimerGetName
+     /tmp/ccBzEjTs.s:1110   .text.osTimerGetName:0000000000000030 $d
+     /tmp/ccBzEjTs.s:1115   .text.osTimerStart:0000000000000000 $t
+     /tmp/ccBzEjTs.s:1120   .text.osTimerStart:0000000000000000 osTimerStart
+     /tmp/ccBzEjTs.s:1225   .text.osTimerStart:0000000000000044 $d
+     /tmp/ccBzEjTs.s:1230   .text.osTimerStop:0000000000000000 $t
+     /tmp/ccBzEjTs.s:1235   .text.osTimerStop:0000000000000000 osTimerStop
+     /tmp/ccBzEjTs.s:1336   .text.osTimerStop:0000000000000040 $d
+     /tmp/ccBzEjTs.s:1341   .text.osTimerIsRunning:0000000000000000 $t
+     /tmp/ccBzEjTs.s:1346   .text.osTimerIsRunning:0000000000000000 osTimerIsRunning
+     /tmp/ccBzEjTs.s:1440   .text.osTimerIsRunning:0000000000000030 $d
+     /tmp/ccBzEjTs.s:1445   .text.osTimerDelete:0000000000000000 $t
+     /tmp/ccBzEjTs.s:1450   .text.osTimerDelete:0000000000000000 osTimerDelete
+     /tmp/ccBzEjTs.s:1551   .text.osTimerDelete:0000000000000040 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+osRtxInfo
+osMessageQueuePut
+osRtxErrorNotify
+EvrRtxTimerError
+ARM GAS  /tmp/ccBzEjTs.s 			page 48
+
+
+osRtxMemoryPoolAlloc
+osRtxMemoryAlloc
+EvrRtxTimerCreated
+EvrRtxTimerGetName
+EvrRtxTimerStarted
+EvrRtxTimerStopped
+EvrRtxTimerIsRunning
+osRtxMemoryPoolFree
+osRtxMemoryFree
+EvrRtxTimerDestroyed
+osMessageQueueNew
+osMessageQueueGet
+EvrRtxTimerCallback
+osRtxConfig
+EvrRtxTimerNew
+EvrRtxTimerStart
+EvrRtxTimerStop
+EvrRtxTimerDelete

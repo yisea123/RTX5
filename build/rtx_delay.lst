@@ -1,0 +1,1126 @@
+ARM GAS  /tmp/ccg06FZf.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.syntax unified
+  17              		.file	"rtx_delay.c"
+  18              		.text
+  19              	.Ltext0:
+  20              		.cfi_sections	.debug_frame
+  21              		.section	.text.svcRtxDelay,"ax",%progbits
+  22              		.align	2
+  23              		.thumb
+  24              		.thumb_func
+  26              	svcRtxDelay:
+  27              	.LFB174:
+  28              		.file 1 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c"
+   1:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** /*
+   2:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  * Copyright (c) 2013-2018 Arm Limited. All rights reserved.
+   3:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  *
+   4:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  * SPDX-License-Identifier: Apache-2.0
+   5:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  *
+   6:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+   7:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  * not use this file except in compliance with the License.
+   8:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  * You may obtain a copy of the License at
+   9:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  *
+  10:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  * www.apache.org/licenses/LICENSE-2.0
+  11:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  *
+  12:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  * Unless required by applicable law or agreed to in writing, software
+  13:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  14:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  15:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  * See the License for the specific language governing permissions and
+  16:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  * limitations under the License.
+  17:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  *
+  18:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  * -----------------------------------------------------------------------------
+  19:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  *
+  20:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  * Project:     CMSIS-RTOS RTX
+  21:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  * Title:       Delay functions
+  22:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  *
+  23:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  * -----------------------------------------------------------------------------
+  24:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****  */
+  25:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** 
+  26:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** #include "rtx_lib.h"
+  27:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** 
+  28:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** 
+  29:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** //  ==== Service Calls ====
+  30:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** 
+ARM GAS  /tmp/ccg06FZf.s 			page 2
+
+
+  31:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** /// Wait for Timeout (Time Delay).
+  32:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** /// \note API identical to osDelay
+  33:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** static osStatus_t svcRtxDelay (uint32_t ticks) {
+  29              		.loc 1 33 0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              	.LVL0:
+  34:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** 
+  35:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****   if (ticks != 0U) {
+  34              		.loc 1 35 0
+  35 0000 48B1     		cbz	r0, .L4
+  33:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** 
+  36              		.loc 1 33 0
+  37 0002 08B5     		push	{r3, lr}
+  38              	.LCFI0:
+  39              		.cfi_def_cfa_offset 8
+  40              		.cfi_offset 3, -8
+  41              		.cfi_offset 14, -4
+  42 0004 0146     		mov	r1, r0
+  36:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****     if (!osRtxThreadWaitEnter(osRtxThreadWaitingDelay, ticks)) {
+  43              		.loc 1 36 0
+  44 0006 1320     		movs	r0, #19
+  45              	.LVL1:
+  46 0008 FFF7FEFF 		bl	osRtxThreadWaitEnter
+  47              	.LVL2:
+  48 000c 08B9     		cbnz	r0, .L2
+  37:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****       EvrRtxThreadDelayCompleted();
+  49              		.loc 1 37 0
+  50 000e FFF7FEFF 		bl	EvrRtxThreadDelayCompleted
+  51              	.LVL3:
+  52              	.L2:
+  38:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****     }
+  39:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****   }
+  40:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** 
+  41:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****   return osOK;
+  42:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** }
+  53              		.loc 1 42 0
+  54 0012 0020     		movs	r0, #0
+  55 0014 08BD     		pop	{r3, pc}
+  56              	.LVL4:
+  57              	.L4:
+  58              	.LCFI1:
+  59              		.cfi_def_cfa_offset 0
+  60              		.cfi_restore 3
+  61              		.cfi_restore 14
+  62 0016 0020     		movs	r0, #0
+  63              	.LVL5:
+  64 0018 7047     		bx	lr
+  65              		.cfi_endproc
+  66              	.LFE174:
+  68 001a 00BF     		.section	.text.svcRtxDelayUntil,"ax",%progbits
+  69              		.align	2
+  70              		.thumb
+  71              		.thumb_func
+  73              	svcRtxDelayUntil:
+  74              	.LFB175:
+ARM GAS  /tmp/ccg06FZf.s 			page 3
+
+
+  43:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** 
+  44:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** /// Wait until specified time.
+  45:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** /// \note API identical to osDelayUntil
+  46:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** static osStatus_t svcRtxDelayUntil (uint32_t ticks) {
+  75              		.loc 1 46 0
+  76              		.cfi_startproc
+  77              		@ args = 0, pretend = 0, frame = 0
+  78              		@ frame_needed = 0, uses_anonymous_args = 0
+  79              	.LVL6:
+  80 0000 08B5     		push	{r3, lr}
+  81              	.LCFI2:
+  82              		.cfi_def_cfa_offset 8
+  83              		.cfi_offset 3, -8
+  84              		.cfi_offset 14, -4
+  47:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** 
+  48:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****   ticks -= osRtxInfo.kernel.tick;
+  85              		.loc 1 48 0
+  86 0002 0B4B     		ldr	r3, .L10
+  87 0004 D968     		ldr	r1, [r3, #12]
+  88 0006 411A     		subs	r1, r0, r1
+  89              	.LVL7:
+  49:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****   if ((ticks == 0U) || (ticks > 0x7FFFFFFFU)) {
+  90              		.loc 1 49 0
+  91 0008 0029     		cmp	r1, #0
+  92 000a 07DC     		bgt	.L6
+  50:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****     EvrRtxThreadError(NULL, (int32_t)osErrorParameter);
+  93              		.loc 1 50 0
+  94 000c 6FF00301 		mvn	r1, #3
+  95              	.LVL8:
+  96 0010 0020     		movs	r0, #0
+  97              	.LVL9:
+  98 0012 FFF7FEFF 		bl	EvrRtxThreadError
+  99              	.LVL10:
+  51:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****     //lint -e{904} "Return statement before end of function" [MISRA Note 1]
+  52:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****     return osErrorParameter;
+ 100              		.loc 1 52 0
+ 101 0016 6FF00300 		mvn	r0, #3
+ 102 001a 08BD     		pop	{r3, pc}
+ 103              	.LVL11:
+ 104              	.L6:
+  53:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****   }
+  54:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** 
+  55:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****   if (!osRtxThreadWaitEnter(osRtxThreadWaitingDelay, ticks)) {
+ 105              		.loc 1 55 0
+ 106 001c 1320     		movs	r0, #19
+ 107 001e FFF7FEFF 		bl	osRtxThreadWaitEnter
+ 108              	.LVL12:
+ 109 0022 18B9     		cbnz	r0, .L8
+  56:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****     EvrRtxThreadDelayCompleted();
+ 110              		.loc 1 56 0
+ 111 0024 FFF7FEFF 		bl	EvrRtxThreadDelayCompleted
+ 112              	.LVL13:
+  57:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****   }
+  58:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** 
+  59:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****   return osOK;
+ 113              		.loc 1 59 0
+ 114 0028 0020     		movs	r0, #0
+ARM GAS  /tmp/ccg06FZf.s 			page 4
+
+
+ 115 002a 08BD     		pop	{r3, pc}
+ 116              	.L8:
+ 117 002c 0020     		movs	r0, #0
+  60:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** }
+ 118              		.loc 1 60 0
+ 119 002e 08BD     		pop	{r3, pc}
+ 120              	.L11:
+ 121              		.align	2
+ 122              	.L10:
+ 123 0030 00000000 		.word	osRtxInfo
+ 124              		.cfi_endproc
+ 125              	.LFE175:
+ 127              		.section	.text.osDelay,"ax",%progbits
+ 128              		.align	2
+ 129              		.global	osDelay
+ 130              		.thumb
+ 131              		.thumb_func
+ 133              	osDelay:
+ 134              	.LFB178:
+  61:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** 
+  62:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** //  Service Calls definitions
+  63:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** //lint ++flb "Library Begin" [MISRA Note 11]
+  64:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** SVC0_1(Delay,      osStatus_t, uint32_t)
+  65:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** SVC0_1(DelayUntil, osStatus_t, uint32_t)
+  66:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** //lint --flb "Library End"
+  67:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** 
+  68:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** 
+  69:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** //  ==== Public API ====
+  70:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** 
+  71:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** /// Wait for Timeout (Time Delay).
+  72:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** osStatus_t osDelay (uint32_t ticks) {
+ 135              		.loc 1 72 0
+ 136              		.cfi_startproc
+ 137              		@ args = 0, pretend = 0, frame = 0
+ 138              		@ frame_needed = 0, uses_anonymous_args = 0
+ 139              	.LVL14:
+ 140 0000 10B5     		push	{r4, lr}
+ 141              	.LCFI3:
+ 142              		.cfi_def_cfa_offset 8
+ 143              		.cfi_offset 4, -8
+ 144              		.cfi_offset 14, -4
+ 145 0002 0446     		mov	r4, r0
+  73:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****   osStatus_t status;
+  74:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** 
+  75:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****   EvrRtxThreadDelay(ticks);
+ 146              		.loc 1 75 0
+ 147 0004 FFF7FEFF 		bl	EvrRtxThreadDelay
+ 148              	.LVL15:
+ 149              	.LBB36:
+ 150              	.LBB37:
+ 151              	.LBB38:
+ 152              		.file 2 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h"
+   1:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**************************************************************************//**
+   2:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * @file     cmsis_gcc.h
+   3:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * @brief    CMSIS compiler GCC header file
+   4:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * @version  V5.0.4
+   5:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * @date     09. April 2018
+ARM GAS  /tmp/ccg06FZf.s 			page 5
+
+
+   6:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  ******************************************************************************/
+   7:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /*
+   8:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * Copyright (c) 2009-2018 Arm Limited. All rights reserved.
+   9:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  *
+  10:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * SPDX-License-Identifier: Apache-2.0
+  11:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  *
+  12:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+  13:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * not use this file except in compliance with the License.
+  14:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * You may obtain a copy of the License at
+  15:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  *
+  16:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * www.apache.org/licenses/LICENSE-2.0
+  17:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  *
+  18:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * Unless required by applicable law or agreed to in writing, software
+  19:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  20:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  21:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * See the License for the specific language governing permissions and
+  22:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  * limitations under the License.
+  23:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+  24:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+  25:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef __CMSIS_GCC_H
+  26:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #define __CMSIS_GCC_H
+  27:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+  28:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /* ignore some GCC warnings */
+  29:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #pragma GCC diagnostic push
+  30:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wsign-conversion"
+  31:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wconversion"
+  32:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wunused-parameter"
+  33:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+  34:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /* Fallback for __has_builtin */
+  35:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef __has_builtin
+  36:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __has_builtin(x) (0)
+  37:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  38:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+  39:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /* CMSIS compiler specific defines */
+  40:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __ASM
+  41:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __ASM                                  __asm
+  42:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  43:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __INLINE
+  44:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __INLINE                               inline
+  45:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  46:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __STATIC_INLINE
+  47:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __STATIC_INLINE                        static inline
+  48:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  49:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __STATIC_FORCEINLINE                 
+  50:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __STATIC_FORCEINLINE                   __attribute__((always_inline)) static inline
+  51:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif                                           
+  52:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __NO_RETURN
+  53:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __NO_RETURN                            __attribute__((__noreturn__))
+  54:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  55:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __USED
+  56:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __USED                                 __attribute__((used))
+  57:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  58:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __WEAK
+  59:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __WEAK                                 __attribute__((weak))
+  60:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  61:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __PACKED
+  62:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __PACKED                               __attribute__((packed, aligned(1)))
+ARM GAS  /tmp/ccg06FZf.s 			page 6
+
+
+  63:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  64:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __PACKED_STRUCT
+  65:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __PACKED_STRUCT                        struct __attribute__((packed, aligned(1)))
+  66:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  67:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __PACKED_UNION
+  68:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __PACKED_UNION                         union __attribute__((packed, aligned(1)))
+  69:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  70:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32        /* deprecated */
+  71:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  72:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  73:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  74:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   struct __attribute__((packed)) T_UINT32 { uint32_t v; };
+  75:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  76:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32(x)                  (((struct T_UINT32 *)(x))->v)
+  77:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  78:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT16_WRITE
+  79:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  80:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  81:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  82:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT16_WRITE { uint16_t v; };
+  83:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  84:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT16_WRITE(addr, val)    (void)((((struct T_UINT16_WRITE *)(void *)(addr))-
+  85:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  86:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT16_READ
+  87:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  88:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  89:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  90:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT16_READ { uint16_t v; };
+  91:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  92:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT16_READ(addr)          (((const struct T_UINT16_READ *)(const void *)(add
+  93:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+  94:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32_WRITE
+  95:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  96:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  97:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  98:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT32_WRITE { uint32_t v; };
+  99:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+ 100:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32_WRITE(addr, val)    (void)((((struct T_UINT32_WRITE *)(void *)(addr))-
+ 101:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 102:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32_READ
+ 103:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+ 104:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+ 105:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+ 106:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT32_READ { uint32_t v; };
+ 107:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+ 108:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32_READ(addr)          (((const struct T_UINT32_READ *)(const void *)(add
+ 109:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 110:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __ALIGNED
+ 111:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __ALIGNED(x)                           __attribute__((aligned(x)))
+ 112:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 113:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #ifndef   __RESTRICT
+ 114:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   #define __RESTRICT                             __restrict
+ 115:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 116:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 117:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 118:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /* ###########################  Core Function Access  ########################### */
+ 119:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /** \ingroup  CMSIS_Core_FunctionInterface
+ARM GAS  /tmp/ccg06FZf.s 			page 7
+
+
+ 120:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****     \defgroup CMSIS_Core_RegAccFunctions CMSIS Core Register Access Functions
+ 121:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   @{
+ 122:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 123:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 124:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 125:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Enable IRQ Interrupts
+ 126:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Enables IRQ interrupts by clearing the I-bit in the CPSR.
+ 127:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
+ 128:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 129:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __enable_irq(void)
+ 130:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 131:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("cpsie i" : : : "memory");
+ 132:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 133:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 134:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 135:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 136:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Disable IRQ Interrupts
+ 137:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Disables IRQ interrupts by setting the I-bit in the CPSR.
+ 138:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
+ 139:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 140:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __disable_irq(void)
+ 141:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 142:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("cpsid i" : : : "memory");
+ 143:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 144:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 145:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 146:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 147:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get Control Register
+ 148:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the content of the Control Register.
+ 149:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               Control Register value
+ 150:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 151:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_CONTROL(void)
+ 152:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 153:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 154:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 155:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, control" : "=r" (result) );
+ 156:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 157:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 158:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 159:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 160:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 161:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 162:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get Control Register (non-secure)
+ 163:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the content of the non-secure Control Register when in secure mode.
+ 164:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               non-secure Control Register value
+ 165:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 166:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __TZ_get_CONTROL_NS(void)
+ 167:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 168:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 169:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 170:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, control_ns" : "=r" (result) );
+ 171:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 172:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 173:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 174:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 175:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 176:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ARM GAS  /tmp/ccg06FZf.s 			page 8
+
+
+ 177:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Set Control Register
+ 178:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Writes the given value to the Control Register.
+ 179:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \param [in]    control  Control Register value to set
+ 180:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 181:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __set_CONTROL(uint32_t control)
+ 182:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 183:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MSR control, %0" : : "r" (control) : "memory");
+ 184:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 185:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 186:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 187:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 188:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 189:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Set Control Register (non-secure)
+ 190:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Writes the given value to the non-secure Control Register when in secure state.
+ 191:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \param [in]    control  Control Register value to set
+ 192:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 193:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __TZ_set_CONTROL_NS(uint32_t control)
+ 194:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 195:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MSR control_ns, %0" : : "r" (control) : "memory");
+ 196:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 197:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 198:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 199:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 200:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 201:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get IPSR Register
+ 202:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the content of the IPSR Register.
+ 203:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               IPSR Register value
+ 204:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 205:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_IPSR(void)
+ 206:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 207:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 208:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 209:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, ipsr" : "=r" (result) );
+ 153              		.loc 2 209 0
+ 154              		.syntax unified
+ 155              	@ 209 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 156 0008 EFF30583 		MRS r3, ipsr
+ 157              	@ 0 "" 2
+ 158              		.thumb
+ 159              		.syntax unified
+ 160              	.LBE38:
+ 161              	.LBE37:
+ 162              	.LBE36:
+  76:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****   if (IsIrqMode() || IsIrqMasked()) {
+ 163              		.loc 1 76 0
+ 164 000c 53B9     		cbnz	r3, .L13
+ 165              	.LBB39:
+ 166              	.LBB40:
+ 167              	.LBB41:
+ 168              	.LBB42:
+ 210:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 211:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 212:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 213:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 214:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 215:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get APSR Register
+ 216:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the content of the APSR Register.
+ARM GAS  /tmp/ccg06FZf.s 			page 9
+
+
+ 217:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               APSR Register value
+ 218:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 219:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_APSR(void)
+ 220:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 221:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 222:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 223:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, apsr" : "=r" (result) );
+ 224:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 225:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 226:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 227:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 228:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 229:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get xPSR Register
+ 230:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the content of the xPSR Register.
+ 231:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               xPSR Register value
+ 232:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 233:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_xPSR(void)
+ 234:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 235:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 236:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 237:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, xpsr" : "=r" (result) );
+ 238:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 239:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 240:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 241:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 242:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 243:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get Process Stack Pointer
+ 244:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the current value of the Process Stack Pointer (PSP).
+ 245:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               PSP Register value
+ 246:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 247:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_PSP(void)
+ 248:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 249:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 250:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 251:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, psp"  : "=r" (result) );
+ 252:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 253:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 254:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 255:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 256:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 257:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 258:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get Process Stack Pointer (non-secure)
+ 259:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the current value of the non-secure Process Stack Pointer (PSP) when in secure s
+ 260:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               PSP Register value
+ 261:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 262:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __TZ_get_PSP_NS(void)
+ 263:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 264:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 265:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 266:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, psp_ns"  : "=r" (result) );
+ 267:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 268:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 269:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 270:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 271:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 272:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 273:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Set Process Stack Pointer
+ARM GAS  /tmp/ccg06FZf.s 			page 10
+
+
+ 274:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Assigns the given value to the Process Stack Pointer (PSP).
+ 275:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \param [in]    topOfProcStack  Process Stack Pointer value to set
+ 276:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 277:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __set_PSP(uint32_t topOfProcStack)
+ 278:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 279:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MSR psp, %0" : : "r" (topOfProcStack) : );
+ 280:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 281:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 282:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 283:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 284:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 285:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Set Process Stack Pointer (non-secure)
+ 286:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Assigns the given value to the non-secure Process Stack Pointer (PSP) when in secure sta
+ 287:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \param [in]    topOfProcStack  Process Stack Pointer value to set
+ 288:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 289:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __TZ_set_PSP_NS(uint32_t topOfProcStack)
+ 290:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 291:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MSR psp_ns, %0" : : "r" (topOfProcStack) : );
+ 292:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 293:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 294:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 295:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 296:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 297:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get Main Stack Pointer
+ 298:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the current value of the Main Stack Pointer (MSP).
+ 299:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               MSP Register value
+ 300:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 301:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_MSP(void)
+ 302:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 303:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 304:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 305:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, msp" : "=r" (result) );
+ 306:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 307:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 308:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 309:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 310:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 311:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 312:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get Main Stack Pointer (non-secure)
+ 313:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the current value of the non-secure Main Stack Pointer (MSP) when in secure stat
+ 314:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               MSP Register value
+ 315:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 316:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __TZ_get_MSP_NS(void)
+ 317:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 318:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 319:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 320:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, msp_ns" : "=r" (result) );
+ 321:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 322:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 323:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 324:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 325:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 326:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 327:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Set Main Stack Pointer
+ 328:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Assigns the given value to the Main Stack Pointer (MSP).
+ 329:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \param [in]    topOfMainStack  Main Stack Pointer value to set
+ 330:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ARM GAS  /tmp/ccg06FZf.s 			page 11
+
+
+ 331:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __set_MSP(uint32_t topOfMainStack)
+ 332:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 333:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MSR msp, %0" : : "r" (topOfMainStack) : );
+ 334:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 335:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 336:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 337:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 338:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 339:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Set Main Stack Pointer (non-secure)
+ 340:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Assigns the given value to the non-secure Main Stack Pointer (MSP) when in secure state.
+ 341:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \param [in]    topOfMainStack  Main Stack Pointer value to set
+ 342:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 343:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __TZ_set_MSP_NS(uint32_t topOfMainStack)
+ 344:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 345:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MSR msp_ns, %0" : : "r" (topOfMainStack) : );
+ 346:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 347:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 348:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 349:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 350:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 351:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 352:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get Stack Pointer (non-secure)
+ 353:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the current value of the non-secure Stack Pointer (SP) when in secure state.
+ 354:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               SP Register value
+ 355:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 356:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __TZ_get_SP_NS(void)
+ 357:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 358:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 359:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 360:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, sp_ns" : "=r" (result) );
+ 361:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 362:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 363:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 364:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 365:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 366:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Set Stack Pointer (non-secure)
+ 367:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Assigns the given value to the non-secure Stack Pointer (SP) when in secure state.
+ 368:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \param [in]    topOfStack  Stack Pointer value to set
+ 369:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 370:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __TZ_set_SP_NS(uint32_t topOfStack)
+ 371:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 372:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MSR sp_ns, %0" : : "r" (topOfStack) : );
+ 373:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 374:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 375:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 376:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 377:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 378:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get Priority Mask
+ 379:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the current state of the priority mask bit from the Priority Mask Register.
+ 380:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               Priority Mask value
+ 381:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 382:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_PRIMASK(void)
+ 383:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 384:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 385:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 386:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, primask" : "=r" (result) :: "memory");
+ 169              		.loc 2 386 0
+ARM GAS  /tmp/ccg06FZf.s 			page 12
+
+
+ 170              		.syntax unified
+ 171              	@ 386 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 172 000e EFF31083 		MRS r3, primask
+ 173              	@ 0 "" 2
+ 174              		.thumb
+ 175              		.syntax unified
+ 176              	.LBE42:
+ 177              	.LBE41:
+ 178              		.file 3 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h"
+   1:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /*
+   2:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * Copyright (c) 2013-2018 Arm Limited. All rights reserved.
+   3:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  *
+   4:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * SPDX-License-Identifier: Apache-2.0
+   5:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  *
+   6:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+   7:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * not use this file except in compliance with the License.
+   8:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * You may obtain a copy of the License at
+   9:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  *
+  10:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * www.apache.org/licenses/LICENSE-2.0
+  11:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  *
+  12:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * Unless required by applicable law or agreed to in writing, software
+  13:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  14:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  15:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * See the License for the specific language governing permissions and
+  16:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * limitations under the License.
+  17:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  *
+  18:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * -----------------------------------------------------------------------------
+  19:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  *
+  20:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * Project:     CMSIS-RTOS RTX
+  21:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * Title:       Cortex-M Core definitions
+  22:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  *
+  23:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * -----------------------------------------------------------------------------
+  24:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  */
+  25:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  26:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef RTX_CORE_CM_H_
+  27:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define RTX_CORE_CM_H_
+  28:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  29:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef RTX_CORE_C_H_
+  30:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #include "RTE_Components.h"
+  31:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #include CMSIS_device_header
+  32:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  33:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  34:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #include <stdbool.h>
+  35:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** typedef bool bool_t;
+  36:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define FALSE                   ((bool_t)0)
+  37:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define TRUE                    ((bool_t)1)
+  38:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  39:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  RTE_CMSIS_RTOS2_RTX5_ARMV8M_NS
+  40:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define DOMAIN_NS               1
+  41:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  42:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  43:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef DOMAIN_NS
+  44:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define DOMAIN_NS               0
+  45:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  46:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  47:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if    (DOMAIN_NS == 1)
+  48:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if   ((!defined(__ARM_ARCH_8M_BASE__) || (__ARM_ARCH_8M_BASE__ == 0)) && \
+ARM GAS  /tmp/ccg06FZf.s 			page 13
+
+
+  49:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****        (!defined(__ARM_ARCH_8M_MAIN__) || (__ARM_ARCH_8M_MAIN__ == 0)))
+  50:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #error "Non-secure domain requires ARMv8-M Architecture!"
+  51:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  52:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  53:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  54:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef EXCLUSIVE_ACCESS
+  55:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if    ((defined(__ARM_ARCH_7M__)      && (__ARM_ARCH_7M__      != 0)) || \
+  56:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****         (defined(__ARM_ARCH_7EM__)     && (__ARM_ARCH_7EM__     != 0)) || \
+  57:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****         (defined(__ARM_ARCH_8M_BASE__) && (__ARM_ARCH_8M_BASE__ != 0)) || \
+  58:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****         (defined(__ARM_ARCH_8M_MAIN__) && (__ARM_ARCH_8M_MAIN__ != 0)))
+  59:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define EXCLUSIVE_ACCESS        1
+  60:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+  61:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define EXCLUSIVE_ACCESS        0
+  62:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  63:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  64:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  65:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define OS_TICK_HANDLER         SysTick_Handler
+  66:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  67:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// xPSR_Initialization Value
+  68:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  privileged      true=privileged, false=unprivileged
+  69:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  thumb           true=Thumb, false=ARM
+  70:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return                     xPSR Init Value
+  71:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE uint32_t xPSR_InitVal (bool_t privileged, bool_t thumb) {
+  72:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   (void)privileged;
+  73:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   (void)thumb;
+  74:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return (0x01000000U);
+  75:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+  76:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  77:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** // Stack Frame:
+  78:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //  - Extended: S16-S31, R4-R11, R0-R3, R12, LR, PC, xPSR, S0-S15, FPSCR
+  79:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //  - Basic:             R4-R11, R0-R3, R12, LR, PC, xPSR
+  80:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  81:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Stack Frame Initialization Value (EXC_RETURN[7..0])
+  82:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if (DOMAIN_NS == 1)
+  83:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define STACK_FRAME_INIT_VAL    0xBCU
+  84:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+  85:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define STACK_FRAME_INIT_VAL    0xFDU
+  86:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  87:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  88:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Stack Offset of Register R0
+  89:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  stack_frame     Stack Frame (EXC_RETURN[7..0])
+  90:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return                     R0 Offset
+  91:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE uint32_t StackOffsetR0 (uint8_t stack_frame) {
+  92:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if (__FPU_USED == 1U)
+  93:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return (((stack_frame & 0x10U) == 0U) ? ((16U+8U)*4U) : (8U*4U));
+  94:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+  95:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   (void)stack_frame;
+  96:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return (8U*4U);
+  97:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  98:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+  99:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 100:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 101:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //  ==== Core functions ====
+ 102:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 103:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //lint -sem(__get_CONTROL, pure)
+ 104:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //lint -sem(__get_IPSR,    pure)
+ 105:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //lint -sem(__get_PRIMASK, pure)
+ARM GAS  /tmp/ccg06FZf.s 			page 14
+
+
+ 106:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //lint -sem(__get_BASEPRI, pure)
+ 107:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 108:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Check if running Privileged
+ 109:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return     true=privileged, false=unprivileged
+ 110:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE bool_t IsPrivileged (void) {
+ 111:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return ((__get_CONTROL() & 1U) == 0U);
+ 112:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 113:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 114:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Check if in IRQ Mode
+ 115:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return     true=IRQ, false=thread
+ 116:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE bool_t IsIrqMode (void) {
+ 117:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return (__get_IPSR() != 0U);
+ 118:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 119:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 120:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Check if IRQ is Masked
+ 121:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return     true=masked, false=not masked
+ 122:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE bool_t IsIrqMasked (void) {
+ 123:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if   ((defined(__ARM_ARCH_7M__)      && (__ARM_ARCH_7M__      != 0)) || \
+ 124:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****        (defined(__ARM_ARCH_7EM__)     && (__ARM_ARCH_7EM__     != 0)) || \
+ 125:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****        (defined(__ARM_ARCH_8M_MAIN__) && (__ARM_ARCH_8M_MAIN__ != 0)))
+ 126:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return ((__get_PRIMASK() != 0U) || (__get_BASEPRI() != 0U));
+ 179              		.loc 3 126 0
+ 180 0012 1BB9     		cbnz	r3, .L17
+ 181              	.LBB43:
+ 182              	.LBB44:
+ 387:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 388:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 389:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 390:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 391:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 392:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 393:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get Priority Mask (non-secure)
+ 394:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the current state of the non-secure priority mask bit from the Priority Mask Reg
+ 395:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               Priority Mask value
+ 396:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 397:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __TZ_get_PRIMASK_NS(void)
+ 398:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 399:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 400:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 401:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, primask_ns" : "=r" (result) :: "memory");
+ 402:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 403:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 404:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 405:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 406:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 407:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 408:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Set Priority Mask
+ 409:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Assigns the given value to the Priority Mask Register.
+ 410:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \param [in]    priMask  Priority Mask
+ 411:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 412:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __set_PRIMASK(uint32_t priMask)
+ 413:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 414:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MSR primask, %0" : : "r" (priMask) : "memory");
+ 415:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 416:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 417:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 418:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ARM GAS  /tmp/ccg06FZf.s 			page 15
+
+
+ 419:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 420:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Set Priority Mask (non-secure)
+ 421:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Assigns the given value to the non-secure Priority Mask Register when in secure state.
+ 422:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \param [in]    priMask  Priority Mask
+ 423:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 424:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __TZ_set_PRIMASK_NS(uint32_t priMask)
+ 425:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 426:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MSR primask_ns, %0" : : "r" (priMask) : "memory");
+ 427:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 428:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #endif
+ 429:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 430:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 431:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** #if ((defined (__ARM_ARCH_7M__      ) && (__ARM_ARCH_7M__      == 1)) || \
+ 432:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****      (defined (__ARM_ARCH_7EM__     ) && (__ARM_ARCH_7EM__     == 1)) || \
+ 433:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****      (defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1))    )
+ 434:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 435:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Enable FIQ
+ 436:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Enables FIQ interrupts by clearing the F-bit in the CPSR.
+ 437:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
+ 438:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 439:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __enable_fault_irq(void)
+ 440:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 441:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("cpsie f" : : : "memory");
+ 442:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 443:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 444:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 445:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 446:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Disable FIQ
+ 447:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Disables FIQ interrupts by setting the F-bit in the CPSR.
+ 448:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
+ 449:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 450:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __disable_fault_irq(void)
+ 451:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 452:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("cpsid f" : : : "memory");
+ 453:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** }
+ 454:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 455:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 456:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** /**
+ 457:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \brief   Get Base Priority
+ 458:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \details Returns the current value of the Base Priority register.
+ 459:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   \return               Base Priority register value
+ 460:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****  */
+ 461:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_BASEPRI(void)
+ 462:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** {
+ 463:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   uint32_t result;
+ 464:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h **** 
+ 465:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, basepri" : "=r" (result) );
+ 183              		.loc 2 465 0
+ 184              		.syntax unified
+ 185              	@ 465 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 186 0014 EFF31183 		MRS r3, basepri
+ 187              	@ 0 "" 2
+ 188              		.thumb
+ 189              		.syntax unified
+ 190              	.LBE44:
+ 191              	.LBE43:
+ 192              		.loc 3 126 0
+ARM GAS  /tmp/ccg06FZf.s 			page 16
+
+
+ 193 0018 13B9     		cbnz	r3, .L18
+ 194 001a 02E0     		b	.L14
+ 195              	.L17:
+ 196 001c 0123     		movs	r3, #1
+ 197 001e 00E0     		b	.L14
+ 198              	.L18:
+ 199 0020 0123     		movs	r3, #1
+ 200              	.L14:
+ 201              	.LBE40:
+ 202              	.LBE39:
+ 203              		.loc 1 76 0
+ 204 0022 3BB1     		cbz	r3, .L15
+ 205              	.L13:
+  77:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****     EvrRtxThreadError(NULL, (int32_t)osErrorISR);
+ 206              		.loc 1 77 0
+ 207 0024 6FF00501 		mvn	r1, #5
+ 208 0028 0020     		movs	r0, #0
+ 209 002a FFF7FEFF 		bl	EvrRtxThreadError
+ 210              	.LVL16:
+  78:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****     status = osErrorISR;
+ 211              		.loc 1 78 0
+ 212 002e 6FF00500 		mvn	r0, #5
+ 213 0032 10BD     		pop	{r4, pc}
+ 214              	.LVL17:
+ 215              	.L15:
+ 216              	.LBB45:
+ 217              	.LBB46:
+  64:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** SVC0_1(DelayUntil, osStatus_t, uint32_t)
+ 218              		.loc 1 64 0
+ 219 0034 2046     		mov	r0, r4
+ 220 0036 DFF808C0 		ldr	ip, .L20
+ 221              		.syntax unified
+ 222              	@ 64 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c" 1
+ 223 003a 00DF     		svc 0
+ 224              	@ 0 "" 2
+ 225              	.LVL18:
+ 226              		.thumb
+ 227              		.syntax unified
+ 228              	.LBE46:
+ 229              	.LBE45:
+  79:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****   } else {
+  80:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****     status = __svcDelay(ticks);
+  81:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****   }
+  82:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****   return status;
+  83:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** }
+ 230              		.loc 1 83 0
+ 231 003c 10BD     		pop	{r4, pc}
+ 232              	.LVL19:
+ 233              	.L21:
+ 234 003e 00BF     		.align	2
+ 235              	.L20:
+ 236 0040 00000000 		.word	svcRtxDelay
+ 237              		.cfi_endproc
+ 238              	.LFE178:
+ 240              		.section	.text.osDelayUntil,"ax",%progbits
+ 241              		.align	2
+ 242              		.global	osDelayUntil
+ARM GAS  /tmp/ccg06FZf.s 			page 17
+
+
+ 243              		.thumb
+ 244              		.thumb_func
+ 246              	osDelayUntil:
+ 247              	.LFB179:
+  84:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** 
+  85:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** /// Wait until specified time.
+  86:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** osStatus_t osDelayUntil (uint32_t ticks) {
+ 248              		.loc 1 86 0
+ 249              		.cfi_startproc
+ 250              		@ args = 0, pretend = 0, frame = 0
+ 251              		@ frame_needed = 0, uses_anonymous_args = 0
+ 252              	.LVL20:
+ 253 0000 10B5     		push	{r4, lr}
+ 254              	.LCFI4:
+ 255              		.cfi_def_cfa_offset 8
+ 256              		.cfi_offset 4, -8
+ 257              		.cfi_offset 14, -4
+ 258 0002 0446     		mov	r4, r0
+  87:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****   osStatus_t status;
+  88:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** 
+  89:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****   EvrRtxThreadDelayUntil(ticks);
+ 259              		.loc 1 89 0
+ 260 0004 FFF7FEFF 		bl	EvrRtxThreadDelayUntil
+ 261              	.LVL21:
+ 262              	.LBB47:
+ 263              	.LBB48:
+ 264              	.LBB49:
+ 209:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 265              		.loc 2 209 0
+ 266              		.syntax unified
+ 267              	@ 209 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 268 0008 EFF30583 		MRS r3, ipsr
+ 269              	@ 0 "" 2
+ 270              		.thumb
+ 271              		.syntax unified
+ 272              	.LBE49:
+ 273              	.LBE48:
+ 274              	.LBE47:
+  90:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****   if (IsIrqMode() || IsIrqMasked()) {
+ 275              		.loc 1 90 0
+ 276 000c 53B9     		cbnz	r3, .L23
+ 277              	.LBB50:
+ 278              	.LBB51:
+ 279              	.LBB52:
+ 280              	.LBB53:
+ 386:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h ****   return(result);
+ 281              		.loc 2 386 0
+ 282              		.syntax unified
+ 283              	@ 386 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 284 000e EFF31083 		MRS r3, primask
+ 285              	@ 0 "" 2
+ 286              		.thumb
+ 287              		.syntax unified
+ 288              	.LBE53:
+ 289              	.LBE52:
+ 290              		.loc 3 126 0
+ 291 0012 1BB9     		cbnz	r3, .L27
+ARM GAS  /tmp/ccg06FZf.s 			page 18
+
+
+ 292              	.LBB54:
+ 293              	.LBB55:
+ 294              		.loc 2 465 0
+ 295              		.syntax unified
+ 296              	@ 465 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 297 0014 EFF31183 		MRS r3, basepri
+ 298              	@ 0 "" 2
+ 299              		.thumb
+ 300              		.syntax unified
+ 301              	.LBE55:
+ 302              	.LBE54:
+ 303              		.loc 3 126 0
+ 304 0018 13B9     		cbnz	r3, .L28
+ 305 001a 02E0     		b	.L24
+ 306              	.L27:
+ 307 001c 0123     		movs	r3, #1
+ 308 001e 00E0     		b	.L24
+ 309              	.L28:
+ 310 0020 0123     		movs	r3, #1
+ 311              	.L24:
+ 312              	.LBE51:
+ 313              	.LBE50:
+ 314              		.loc 1 90 0
+ 315 0022 3BB1     		cbz	r3, .L25
+ 316              	.L23:
+  91:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****     EvrRtxThreadError(NULL, (int32_t)osErrorISR);
+ 317              		.loc 1 91 0
+ 318 0024 6FF00501 		mvn	r1, #5
+ 319 0028 0020     		movs	r0, #0
+ 320 002a FFF7FEFF 		bl	EvrRtxThreadError
+ 321              	.LVL22:
+  92:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****     status = osErrorISR;
+ 322              		.loc 1 92 0
+ 323 002e 6FF00500 		mvn	r0, #5
+ 324 0032 10BD     		pop	{r4, pc}
+ 325              	.LVL23:
+ 326              	.L25:
+ 327              	.LBB56:
+ 328              	.LBB57:
+  65:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** //lint --flb "Library End"
+ 329              		.loc 1 65 0
+ 330 0034 2046     		mov	r0, r4
+ 331 0036 DFF808C0 		ldr	ip, .L30
+ 332              		.syntax unified
+ 333              	@ 65 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c" 1
+ 334 003a 00DF     		svc 0
+ 335              	@ 0 "" 2
+ 336              	.LVL24:
+ 337              		.thumb
+ 338              		.syntax unified
+ 339              	.LBE57:
+ 340              	.LBE56:
+  93:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****   } else {
+  94:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****     status = __svcDelayUntil(ticks);
+  95:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****   }
+  96:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c ****   return status;
+  97:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_delay.c **** }
+ARM GAS  /tmp/ccg06FZf.s 			page 19
+
+
+ 341              		.loc 1 97 0
+ 342 003c 10BD     		pop	{r4, pc}
+ 343              	.LVL25:
+ 344              	.L31:
+ 345 003e 00BF     		.align	2
+ 346              	.L30:
+ 347 0040 00000000 		.word	svcRtxDelayUntil
+ 348              		.cfi_endproc
+ 349              	.LFE179:
+ 351              		.text
+ 352              	.Letext0:
+ 353              		.file 4 "/usr/include/newlib/machine/_default_types.h"
+ 354              		.file 5 "/usr/include/newlib/sys/_stdint.h"
+ 355              		.file 6 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/Include/cmsis_os2.h"
+ 356              		.file 7 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Include/rtx_os.h"
+ 357              		.file 8 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/core_cm4.h"
+ 358              		.file 9 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h"
+ 359              		.file 10 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Include/rtx_evr.h"
+ARM GAS  /tmp/ccg06FZf.s 			page 20
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 rtx_delay.c
+     /tmp/ccg06FZf.s:22     .text.svcRtxDelay:0000000000000000 $t
+     /tmp/ccg06FZf.s:26     .text.svcRtxDelay:0000000000000000 svcRtxDelay
+     /tmp/ccg06FZf.s:69     .text.svcRtxDelayUntil:0000000000000000 $t
+     /tmp/ccg06FZf.s:73     .text.svcRtxDelayUntil:0000000000000000 svcRtxDelayUntil
+     /tmp/ccg06FZf.s:123    .text.svcRtxDelayUntil:0000000000000030 $d
+     /tmp/ccg06FZf.s:128    .text.osDelay:0000000000000000 $t
+     /tmp/ccg06FZf.s:133    .text.osDelay:0000000000000000 osDelay
+     /tmp/ccg06FZf.s:236    .text.osDelay:0000000000000040 $d
+     /tmp/ccg06FZf.s:241    .text.osDelayUntil:0000000000000000 $t
+     /tmp/ccg06FZf.s:246    .text.osDelayUntil:0000000000000000 osDelayUntil
+     /tmp/ccg06FZf.s:347    .text.osDelayUntil:0000000000000040 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+osRtxThreadWaitEnter
+EvrRtxThreadDelayCompleted
+EvrRtxThreadError
+osRtxInfo
+EvrRtxThreadDelay
+EvrRtxThreadDelayUntil

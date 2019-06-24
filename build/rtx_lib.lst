@@ -1,0 +1,1002 @@
+ARM GAS  /tmp/ccIppXeg.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.syntax unified
+  17              		.file	"rtx_lib.c"
+  18              		.text
+  19              	.Ltext0:
+  20              		.cfi_sections	.debug_frame
+  21              		.syntax unified
+  22              		.global os_cb_sections
+  23              		.thumb
+  24              		.syntax unified
+  25              		.section	.text.software_init_hook,"ax",%progbits
+  26              		.align	2
+  27              		.weak	software_init_hook
+  28              		.thumb
+  29              		.thumb_func
+  31              	software_init_hook:
+  32              	.LFB102:
+  33              		.file 1 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c"
+   1:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** /*
+   2:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  * Copyright (c) 2013-2018 Arm Limited. All rights reserved.
+   3:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  *
+   4:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  * SPDX-License-Identifier: Apache-2.0
+   5:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  *
+   6:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+   7:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  * not use this file except in compliance with the License.
+   8:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  * You may obtain a copy of the License at
+   9:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  *
+  10:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  * www.apache.org/licenses/LICENSE-2.0
+  11:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  *
+  12:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  * Unless required by applicable law or agreed to in writing, software
+  13:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  14:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  15:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  * See the License for the specific language governing permissions and
+  16:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  * limitations under the License.
+  17:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  *
+  18:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  * -----------------------------------------------------------------------------
+  19:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  *
+  20:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  * Project:     CMSIS-RTOS RTX
+  21:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  * Title:       RTX Library Configuration
+  22:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  *
+  23:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  * -----------------------------------------------------------------------------
+  24:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****  */
+  25:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ARM GAS  /tmp/ccIppXeg.s 			page 2
+
+
+  26:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #include "cmsis_compiler.h"
+  27:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #include "RTX_Config.h"
+  28:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #include "rtx_os.h"
+  29:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+  30:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #ifdef    RTE_Compiler_EventRecorder
+  31:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #include "EventRecorder.h"
+  32:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #include "EventRecorderConf.h"
+  33:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+  34:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #include "rtx_evr.h"
+  35:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+  36:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+  37:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // System Configuration
+  38:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // ====================
+  39:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+  40:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Dynamic Memory
+  41:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_DYNAMIC_MEM_SIZE != 0)
+  42:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if ((OS_DYNAMIC_MEM_SIZE % 8) != 0)
+  43:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #error "Invalid Dynamic Memory size!"
+  44:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+  45:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static uint64_t os_mem[OS_DYNAMIC_MEM_SIZE/8] \
+  46:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".bss.os")));
+  47:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+  48:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+  49:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Kernel Tick Frequency
+  50:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_TICK_FREQ < 1)
+  51:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #error "Invalid Kernel Tick Frequency!"
+  52:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+  53:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+  54:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // ISR FIFO Queue
+  55:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static void *os_isr_queue[OS_ISR_FIFO_QUEUE] \
+  56:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".bss.os")));
+  57:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+  58:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+  59:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Thread Configuration
+  60:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // ====================
+  61:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+  62:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (((OS_STACK_SIZE % 8) != 0) || (OS_STACK_SIZE < 72))
+  63:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #error "Invalid default Thread Stack size!"
+  64:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+  65:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+  66:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (((OS_IDLE_THREAD_STACK_SIZE % 8) != 0) || (OS_IDLE_THREAD_STACK_SIZE < 72))
+  67:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #error "Invalid Idle Thread Stack size!"
+  68:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+  69:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+  70:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+  71:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_THREAD_OBJ_MEM != 0)
+  72:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+  73:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_THREAD_NUM == 0)
+  74:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #error "Invalid number of user Threads!"
+  75:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+  76:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+  77:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if ((OS_THREAD_USER_STACK_SIZE != 0) && ((OS_THREAD_USER_STACK_SIZE % 8) != 0))
+  78:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #error "Invalid total Stack size!"
+  79:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+  80:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+  81:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Thread Control Blocks
+  82:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static osRtxThread_t os_thread_cb[OS_THREAD_NUM] \
+ARM GAS  /tmp/ccIppXeg.s 			page 3
+
+
+  83:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".bss.os.thread.cb")));
+  84:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+  85:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Thread Default Stack
+  86:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_THREAD_DEF_STACK_NUM != 0)
+  87:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static uint64_t os_thread_def_stack[OS_THREAD_DEF_STACK_NUM*(OS_STACK_SIZE/8)] \
+  88:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".bss.os.thread.stack")));
+  89:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+  90:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+  91:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Memory Pool for Thread Control Blocks
+  92:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static osRtxMpInfo_t os_mpi_thread \
+  93:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".data.os.thread.mpi"))) =
+  94:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** { (uint32_t)OS_THREAD_NUM, 0U, (uint32_t)osRtxThreadCbSize, &os_thread_cb[0], NULL, NULL };
+  95:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+  96:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Memory Pool for Thread Default Stack
+  97:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_THREAD_DEF_STACK_NUM != 0)
+  98:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static osRtxMpInfo_t os_mpi_def_stack \
+  99:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".data.os.thread.mpi"))) =
+ 100:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** { (uint32_t)OS_THREAD_DEF_STACK_NUM, 0U, (uint32_t)OS_STACK_SIZE, &os_thread_def_stack[0], NULL, NU
+ 101:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 102:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 103:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Memory Pool for Thread Stack
+ 104:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_THREAD_USER_STACK_SIZE != 0)
+ 105:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static uint64_t os_thread_stack[2 + OS_THREAD_NUM + (OS_THREAD_USER_STACK_SIZE/8)] \
+ 106:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".bss.os.thread.stack")));
+ 107:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 108:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 109:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif  // (OS_THREAD_OBJ_MEM != 0)
+ 110:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 111:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 112:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Stack overrun checking
+ 113:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_STACK_CHECK == 0)
+ 114:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Override library function
+ 115:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern void osRtxThreadStackCheck (void);
+ 116:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****        void osRtxThreadStackCheck (void) {}
+ 117:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 118:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 119:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 120:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Idle Thread Control Block
+ 121:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static osRtxThread_t os_idle_thread_cb \
+ 122:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".bss.os.thread.cb")));
+ 123:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 124:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Idle Thread Stack
+ 125:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static uint64_t os_idle_thread_stack[OS_IDLE_THREAD_STACK_SIZE/8] \
+ 126:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".bss.os.thread.stack")));
+ 127:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 128:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Idle Thread Attributes
+ 129:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static const osThreadAttr_t os_idle_thread_attr = {
+ 130:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if defined(OS_IDLE_THREAD_NAME)
+ 131:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   OS_IDLE_THREAD_NAME,
+ 132:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #else
+ 133:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   NULL,
+ 134:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 135:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   osThreadDetached,
+ 136:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   &os_idle_thread_cb,
+ 137:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)sizeof(os_idle_thread_cb),
+ 138:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   &os_idle_thread_stack[0],
+ 139:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)sizeof(os_idle_thread_stack),
+ARM GAS  /tmp/ccIppXeg.s 			page 4
+
+
+ 140:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   osPriorityIdle,
+ 141:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if defined(OS_IDLE_THREAD_TZ_MOD_ID)
+ 142:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)OS_IDLE_THREAD_TZ_MOD_ID,
+ 143:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #else
+ 144:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   0U,
+ 145:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 146:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   0U
+ 147:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** };
+ 148:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 149:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 150:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Timer Configuration
+ 151:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // ===================
+ 152:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 153:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_TIMER_OBJ_MEM != 0)
+ 154:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 155:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_TIMER_NUM == 0)
+ 156:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #error "Invalid number of Timer objects!"
+ 157:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 158:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 159:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Timer Control Blocks
+ 160:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static osRtxTimer_t os_timer_cb[OS_TIMER_NUM] \
+ 161:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".bss.os.timer.cb")));
+ 162:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 163:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Memory Pool for Timer Control Blocks
+ 164:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static osRtxMpInfo_t os_mpi_timer \
+ 165:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".data.os.timer.mpi"))) =
+ 166:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** { (uint32_t)OS_TIMER_NUM, 0U, (uint32_t)osRtxTimerCbSize, &os_timer_cb[0], NULL, NULL };
+ 167:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 168:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif  // (OS_TIMER_OBJ_MEM != 0)
+ 169:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 170:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 171:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if ((OS_TIMER_THREAD_STACK_SIZE != 0) && (OS_TIMER_CB_QUEUE != 0))
+ 172:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 173:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (((OS_TIMER_THREAD_STACK_SIZE % 8) != 0) || (OS_TIMER_THREAD_STACK_SIZE < 96))
+ 174:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #error "Invalid Timer Thread Stack size!"
+ 175:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 176:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 177:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Timer Thread Control Block
+ 178:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static osRtxThread_t os_timer_thread_cb \
+ 179:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".bss.os.thread.cb")));
+ 180:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 181:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Timer Thread Stack
+ 182:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static uint64_t os_timer_thread_stack[OS_TIMER_THREAD_STACK_SIZE/8] \
+ 183:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".bss.os.thread.stack")));
+ 184:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 185:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Timer Thread Attributes
+ 186:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static const osThreadAttr_t os_timer_thread_attr = {
+ 187:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if defined(OS_TIMER_THREAD_NAME)
+ 188:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   OS_TIMER_THREAD_NAME,
+ 189:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #else
+ 190:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   NULL,
+ 191:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 192:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   osThreadDetached,
+ 193:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   &os_timer_thread_cb,
+ 194:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)sizeof(os_timer_thread_cb),
+ 195:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   &os_timer_thread_stack[0],
+ 196:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)sizeof(os_timer_thread_stack),
+ARM GAS  /tmp/ccIppXeg.s 			page 5
+
+
+ 197:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   //lint -e{9030} -e{9034} "cast from signed to enum"
+ 198:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (osPriority_t)OS_TIMER_THREAD_PRIO,
+ 199:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if defined(OS_TIMER_THREAD_TZ_MOD_ID)
+ 200:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)OS_TIMER_THREAD_TZ_MOD_ID,
+ 201:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #else
+ 202:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   0U,
+ 203:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 204:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   0U
+ 205:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** };
+ 206:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 207:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Timer Message Queue Control Block
+ 208:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static osRtxMessageQueue_t os_timer_mq_cb \
+ 209:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".bss.os.msgqueue.cb")));
+ 210:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 211:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Timer Message Queue Data
+ 212:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static uint32_t os_timer_mq_data[osRtxMessageQueueMemSize(OS_TIMER_CB_QUEUE,8)/4] \
+ 213:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".bss.os.msgqueue.mem")));
+ 214:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 215:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Timer Message Queue Attributes
+ 216:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static const osMessageQueueAttr_t os_timer_mq_attr = {
+ 217:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   NULL,
+ 218:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   0U,
+ 219:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   &os_timer_mq_cb,
+ 220:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)sizeof(os_timer_mq_cb),
+ 221:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   &os_timer_mq_data[0],
+ 222:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)sizeof(os_timer_mq_data)
+ 223:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** };
+ 224:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 225:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #else
+ 226:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 227:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern void osRtxTimerThread (void *argument);
+ 228:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****        void osRtxTimerThread (void *argument) { (void)argument; }
+ 229:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 230:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif  // ((OS_TIMER_THREAD_STACK_SIZE != 0) && (OS_TIMER_CB_QUEUE != 0))
+ 231:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 232:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 233:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Event Flags Configuration
+ 234:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // =========================
+ 235:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 236:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_EVFLAGS_OBJ_MEM != 0)
+ 237:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 238:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_EVFLAGS_NUM == 0)
+ 239:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #error "Invalid number of Event Flags objects!"
+ 240:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 241:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 242:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Event Flags Control Blocks
+ 243:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static osRtxEventFlags_t os_ef_cb[OS_EVFLAGS_NUM] \
+ 244:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".bss.os.evflags.cb")));
+ 245:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 246:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Memory Pool for Event Flags Control Blocks
+ 247:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static osRtxMpInfo_t os_mpi_ef \
+ 248:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".data.os.evflags.mpi"))) =
+ 249:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** { (uint32_t)OS_EVFLAGS_NUM, 0U, (uint32_t)osRtxEventFlagsCbSize, &os_ef_cb[0], NULL, NULL };
+ 250:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 251:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif  // (OS_EVFLAGS_OBJ_MEM != 0)
+ 252:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 253:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ARM GAS  /tmp/ccIppXeg.s 			page 6
+
+
+ 254:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Mutex Configuration
+ 255:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // ===================
+ 256:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 257:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_MUTEX_OBJ_MEM != 0)
+ 258:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 259:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_MUTEX_NUM == 0)
+ 260:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #error "Invalid number of Mutex objects!"
+ 261:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 262:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 263:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Mutex Control Blocks
+ 264:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static osRtxMutex_t os_mutex_cb[OS_MUTEX_NUM] \
+ 265:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".bss.os.mutex.cb")));
+ 266:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 267:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Memory Pool for Mutex Control Blocks
+ 268:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static osRtxMpInfo_t os_mpi_mutex \
+ 269:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".data.os.mutex.mpi"))) =
+ 270:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** { (uint32_t)OS_MUTEX_NUM, 0U, (uint32_t)osRtxMutexCbSize, &os_mutex_cb[0], NULL, NULL };
+ 271:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 272:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif  // (OS_MUTEX_OBJ_MEM != 0)
+ 273:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 274:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 275:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Semaphore Configuration
+ 276:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // =======================
+ 277:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 278:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_SEMAPHORE_OBJ_MEM != 0)
+ 279:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 280:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_SEMAPHORE_NUM == 0)
+ 281:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #error "Invalid number of Semaphore objects!"
+ 282:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 283:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 284:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Semaphore Control Blocks
+ 285:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static osRtxSemaphore_t os_semaphore_cb[OS_SEMAPHORE_NUM] \
+ 286:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".bss.os.semaphore.cb")));
+ 287:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 288:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Memory Pool for Semaphore Control Blocks
+ 289:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static osRtxMpInfo_t os_mpi_semaphore \
+ 290:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".data.os.semaphore.mpi"))) =
+ 291:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** { (uint32_t)OS_SEMAPHORE_NUM, 0U, (uint32_t)osRtxSemaphoreCbSize, &os_semaphore_cb[0], NULL, NULL }
+ 292:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 293:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif  // (OS_SEMAPHORE_OBJ_MEM != 0)
+ 294:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 295:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 296:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Memory Pool Configuration
+ 297:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // =========================
+ 298:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 299:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_MEMPOOL_OBJ_MEM != 0)
+ 300:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 301:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_MEMPOOL_NUM == 0)
+ 302:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #error "Invalid number of Memory Pool objects!"
+ 303:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 304:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 305:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Memory Pool Control Blocks
+ 306:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static osRtxMemoryPool_t os_mp_cb[OS_MEMPOOL_NUM] \
+ 307:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".bss.os.mempool.cb")));
+ 308:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 309:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Memory Pool for Memory Pool Control Blocks
+ 310:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static osRtxMpInfo_t os_mpi_mp \
+ARM GAS  /tmp/ccIppXeg.s 			page 7
+
+
+ 311:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".data.os.mempool.mpi"))) =
+ 312:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** { (uint32_t)OS_MEMPOOL_NUM, 0U, (uint32_t)osRtxMemoryPoolCbSize, &os_mp_cb[0], NULL, NULL };
+ 313:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 314:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Memory Pool for Memory Pool Data Storage
+ 315:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_MEMPOOL_DATA_SIZE != 0)
+ 316:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if ((OS_MEMPOOL_DATA_SIZE % 8) != 0)
+ 317:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #error "Invalid Data Memory size for Memory Pools!"
+ 318:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 319:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static uint64_t os_mp_data[2 + OS_MEMPOOL_NUM + (OS_MEMPOOL_DATA_SIZE/8)] \
+ 320:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".bss.os.mempool.mem")));
+ 321:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 322:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 323:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif  // (OS_MEMPOOL_OBJ_MEM != 0)
+ 324:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 325:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 326:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Message Queue Configuration
+ 327:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // ===========================
+ 328:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 329:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_MSGQUEUE_OBJ_MEM != 0)
+ 330:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 331:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_MSGQUEUE_NUM == 0)
+ 332:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #error "Invalid number of Message Queue objects!"
+ 333:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 334:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 335:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Message Queue Control Blocks
+ 336:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static osRtxMessageQueue_t os_mq_cb[OS_MSGQUEUE_NUM] \
+ 337:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".bss.os.msgqueue.cb")));
+ 338:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 339:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Memory Pool for Message Queue Control Blocks
+ 340:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static osRtxMpInfo_t os_mpi_mq \
+ 341:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".data.os.msgqueue.mpi"))) =
+ 342:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** { (uint32_t)OS_MSGQUEUE_NUM, 0U, (uint32_t)osRtxMessageQueueCbSize, &os_mq_cb[0], NULL, NULL };
+ 343:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 344:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Memory Pool for Message Queue Data Storage
+ 345:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_MSGQUEUE_DATA_SIZE != 0)
+ 346:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if ((OS_MSGQUEUE_DATA_SIZE % 8) != 0)
+ 347:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #error "Invalid Data Memory size for Message Queues!"
+ 348:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 349:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** static uint64_t os_mq_data[2 + OS_MSGQUEUE_NUM + (OS_MSGQUEUE_DATA_SIZE/8)] \
+ 350:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".bss.os.msgqueue.mem")));
+ 351:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 352:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 353:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif  // (OS_MSGQUEUE_OBJ_MEM != 0)
+ 354:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 355:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 356:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Event Recorder Configuration
+ 357:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // ============================
+ 358:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 359:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (defined(OS_EVR_INIT) && (OS_EVR_INIT != 0))
+ 360:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 361:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if  defined(RTE_Compiler_EventRecorder)
+ 362:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 363:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Event Recorder Initialize
+ 364:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __STATIC_INLINE void evr_initialize (void) {
+ 365:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 366:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (void)EventRecorderInitialize(OS_EVR_LEVEL, (uint32_t)OS_EVR_START);
+ 367:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ARM GAS  /tmp/ccIppXeg.s 			page 8
+
+
+ 368:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if ((OS_EVR_MEMORY_FILTER    & 0x80U) != 0U)
+ 369:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (void)EventRecorderEnable(OS_EVR_MEMORY_FILTER    & 0x0FU, EvtRtxMemoryNo,       EvtRtxMemoryNo);
+ 370:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 371:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if ((OS_EVR_KERNEL_FILTER    & 0x80U) != 0U)
+ 372:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (void)EventRecorderEnable(OS_EVR_KERNEL_FILTER    & 0x0FU, EvtRtxKernelNo,       EvtRtxKernelNo);
+ 373:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 374:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if ((OS_EVR_THREAD_FILTER    & 0x80U) != 0U)
+ 375:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (void)EventRecorderEnable(OS_EVR_THREAD_FILTER    & 0x0FU, EvtRtxThreadNo,       EvtRtxThreadNo);
+ 376:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 377:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if ((OS_EVR_TIMER_FILTER     & 0x80U) != 0U)
+ 378:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (void)EventRecorderEnable(OS_EVR_TIMER_FILTER     & 0x0FU, EvtRtxTimerNo,        EvtRtxTimerNo);
+ 379:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 380:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if ((OS_EVR_EVFLAGS_FILTER   & 0x80U) != 0U)
+ 381:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (void)EventRecorderEnable(OS_EVR_EVFLAGS_FILTER   & 0x0FU, EvtRtxEventFlagsNo,   EvtRtxEventFlags
+ 382:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 383:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if ((OS_EVR_MUTEX_FILTER     & 0x80U) != 0U)
+ 384:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (void)EventRecorderEnable(OS_EVR_MUTEX_FILTER     & 0x0FU, EvtRtxMutexNo,        EvtRtxMutexNo);
+ 385:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 386:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if ((OS_EVR_SEMAPHORE_FILTER & 0x80U) != 0U)
+ 387:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (void)EventRecorderEnable(OS_EVR_SEMAPHORE_FILTER & 0x0FU, EvtRtxSemaphoreNo,    EvtRtxSemaphoreN
+ 388:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 389:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if ((OS_EVR_MEMPOOL_FILTER   & 0x80U) != 0U)
+ 390:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (void)EventRecorderEnable(OS_EVR_MEMPOOL_FILTER   & 0x0FU, EvtRtxMemoryPoolNo,   EvtRtxMemoryPool
+ 391:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 392:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if ((OS_EVR_MSGQUEUE_FILTER  & 0x80U) != 0U)
+ 393:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (void)EventRecorderEnable(OS_EVR_MSGQUEUE_FILTER  & 0x0FU, EvtRtxMessageQueueNo, EvtRtxMessageQue
+ 394:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 395:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** }
+ 396:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 397:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #else
+ 398:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #warning "Event Recorder cannot be initialized (Event Recorder component is not selected)!"
+ 399:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #define evr_initialize()
+ 400:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 401:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 402:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif  // (OS_EVR_INIT != 0)
+ 403:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 404:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 405:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // OS Configuration
+ 406:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // ================
+ 407:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 408:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 409:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** const osRtxConfig_t osRtxConfig \
+ 410:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __USED \
+ 411:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".rodata"))) =
+ 412:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** {
+ 413:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   //lint -e{835} "Zero argument to operator"
+ 414:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   0U   // Flags
+ 415:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_PRIVILEGE_MODE != 0)
+ 416:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   | osRtxConfigPrivilegedMode
+ 417:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 418:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_STACK_CHECK != 0)
+ 419:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   | osRtxConfigStackCheck
+ 420:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 421:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_STACK_WATERMARK != 0)
+ 422:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   | osRtxConfigStackWatermark
+ 423:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 424:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   ,
+ARM GAS  /tmp/ccIppXeg.s 			page 9
+
+
+ 425:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)OS_TICK_FREQ,
+ 426:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_ROBIN_ENABLE != 0)
+ 427:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)OS_ROBIN_TIMEOUT,
+ 428:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #else
+ 429:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   0U,
+ 430:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 431:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   { &os_isr_queue[0], (uint16_t)(sizeof(os_isr_queue)/sizeof(void *)), 0U },
+ 432:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   { 
+ 433:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     // Memory Pools (Variable Block Size)
+ 434:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if ((OS_THREAD_OBJ_MEM != 0) && (OS_THREAD_USER_STACK_SIZE != 0))
+ 435:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     &os_thread_stack[0], sizeof(os_thread_stack),
+ 436:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #else
+ 437:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     NULL, 0U,
+ 438:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 439:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if ((OS_MEMPOOL_OBJ_MEM != 0) && (OS_MEMPOOL_DATA_SIZE != 0))
+ 440:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     &os_mp_data[0], sizeof(os_mp_data),
+ 441:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #else
+ 442:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     NULL, 0U,
+ 443:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 444:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if ((OS_MSGQUEUE_OBJ_MEM != 0) && (OS_MSGQUEUE_DATA_SIZE != 0))
+ 445:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     &os_mq_data[0], sizeof(os_mq_data),
+ 446:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #else
+ 447:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     NULL, 0U,
+ 448:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 449:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_DYNAMIC_MEM_SIZE != 0)
+ 450:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     &os_mem[0], (uint32_t)OS_DYNAMIC_MEM_SIZE,
+ 451:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #else
+ 452:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     NULL, 0U
+ 453:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 454:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   },
+ 455:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   {
+ 456:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     // Memory Pools (Fixed Block Size)
+ 457:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_THREAD_OBJ_MEM != 0)
+ 458:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_THREAD_DEF_STACK_NUM != 0)
+ 459:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     &os_mpi_def_stack,
+ 460:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #else
+ 461:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     NULL,
+ 462:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 463:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     &os_mpi_thread,
+ 464:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #else
+ 465:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     NULL, 
+ 466:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     NULL,
+ 467:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 468:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_TIMER_OBJ_MEM != 0)
+ 469:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     &os_mpi_timer,
+ 470:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #else
+ 471:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     NULL,
+ 472:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 473:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_EVFLAGS_OBJ_MEM != 0)
+ 474:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     &os_mpi_ef,
+ 475:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #else
+ 476:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     NULL,
+ 477:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 478:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_MUTEX_OBJ_MEM != 0)
+ 479:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     &os_mpi_mutex,
+ 480:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #else
+ 481:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     NULL,
+ARM GAS  /tmp/ccIppXeg.s 			page 10
+
+
+ 482:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 483:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_SEMAPHORE_OBJ_MEM != 0)
+ 484:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     &os_mpi_semaphore,
+ 485:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #else
+ 486:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     NULL,
+ 487:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 488:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_MEMPOOL_OBJ_MEM != 0)
+ 489:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     &os_mpi_mp,
+ 490:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #else
+ 491:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     NULL,
+ 492:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 493:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (OS_MSGQUEUE_OBJ_MEM != 0)
+ 494:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     &os_mpi_mq,
+ 495:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #else
+ 496:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     NULL,
+ 497:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 498:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   },
+ 499:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)OS_STACK_SIZE,
+ 500:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   &os_idle_thread_attr,
+ 501:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if ((OS_TIMER_THREAD_STACK_SIZE != 0) && (OS_TIMER_CB_QUEUE != 0))
+ 502:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   &os_timer_thread_attr,
+ 503:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   &os_timer_mq_attr,
+ 504:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)OS_TIMER_CB_QUEUE
+ 505:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #else
+ 506:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   NULL,
+ 507:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   NULL,
+ 508:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   0U
+ 509:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 510:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** };
+ 511:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 512:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 513:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Non weak reference to library irq module
+ 514:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** //lint -esym(526,irqRtxLib)    "Defined by Exception handlers"
+ 515:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** //lint -esym(714,irqRtxLibRef) "Non weak reference"
+ 516:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** //lint -esym(765,irqRtxLibRef) "Global scope"
+ 517:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern       uint8_t  irqRtxLib;
+ 518:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern const uint8_t *irqRtxLibRef;
+ 519:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****        const uint8_t *irqRtxLibRef = &irqRtxLib;
+ 520:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 521:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // Default User SVC Table
+ 522:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** //lint -esym(714,osRtxUserSVC) "Referenced by Exception handlers"
+ 523:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** //lint -esym(765,osRtxUserSVC) "Global scope"
+ 524:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** //lint -e{9067} "extern array declared without size"
+ 525:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern void * const osRtxUserSVC[];
+ 526:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __WEAK void * const osRtxUserSVC[1] = { (void *)0 };
+ 527:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 528:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 529:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // OS Sections
+ 530:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // ===========
+ 531:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 532:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if defined(__CC_ARM)
+ 533:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __asm void os_cb_sections_wrapper (void) {
+ 534:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 EXTERN  ||.bss.os.thread.cb$$Base||     [WEAK]
+ 535:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 EXTERN  ||.bss.os.thread.cb$$Limit||    [WEAK]
+ 536:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 EXTERN  ||.bss.os.timer.cb$$Base||      [WEAK]
+ 537:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 EXTERN  ||.bss.os.timer.cb$$Limit||     [WEAK]
+ 538:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 EXTERN  ||.bss.os.evflags.cb$$Base||    [WEAK]
+ARM GAS  /tmp/ccIppXeg.s 			page 11
+
+
+ 539:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 EXTERN  ||.bss.os.evflags.cb$$Limit||   [WEAK]
+ 540:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 EXTERN  ||.bss.os.mutex.cb$$Base||      [WEAK]
+ 541:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 EXTERN  ||.bss.os.mutex.cb$$Limit||     [WEAK]
+ 542:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 EXTERN  ||.bss.os.semaphore.cb$$Base||  [WEAK]
+ 543:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 EXTERN  ||.bss.os.semaphore.cb$$Limit|| [WEAK]
+ 544:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 EXTERN  ||.bss.os.mempool.cb$$Base||    [WEAK]
+ 545:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 EXTERN  ||.bss.os.mempool.cb$$Limit||   [WEAK]
+ 546:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 EXTERN  ||.bss.os.msgqueue.cb$$Base||   [WEAK]
+ 547:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 EXTERN  ||.bss.os.msgqueue.cb$$Limit||  [WEAK]
+ 548:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   
+ 549:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 AREA    ||.rodata||, DATA, READONLY
+ 550:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 EXPORT  os_cb_sections
+ 551:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** os_cb_sections
+ 552:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 DCD     ||.bss.os.thread.cb$$Base||
+ 553:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 DCD     ||.bss.os.thread.cb$$Limit||
+ 554:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 DCD     ||.bss.os.timer.cb$$Base||
+ 555:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 DCD     ||.bss.os.timer.cb$$Limit||
+ 556:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 DCD     ||.bss.os.evflags.cb$$Base||
+ 557:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 DCD     ||.bss.os.evflags.cb$$Limit||
+ 558:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 DCD     ||.bss.os.mutex.cb$$Base||
+ 559:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 DCD     ||.bss.os.mutex.cb$$Limit||
+ 560:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 DCD     ||.bss.os.semaphore.cb$$Base||
+ 561:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 DCD     ||.bss.os.semaphore.cb$$Limit||
+ 562:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 DCD     ||.bss.os.mempool.cb$$Base||
+ 563:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 DCD     ||.bss.os.mempool.cb$$Limit||
+ 564:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 DCD     ||.bss.os.msgqueue.cb$$Base||
+ 565:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 DCD     ||.bss.os.msgqueue.cb$$Limit||
+ 566:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 567:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****                 AREA    ||.emb_text||, CODE
+ 568:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** };
+ 569:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 570:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 571:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050))
+ 572:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** //lint -e{19} "Linker symbols"
+ 573:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __asm (
+ 574:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   ".weakref __os_thread_cb_start__,    .bss.os.thread.cb$$Base\n\t"
+ 575:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   ".weakref __os_thread_cb_end__,      .bss.os.thread.cb$$Limit\n\t"
+ 576:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   ".weakref __os_timer_cb_start__,     .bss.os.timer.cb$$Base\n\t"
+ 577:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   ".weakref __os_timer_cb_end__,       .bss.os.timer.cb$$Limit\n\t"
+ 578:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   ".weakref __os_evflags_cb_start__,   .bss.os.evflags.cb$$Base\n\t"
+ 579:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   ".weakref __os_evflags_cb_end__,     .bss.os.evflags.cb$$Limit\n\t"
+ 580:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   ".weakref __os_mutex_cb_start__,     .bss.os.mutex.cb$$Base\n\t"
+ 581:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   ".weakref __os_mutex_cb_end__,       .bss.os.mutex.cb$$Limit\n\t"
+ 582:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   ".weakref __os_semaphore_cb_start__, .bss.os.semaphore.cb$$Base\n\t"
+ 583:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   ".weakref __os_semaphore_cb_end__,   .bss.os.semaphore.cb$$Limit\n\t"
+ 584:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   ".weakref __os_mempool_cb_start__,   .bss.os.mempool.cb$$Base\n\t"
+ 585:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   ".weakref __os_mempool_cb_end__,     .bss.os.mempool.cb$$Limit\n\t"
+ 586:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   ".weakref __os_msgqueue_cb_start__,  .bss.os.msgqueue.cb$$Base\n\t"
+ 587:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   ".weakref __os_msgqueue_cb_end__,    .bss.os.msgqueue.cb$$Limit\n\t"
+ 588:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** );
+ 589:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 590:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 591:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if (defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)) || \
+ 592:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     (defined(__GNUC__) && !defined(__CC_ARM))
+ 593:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 594:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern __attribute__((weak)) uint32_t __os_thread_cb_start__;    //lint -esym(526,__os_thread_cb_st
+ 595:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern __attribute__((weak)) uint32_t __os_thread_cb_end__;      //lint -esym(526,__os_thread_cb_en
+ARM GAS  /tmp/ccIppXeg.s 			page 12
+
+
+ 596:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern __attribute__((weak)) uint32_t __os_timer_cb_start__;     //lint -esym(526,__os_timer_cb_sta
+ 597:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern __attribute__((weak)) uint32_t __os_timer_cb_end__;       //lint -esym(526,__os_timer_cb_end
+ 598:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern __attribute__((weak)) uint32_t __os_evflags_cb_start__;   //lint -esym(526,__os_evflags_cb_s
+ 599:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern __attribute__((weak)) uint32_t __os_evflags_cb_end__;     //lint -esym(526,__os_evflags_cb_e
+ 600:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern __attribute__((weak)) uint32_t __os_mutex_cb_start__;     //lint -esym(526,__os_mutex_cb_sta
+ 601:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern __attribute__((weak)) uint32_t __os_mutex_cb_end__;       //lint -esym(526,__os_mutex_cb_end
+ 602:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern __attribute__((weak)) uint32_t __os_semaphore_cb_start__; //lint -esym(526,__os_semaphore_cb
+ 603:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern __attribute__((weak)) uint32_t __os_semaphore_cb_end__;   //lint -esym(526,__os_semaphore_cb
+ 604:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern __attribute__((weak)) uint32_t __os_mempool_cb_start__;   //lint -esym(526,__os_mempool_cb_s
+ 605:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern __attribute__((weak)) uint32_t __os_mempool_cb_end__;     //lint -esym(526,__os_mempool_cb_e
+ 606:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern __attribute__((weak)) uint32_t __os_msgqueue_cb_start__;  //lint -esym(526,__os_msgqueue_cb_
+ 607:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern __attribute__((weak)) uint32_t __os_msgqueue_cb_end__;    //lint -esym(526,__os_msgqueue_cb_
+ 608:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 609:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** //lint -e{19} "Global symbol"
+ 610:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __asm (".global os_cb_sections");
+ 611:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 612:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** //lint -e{9067} "extern array declared without size"
+ 613:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern const uint32_t os_cb_sections[];
+ 614:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 615:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** //lint -esym(714,os_cb_sections) "Referenced by debugger"
+ 616:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** //lint -esym(765,os_cb_sections) "Global scope"
+ 617:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** //lint -e{923} -e{9078} "cast from pointer to unsigned int"
+ 618:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** const uint32_t os_cb_sections[] \
+ 619:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __attribute__((section(".rodata"))) =
+ 620:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** {
+ 621:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)&__os_thread_cb_start__,
+ 622:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)&__os_thread_cb_end__,
+ 623:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)&__os_timer_cb_start__,
+ 624:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)&__os_timer_cb_end__,
+ 625:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)&__os_evflags_cb_start__,
+ 626:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)&__os_evflags_cb_end__,
+ 627:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)&__os_mutex_cb_start__,
+ 628:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)&__os_mutex_cb_end__,
+ 629:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)&__os_semaphore_cb_start__,
+ 630:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)&__os_semaphore_cb_end__,
+ 631:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)&__os_mempool_cb_start__,
+ 632:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)&__os_mempool_cb_end__,
+ 633:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)&__os_msgqueue_cb_start__,
+ 634:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (uint32_t)&__os_msgqueue_cb_end__
+ 635:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** };
+ 636:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 637:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 638:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 639:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 640:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // OS Initialization
+ 641:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // =================
+ 642:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 643:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #if  defined(__CC_ARM) || \
+ 644:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****     (defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050))
+ 645:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 646:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #ifndef __MICROLIB
+ 647:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** //lint -esym(714,_platform_post_stackheap_init) "Referenced by C library"
+ 648:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** //lint -esym(765,_platform_post_stackheap_init) "Global scope"
+ 649:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern void _platform_post_stackheap_init (void);
+ 650:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __WEAK void _platform_post_stackheap_init (void) {
+ 651:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (void)osKernelInitialize();
+ 652:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** }
+ARM GAS  /tmp/ccIppXeg.s 			page 13
+
+
+ 653:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 654:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 655:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #elif defined(__GNUC__)
+ 656:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 657:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** extern void software_init_hook (void);
+ 658:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** __WEAK void software_init_hook (void) {
+  34              		.loc 1 658 0
+  35              		.cfi_startproc
+  36              		@ args = 0, pretend = 0, frame = 0
+  37              		@ frame_needed = 0, uses_anonymous_args = 0
+  38 0000 08B5     		push	{r3, lr}
+  39              	.LCFI0:
+  40              		.cfi_def_cfa_offset 8
+  41              		.cfi_offset 3, -8
+  42              		.cfi_offset 14, -4
+ 659:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c ****   (void)osKernelInitialize();
+  43              		.loc 1 659 0
+  44 0002 FFF7FEFF 		bl	osKernelInitialize
+  45              	.LVL0:
+  46 0006 08BD     		pop	{r3, pc}
+  47              		.cfi_endproc
+  48              	.LFE102:
+  50              		.section	.text.osRtxKernelPreInit,"ax",%progbits
+  51              		.align	2
+  52              		.global	osRtxKernelPreInit
+  53              		.thumb
+  54              		.thumb_func
+  56              	osRtxKernelPreInit:
+  57              	.LFB103:
+ 660:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** }
+ 661:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 662:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** #endif
+ 663:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 664:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 665:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // OS Hooks
+ 666:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // ========
+ 667:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** 
+ 668:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** // RTOS Kernel Pre-Initialization Hook
+ 669:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** void osRtxKernelPreInit (void);
+ 670:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.c **** void osRtxKernelPreInit (void) {
+  58              		.loc 1 670 0
+  59              		.cfi_startproc
+  60              		@ args = 0, pretend = 0, frame = 0
+  61              		@ frame_needed = 0, uses_anonymous_args = 0
+  62              		@ link register save eliminated.
+  63 0000 7047     		bx	lr
+  64              		.cfi_endproc
+  65              	.LFE103:
+  67              		.global	os_cb_sections
+  68              		.weak	osRtxUserSVC
+  69              		.global	irqRtxLibRef
+  70              		.global	osRtxConfig
+  71 0002 00BF     		.section	.rodata,"a",%progbits
+  72              		.align	2
+  75              	os_cb_sections:
+  76 0000 00000000 		.word	__os_thread_cb_start__
+  77 0004 00000000 		.word	__os_thread_cb_end__
+ARM GAS  /tmp/ccIppXeg.s 			page 14
+
+
+  78 0008 00000000 		.word	__os_timer_cb_start__
+  79 000c 00000000 		.word	__os_timer_cb_end__
+  80 0010 00000000 		.word	__os_evflags_cb_start__
+  81 0014 00000000 		.word	__os_evflags_cb_end__
+  82 0018 00000000 		.word	__os_mutex_cb_start__
+  83 001c 00000000 		.word	__os_mutex_cb_end__
+  84 0020 00000000 		.word	__os_semaphore_cb_start__
+  85 0024 00000000 		.word	__os_semaphore_cb_end__
+  86 0028 00000000 		.word	__os_mempool_cb_start__
+  87 002c 00000000 		.word	__os_mempool_cb_end__
+  88 0030 00000000 		.word	__os_msgqueue_cb_start__
+  89 0034 00000000 		.word	__os_msgqueue_cb_end__
+  92              	osRtxConfig:
+  93 0038 03000000 		.word	3
+  94 003c E8030000 		.word	1000
+  95 0040 05000000 		.word	5
+  96 0044 00000000 		.word	os_isr_queue
+  97 0048 1000     		.short	16
+  98 004a 0000     		.short	0
+  99 004c 00000000 		.word	0
+ 100 0050 00000000 		.word	0
+ 101 0054 00000000 		.word	0
+ 102 0058 00000000 		.word	0
+ 103 005c 00000000 		.word	0
+ 104 0060 00000000 		.word	0
+ 105 0064 40000000 		.word	os_mem
+ 106 0068 00100000 		.word	4096
+ 107 006c 00000000 		.word	0
+ 108 0070 00000000 		.word	0
+ 109 0074 00000000 		.word	0
+ 110 0078 00000000 		.word	0
+ 111 007c 00000000 		.word	0
+ 112 0080 00000000 		.word	0
+ 113 0084 00000000 		.word	0
+ 114 0088 00000000 		.word	0
+ 115 008c 00010000 		.word	256
+ 116 0090 00000000 		.word	os_idle_thread_attr
+ 117 0094 00000000 		.word	os_timer_thread_attr
+ 118 0098 00000000 		.word	os_timer_mq_attr
+ 119 009c 04000000 		.word	4
+ 120              		.section	.rodata.os_idle_thread_attr,"a",%progbits
+ 121              		.align	2
+ 124              	os_idle_thread_attr:
+ 125 0000 00000000 		.word	0
+ 126 0004 00000000 		.word	0
+ 127 0008 44000000 		.word	os_idle_thread_cb
+ 128 000c 44000000 		.word	68
+ 129 0010 00010000 		.word	os_idle_thread_stack
+ 130 0014 00010000 		.word	256
+ 131 0018 01000000 		.word	1
+ 132 001c 00000000 		.word	0
+ 133 0020 00000000 		.word	0
+ 134              		.section	.rodata.osRtxUserSVC,"a",%progbits
+ 135              		.align	2
+ 138              	osRtxUserSVC:
+ 139 0000 00000000 		.space	4
+ 140              		.section	.rodata.os_timer_thread_attr,"a",%progbits
+ARM GAS  /tmp/ccIppXeg.s 			page 15
+
+
+ 141              		.align	2
+ 144              	os_timer_thread_attr:
+ 145 0000 00000000 		.word	0
+ 146 0004 00000000 		.word	0
+ 147 0008 00000000 		.word	os_timer_thread_cb
+ 148 000c 44000000 		.word	68
+ 149 0010 00000000 		.word	os_timer_thread_stack
+ 150 0014 00010000 		.word	256
+ 151 0018 28000000 		.word	40
+ 152 001c 00000000 		.word	0
+ 153 0020 00000000 		.word	0
+ 154              		.section	.bss.os,"aw",%nobits
+ 155              		.align	3
+ 158              	os_isr_queue:
+ 159 0000 00000000 		.space	64
+ 159      00000000 
+ 159      00000000 
+ 159      00000000 
+ 159      00000000 
+ 162              	os_mem:
+ 163 0040 00000000 		.space	4096
+ 163      00000000 
+ 163      00000000 
+ 163      00000000 
+ 163      00000000 
+ 164              		.section	.data.irqRtxLibRef,"aw",%progbits
+ 165              		.align	2
+ 168              	irqRtxLibRef:
+ 169 0000 00000000 		.word	irqRtxLib
+ 170              		.section	.bss.os.msgqueue.cb,"aw",%nobits
+ 171              		.align	2
+ 174              	os_timer_mq_cb:
+ 175 0000 00000000 		.space	52
+ 175      00000000 
+ 175      00000000 
+ 175      00000000 
+ 175      00000000 
+ 176              		.section	.bss.os.msgqueue.mem,"aw",%nobits
+ 177              		.align	2
+ 180              	os_timer_mq_data:
+ 181 0000 00000000 		.space	80
+ 181      00000000 
+ 181      00000000 
+ 181      00000000 
+ 181      00000000 
+ 182              		.section	.rodata.os_timer_mq_attr,"a",%progbits
+ 183              		.align	2
+ 186              	os_timer_mq_attr:
+ 187 0000 00000000 		.word	0
+ 188 0004 00000000 		.word	0
+ 189 0008 00000000 		.word	os_timer_mq_cb
+ 190 000c 34000000 		.word	52
+ 191 0010 00000000 		.word	os_timer_mq_data
+ 192 0014 50000000 		.word	80
+ 193              		.section	.bss.os.thread.stack,"aw",%nobits
+ 194              		.align	3
+ 197              	os_timer_thread_stack:
+ARM GAS  /tmp/ccIppXeg.s 			page 16
+
+
+ 198 0000 00000000 		.space	256
+ 198      00000000 
+ 198      00000000 
+ 198      00000000 
+ 198      00000000 
+ 201              	os_idle_thread_stack:
+ 202 0100 00000000 		.space	256
+ 202      00000000 
+ 202      00000000 
+ 202      00000000 
+ 202      00000000 
+ 203              		.section	.bss.os.thread.cb,"aw",%nobits
+ 204              		.align	2
+ 207              	os_timer_thread_cb:
+ 208 0000 00000000 		.space	68
+ 208      00000000 
+ 208      00000000 
+ 208      00000000 
+ 208      00000000 
+ 211              	os_idle_thread_cb:
+ 212 0044 00000000 		.space	68
+ 212      00000000 
+ 212      00000000 
+ 212      00000000 
+ 212      00000000 
+ 213              		.weak	__os_msgqueue_cb_end__
+ 214              		.weak	__os_msgqueue_cb_start__
+ 215              		.weak	__os_mempool_cb_end__
+ 216              		.weak	__os_mempool_cb_start__
+ 217              		.weak	__os_semaphore_cb_end__
+ 218              		.weak	__os_semaphore_cb_start__
+ 219              		.weak	__os_mutex_cb_end__
+ 220              		.weak	__os_mutex_cb_start__
+ 221              		.weak	__os_evflags_cb_end__
+ 222              		.weak	__os_evflags_cb_start__
+ 223              		.weak	__os_timer_cb_end__
+ 224              		.weak	__os_timer_cb_start__
+ 225              		.weak	__os_thread_cb_end__
+ 226              		.weak	__os_thread_cb_start__
+ 227              		.text
+ 228              	.Letext0:
+ 229              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 230              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 231              		.file 4 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/Include/cmsis_os2.h"
+ 232              		.file 5 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Include/rtx_os.h"
+ARM GAS  /tmp/ccIppXeg.s 			page 17
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 rtx_lib.c
+     /tmp/ccIppXeg.s:75     .rodata:0000000000000000 os_cb_sections
+     /tmp/ccIppXeg.s:26     .text.software_init_hook:0000000000000000 $t
+     /tmp/ccIppXeg.s:31     .text.software_init_hook:0000000000000000 software_init_hook
+     /tmp/ccIppXeg.s:51     .text.osRtxKernelPreInit:0000000000000000 $t
+     /tmp/ccIppXeg.s:56     .text.osRtxKernelPreInit:0000000000000000 osRtxKernelPreInit
+     /tmp/ccIppXeg.s:138    .rodata.osRtxUserSVC:0000000000000000 osRtxUserSVC
+     /tmp/ccIppXeg.s:168    .data.irqRtxLibRef:0000000000000000 irqRtxLibRef
+     /tmp/ccIppXeg.s:92     .rodata:0000000000000038 osRtxConfig
+     /tmp/ccIppXeg.s:72     .rodata:0000000000000000 $d
+     /tmp/ccIppXeg.s:158    .bss.os:0000000000000000 os_isr_queue
+     /tmp/ccIppXeg.s:162    .bss.os:0000000000000040 os_mem
+     /tmp/ccIppXeg.s:124    .rodata.os_idle_thread_attr:0000000000000000 os_idle_thread_attr
+     /tmp/ccIppXeg.s:144    .rodata.os_timer_thread_attr:0000000000000000 os_timer_thread_attr
+     /tmp/ccIppXeg.s:186    .rodata.os_timer_mq_attr:0000000000000000 os_timer_mq_attr
+     /tmp/ccIppXeg.s:121    .rodata.os_idle_thread_attr:0000000000000000 $d
+     /tmp/ccIppXeg.s:211    .bss.os.thread.cb:0000000000000044 os_idle_thread_cb
+     /tmp/ccIppXeg.s:201    .bss.os.thread.stack:0000000000000100 os_idle_thread_stack
+     /tmp/ccIppXeg.s:135    .rodata.osRtxUserSVC:0000000000000000 $d
+     /tmp/ccIppXeg.s:141    .rodata.os_timer_thread_attr:0000000000000000 $d
+     /tmp/ccIppXeg.s:207    .bss.os.thread.cb:0000000000000000 os_timer_thread_cb
+     /tmp/ccIppXeg.s:197    .bss.os.thread.stack:0000000000000000 os_timer_thread_stack
+     /tmp/ccIppXeg.s:155    .bss.os:0000000000000000 $d
+     /tmp/ccIppXeg.s:165    .data.irqRtxLibRef:0000000000000000 $d
+     /tmp/ccIppXeg.s:171    .bss.os.msgqueue.cb:0000000000000000 $d
+     /tmp/ccIppXeg.s:174    .bss.os.msgqueue.cb:0000000000000000 os_timer_mq_cb
+     /tmp/ccIppXeg.s:177    .bss.os.msgqueue.mem:0000000000000000 $d
+     /tmp/ccIppXeg.s:180    .bss.os.msgqueue.mem:0000000000000000 os_timer_mq_data
+     /tmp/ccIppXeg.s:183    .rodata.os_timer_mq_attr:0000000000000000 $d
+     /tmp/ccIppXeg.s:194    .bss.os.thread.stack:0000000000000000 $d
+     /tmp/ccIppXeg.s:204    .bss.os.thread.cb:0000000000000000 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+osKernelInitialize
+__os_thread_cb_start__
+__os_thread_cb_end__
+__os_timer_cb_start__
+__os_timer_cb_end__
+__os_evflags_cb_start__
+__os_evflags_cb_end__
+__os_mutex_cb_start__
+__os_mutex_cb_end__
+__os_semaphore_cb_start__
+__os_semaphore_cb_end__
+__os_mempool_cb_start__
+__os_mempool_cb_end__
+__os_msgqueue_cb_start__
+__os_msgqueue_cb_end__
+irqRtxLib

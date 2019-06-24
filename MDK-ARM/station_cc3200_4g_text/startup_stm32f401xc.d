@@ -1,0 +1,1 @@
+station_cc3200_4g_text\startup_stm32f401xc.o: startup_stm32f401xc.s

@@ -1,0 +1,2089 @@
+ARM GAS  /tmp/ccG96Spd.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.syntax unified
+  17              		.file	"rtx_system.c"
+  18              		.text
+  19              	.Ltext0:
+  20              		.cfi_sections	.debug_frame
+  21              		.section	.text.isr_queue_put,"ax",%progbits
+  22              		.align	2
+  23              		.thumb
+  24              		.thumb_func
+  26              	isr_queue_put:
+  27              	.LFB174:
+  28              		.file 1 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c"
+   1:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** /*
+   2:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  * Copyright (c) 2013-2018 Arm Limited. All rights reserved.
+   3:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  *
+   4:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  * SPDX-License-Identifier: Apache-2.0
+   5:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  *
+   6:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+   7:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  * not use this file except in compliance with the License.
+   8:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  * You may obtain a copy of the License at
+   9:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  *
+  10:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  * www.apache.org/licenses/LICENSE-2.0
+  11:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  *
+  12:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  * Unless required by applicable law or agreed to in writing, software
+  13:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  14:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  15:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  * See the License for the specific language governing permissions and
+  16:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  * limitations under the License.
+  17:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  *
+  18:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  * -----------------------------------------------------------------------------
+  19:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  *
+  20:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  * Project:     CMSIS-RTOS RTX
+  21:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  * Title:       System functions
+  22:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  *
+  23:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  * -----------------------------------------------------------------------------
+  24:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****  */
+  25:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+  26:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** #include "rtx_lib.h"
+  27:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+  28:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+  29:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** //  ==== Helper functions ====
+  30:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+ARM GAS  /tmp/ccG96Spd.s 			page 2
+
+
+  31:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** /// Put Object into ISR Queue.
+  32:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** /// \param[in]  object          object.
+  33:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** /// \return 1 - success, 0 - failure.
+  34:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** static uint32_t isr_queue_put (os_object_t *object) {
+  29              		.loc 1 34 0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34              	.LVL0:
+  35 0000 30B4     		push	{r4, r5}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 8
+  38              		.cfi_offset 4, -8
+  39              		.cfi_offset 5, -4
+  35:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** #if (EXCLUSIVE_ACCESS == 0)
+  36:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   uint32_t primask = __get_PRIMASK();
+  37:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** #else
+  38:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   uint32_t n;
+  39:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** #endif
+  40:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   uint16_t max;
+  41:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   uint32_t ret;
+  42:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+  43:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   max = osRtxInfo.isr_queue.max;
+  40              		.loc 1 43 0
+  41 0002 134B     		ldr	r3, .L5
+  42 0004 B3F85420 		ldrh	r2, [r3, #84]
+  43              	.LVL1:
+  44              	.LBB26:
+  45              	.LBB27:
+  46              		.file 2 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h"
+   1:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /*
+   2:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * Copyright (c) 2013-2018 Arm Limited. All rights reserved.
+   3:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  *
+   4:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * SPDX-License-Identifier: Apache-2.0
+   5:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  *
+   6:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+   7:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * not use this file except in compliance with the License.
+   8:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * You may obtain a copy of the License at
+   9:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  *
+  10:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * www.apache.org/licenses/LICENSE-2.0
+  11:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  *
+  12:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * Unless required by applicable law or agreed to in writing, software
+  13:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  14:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  15:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * See the License for the specific language governing permissions and
+  16:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * limitations under the License.
+  17:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  *
+  18:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * -----------------------------------------------------------------------------
+  19:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  *
+  20:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * Project:     CMSIS-RTOS RTX
+  21:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * Title:       Cortex-M Core definitions
+  22:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  *
+  23:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  * -----------------------------------------------------------------------------
+  24:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****  */
+  25:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  26:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef RTX_CORE_CM_H_
+ARM GAS  /tmp/ccG96Spd.s 			page 3
+
+
+  27:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define RTX_CORE_CM_H_
+  28:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  29:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef RTX_CORE_C_H_
+  30:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #include "RTE_Components.h"
+  31:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #include CMSIS_device_header
+  32:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  33:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  34:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #include <stdbool.h>
+  35:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** typedef bool bool_t;
+  36:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define FALSE                   ((bool_t)0)
+  37:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define TRUE                    ((bool_t)1)
+  38:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  39:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  RTE_CMSIS_RTOS2_RTX5_ARMV8M_NS
+  40:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define DOMAIN_NS               1
+  41:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  42:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  43:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef DOMAIN_NS
+  44:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define DOMAIN_NS               0
+  45:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  46:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  47:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if    (DOMAIN_NS == 1)
+  48:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if   ((!defined(__ARM_ARCH_8M_BASE__) || (__ARM_ARCH_8M_BASE__ == 0)) && \
+  49:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****        (!defined(__ARM_ARCH_8M_MAIN__) || (__ARM_ARCH_8M_MAIN__ == 0)))
+  50:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #error "Non-secure domain requires ARMv8-M Architecture!"
+  51:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  52:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  53:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  54:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef EXCLUSIVE_ACCESS
+  55:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if    ((defined(__ARM_ARCH_7M__)      && (__ARM_ARCH_7M__      != 0)) || \
+  56:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****         (defined(__ARM_ARCH_7EM__)     && (__ARM_ARCH_7EM__     != 0)) || \
+  57:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****         (defined(__ARM_ARCH_8M_BASE__) && (__ARM_ARCH_8M_BASE__ != 0)) || \
+  58:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****         (defined(__ARM_ARCH_8M_MAIN__) && (__ARM_ARCH_8M_MAIN__ != 0)))
+  59:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define EXCLUSIVE_ACCESS        1
+  60:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+  61:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define EXCLUSIVE_ACCESS        0
+  62:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  63:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  64:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  65:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define OS_TICK_HANDLER         SysTick_Handler
+  66:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  67:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// xPSR_Initialization Value
+  68:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  privileged      true=privileged, false=unprivileged
+  69:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  thumb           true=Thumb, false=ARM
+  70:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return                     xPSR Init Value
+  71:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE uint32_t xPSR_InitVal (bool_t privileged, bool_t thumb) {
+  72:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   (void)privileged;
+  73:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   (void)thumb;
+  74:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return (0x01000000U);
+  75:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+  76:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  77:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** // Stack Frame:
+  78:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //  - Extended: S16-S31, R4-R11, R0-R3, R12, LR, PC, xPSR, S0-S15, FPSCR
+  79:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //  - Basic:             R4-R11, R0-R3, R12, LR, PC, xPSR
+  80:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  81:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Stack Frame Initialization Value (EXC_RETURN[7..0])
+  82:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if (DOMAIN_NS == 1)
+  83:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define STACK_FRAME_INIT_VAL    0xBCU
+ARM GAS  /tmp/ccG96Spd.s 			page 4
+
+
+  84:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+  85:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define STACK_FRAME_INIT_VAL    0xFDU
+  86:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  87:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+  88:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Stack Offset of Register R0
+  89:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  stack_frame     Stack Frame (EXC_RETURN[7..0])
+  90:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return                     R0 Offset
+  91:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE uint32_t StackOffsetR0 (uint8_t stack_frame) {
+  92:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if (__FPU_USED == 1U)
+  93:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return (((stack_frame & 0x10U) == 0U) ? ((16U+8U)*4U) : (8U*4U));
+  94:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+  95:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   (void)stack_frame;
+  96:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return (8U*4U);
+  97:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+  98:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+  99:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 100:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 101:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //  ==== Core functions ====
+ 102:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 103:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //lint -sem(__get_CONTROL, pure)
+ 104:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //lint -sem(__get_IPSR,    pure)
+ 105:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //lint -sem(__get_PRIMASK, pure)
+ 106:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //lint -sem(__get_BASEPRI, pure)
+ 107:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 108:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Check if running Privileged
+ 109:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return     true=privileged, false=unprivileged
+ 110:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE bool_t IsPrivileged (void) {
+ 111:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return ((__get_CONTROL() & 1U) == 0U);
+ 112:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 113:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 114:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Check if in IRQ Mode
+ 115:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return     true=IRQ, false=thread
+ 116:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE bool_t IsIrqMode (void) {
+ 117:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return (__get_IPSR() != 0U);
+ 118:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 119:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 120:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Check if IRQ is Masked
+ 121:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return     true=masked, false=not masked
+ 122:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE bool_t IsIrqMasked (void) {
+ 123:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if   ((defined(__ARM_ARCH_7M__)      && (__ARM_ARCH_7M__      != 0)) || \
+ 124:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****        (defined(__ARM_ARCH_7EM__)     && (__ARM_ARCH_7EM__     != 0)) || \
+ 125:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****        (defined(__ARM_ARCH_8M_MAIN__) && (__ARM_ARCH_8M_MAIN__ != 0)))
+ 126:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return ((__get_PRIMASK() != 0U) || (__get_BASEPRI() != 0U));
+ 127:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+ 128:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return  (__get_PRIMASK() != 0U);
+ 129:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 130:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 131:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 132:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 133:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //  ==== Core Peripherals functions ====
+ 134:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 135:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Setup SVC and PendSV System Service Calls
+ 136:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE void SVC_Setup (void) {
+ 137:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if   ((defined(__ARM_ARCH_8M_MAIN__) && (__ARM_ARCH_8M_MAIN__ != 0)) || \
+ 138:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****        (defined(__CORTEX_M)           && (__CORTEX_M == 7U)))
+ 139:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   uint32_t p, n;
+ 140:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ARM GAS  /tmp/ccG96Spd.s 			page 5
+
+
+ 141:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SCB->SHPR[10] = 0xFFU;
+ 142:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   n = 32U - (uint32_t)__CLZ(~(SCB->SHPR[10] | 0xFFFFFF00U));
+ 143:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   p = NVIC_GetPriorityGrouping();
+ 144:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   if (p >= n) {
+ 145:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     n = p + 1U;
+ 146:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   }
+ 147:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SCB->SHPR[7] = (uint8_t)(0xFEU << n);
+ 148:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #elif  (defined(__ARM_ARCH_8M_BASE__) && (__ARM_ARCH_8M_BASE__ != 0))
+ 149:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   uint32_t n;
+ 150:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 151:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SCB->SHPR[1] |= 0x00FF0000U;
+ 152:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   n = SCB->SHPR[1];
+ 153:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SCB->SHPR[0] |= (n << (8+1)) & 0xFC000000U;
+ 154:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #elif ((defined(__ARM_ARCH_7M__)      && (__ARM_ARCH_7M__      != 0)) || \
+ 155:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****        (defined(__ARM_ARCH_7EM__)     && (__ARM_ARCH_7EM__     != 0)))
+ 156:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   uint32_t p, n;
+ 157:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 158:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SCB->SHP[10] = 0xFFU;
+ 159:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   n = 32U - (uint32_t)__CLZ(~(SCB->SHP[10] | 0xFFFFFF00U));
+ 160:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   p = NVIC_GetPriorityGrouping();
+ 161:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   if (p >= n) {
+ 162:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     n = p + 1U;
+ 163:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   }
+ 164:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SCB->SHP[7] = (uint8_t)(0xFEU << n);
+ 165:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #elif  (defined(__ARM_ARCH_6M__)      && (__ARM_ARCH_6M__      != 0))
+ 166:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   uint32_t n;
+ 167:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 168:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SCB->SHP[1] |= 0x00FF0000U;
+ 169:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   n = SCB->SHP[1];
+ 170:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SCB->SHP[0] |= (n << (8+1)) & 0xFC000000U;
+ 171:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 172:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 173:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 174:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Get Pending SV (Service Call) Flag
+ 175:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return     Pending SV Flag
+ 176:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE uint8_t GetPendSV (void) {
+ 177:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return ((uint8_t)((SCB->ICSR & (SCB_ICSR_PENDSVSET_Msk)) >> 24));
+ 178:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 179:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 180:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Clear Pending SV (Service Call) Flag
+ 181:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE void ClrPendSV (void) {
+ 182:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SCB->ICSR = SCB_ICSR_PENDSVCLR_Msk;
+ 183:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 184:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 185:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Set Pending SV (Service Call) Flag
+ 186:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE void SetPendSV (void) {
+ 187:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SCB->ICSR = SCB_ICSR_PENDSVSET_Msk;
+ 188:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 189:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 190:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 191:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //  ==== Service Calls definitions ====
+ 192:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 193:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //lint -save -e9023 -e9024 -e9026 "Function-like macros using '#/##'" [MISRA Note 10]
+ 194:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 195:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if defined(__CC_ARM)
+ 196:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 197:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if   ((defined(__ARM_ARCH_7M__)      && (__ARM_ARCH_7M__      != 0)) ||       \
+ARM GAS  /tmp/ccG96Spd.s 			page 6
+
+
+ 198:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****        (defined(__ARM_ARCH_7EM__)     && (__ARM_ARCH_7EM__     != 0)) ||       \
+ 199:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****        (defined(__ARM_ARCH_8M_MAIN__) && (__ARM_ARCH_8M_MAIN__ != 0)))
+ 200:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define __SVC_INDIRECT(n) __svc_indirect(n)
+ 201:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #elif ((defined(__ARM_ARCH_6M__)      && (__ARM_ARCH_6M__      != 0)) ||       \
+ 202:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****        (defined(__ARM_ARCH_8M_BASE__) && (__ARM_ARCH_8M_BASE__ != 0)))
+ 203:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define __SVC_INDIRECT(n) __svc_indirect_r7(n)
+ 204:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 205:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 206:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC0_0N(f,t)                                                           \
+ 207:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __SVC_INDIRECT(0) t    svc##f (t(*)());                                        \
+ 208:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __attribute__((always_inline))                                                 \
+ 209:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE   t  __svc##f (void) {                                         \
+ 210:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   svc##f(svcRtx##f);                                                           \
+ 211:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 212:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 213:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC0_0(f,t)                                                            \
+ 214:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __SVC_INDIRECT(0) t    svc##f (t(*)());                                        \
+ 215:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __attribute__((always_inline))                                                 \
+ 216:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE   t  __svc##f (void) {                                         \
+ 217:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return svc##f(svcRtx##f);                                                    \
+ 218:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 219:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 220:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC0_1N(f,t,t1)                                                        \
+ 221:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __SVC_INDIRECT(0) t    svc##f (t(*)(t1),t1);                                   \
+ 222:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __attribute__((always_inline))                                                 \
+ 223:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE   t  __svc##f (t1 a1) {                                        \
+ 224:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   svc##f(svcRtx##f,a1);                                                        \
+ 225:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 226:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 227:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC0_1(f,t,t1)                                                         \
+ 228:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __SVC_INDIRECT(0) t    svc##f (t(*)(t1),t1);                                   \
+ 229:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __attribute__((always_inline))                                                 \
+ 230:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE   t  __svc##f (t1 a1) {                                        \
+ 231:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return svc##f(svcRtx##f,a1);                                                 \
+ 232:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 233:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 234:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC0_2(f,t,t1,t2)                                                      \
+ 235:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __SVC_INDIRECT(0) t    svc##f (t(*)(t1,t2),t1,t2);                             \
+ 236:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __attribute__((always_inline))                                                 \
+ 237:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE   t  __svc##f (t1 a1, t2 a2) {                                 \
+ 238:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return svc##f(svcRtx##f,a1,a2);                                              \
+ 239:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 240:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 241:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC0_3(f,t,t1,t2,t3)                                                   \
+ 242:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __SVC_INDIRECT(0) t    svc##f (t(*)(t1,t2,t3),t1,t2,t3);                       \
+ 243:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __attribute__((always_inline))                                                 \
+ 244:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE   t  __svc##f (t1 a1, t2 a2, t3 a3) {                          \
+ 245:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return svc##f(svcRtx##f,a1,a2,a3);                                           \
+ 246:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 247:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 248:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC0_4(f,t,t1,t2,t3,t4)                                                \
+ 249:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __SVC_INDIRECT(0) t    svc##f (t(*)(t1,t2,t3,t4),t1,t2,t3,t4);                 \
+ 250:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __attribute__((always_inline))                                                 \
+ 251:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE   t  __svc##f (t1 a1, t2 a2, t3 a3, t4 a4) {                   \
+ 252:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return svc##f(svcRtx##f,a1,a2,a3,a4);                                        \
+ 253:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 254:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ARM GAS  /tmp/ccG96Spd.s 			page 7
+
+
+ 255:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #elif defined(__ICCARM__)
+ 256:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 257:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if   ((defined(__ARM_ARCH_7M__)      && (__ARM_ARCH_7M__      != 0)) ||       \
+ 258:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****        (defined(__ARM_ARCH_7EM__)     && (__ARM_ARCH_7EM__     != 0)) ||       \
+ 259:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****        (defined(__ARM_ARCH_8M_MAIN__) && (__ARM_ARCH_8M_MAIN__ != 0)))
+ 260:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC_ArgF(f)                                                            \
+ 261:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   __asm(                                                                       \
+ 262:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "mov r12,%0\n"                                                             \
+ 263:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     :: "r"(&f): "r12"                                                          \
+ 264:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   );
+ 265:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #elif ((defined(__ARM_ARCH_6M__)      && (__ARM_ARCH_6M__      != 0)) ||       \
+ 266:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****        (defined(__ARM_ARCH_8M_BASE__) && (__ARM_ARCH_8M_BASE__ != 0)))
+ 267:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC_ArgF(f)                                                            \
+ 268:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   __asm(                                                                       \
+ 269:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "mov r7,%0\n"                                                              \
+ 270:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     :: "r"(&f): "r7"                                                           \
+ 271:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   );
+ 272:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 273:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 274:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define STRINGIFY(a) #a
+ 275:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define __SVC_INDIRECT(n) _Pragma(STRINGIFY(swi_number = n)) __swi
+ 276:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 277:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC0_0N(f,t)                                                           \
+ 278:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __SVC_INDIRECT(0) t    svc##f ();                                              \
+ 279:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __attribute__((always_inline))                                                 \
+ 280:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE   t  __svc##f (void) {                                         \
+ 281:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgF(svcRtx##f);                                                         \
+ 282:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   svc##f();                                                                    \
+ 283:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 284:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 285:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC0_0(f,t)                                                            \
+ 286:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __SVC_INDIRECT(0) t    svc##f ();                                              \
+ 287:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __attribute__((always_inline))                                                 \
+ 288:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE   t  __svc##f (void) {                                         \
+ 289:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgF(svcRtx##f);                                                         \
+ 290:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return svc##f();                                                             \
+ 291:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 292:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 293:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC0_1N(f,t,t1)                                                        \
+ 294:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __SVC_INDIRECT(0) t    svc##f (t1 a1);                                         \
+ 295:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __attribute__((always_inline))                                                 \
+ 296:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE   t  __svc##f (t1 a1) {                                        \
+ 297:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgF(svcRtx##f);                                                         \
+ 298:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   svc##f(a1);                                                                  \
+ 299:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 300:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 301:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC0_1(f,t,t1)                                                         \
+ 302:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __SVC_INDIRECT(0) t    svc##f (t1 a1);                                         \
+ 303:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __attribute__((always_inline))                                                 \
+ 304:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE   t  __svc##f (t1 a1) {                                        \
+ 305:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgF(svcRtx##f);                                                         \
+ 306:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return svc##f(a1);                                                           \
+ 307:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 308:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 309:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC0_2(f,t,t1,t2)                                                      \
+ 310:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __SVC_INDIRECT(0) t    svc##f (t1 a1, t2 a2);                                  \
+ 311:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __attribute__((always_inline))                                                 \
+ARM GAS  /tmp/ccG96Spd.s 			page 8
+
+
+ 312:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE   t  __svc##f (t1 a1, t2 a2) {                                 \
+ 313:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgF(svcRtx##f);                                                         \
+ 314:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return svc##f(a1,a2);                                                        \
+ 315:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 316:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 317:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC0_3(f,t,t1,t2,t3)                                                   \
+ 318:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __SVC_INDIRECT(0) t    svc##f (t1 a1, t2 a2, t3 a3);                           \
+ 319:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __attribute__((always_inline))                                                 \
+ 320:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE   t  __svc##f (t1 a1, t2 a2, t3 a3) {                          \
+ 321:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgF(svcRtx##f);                                                         \
+ 322:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return svc##f(a1,a2,a3);                                                     \
+ 323:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 324:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 325:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC0_4(f,t,t1,t2,t3,t4)                                                \
+ 326:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __SVC_INDIRECT(0) t    svc##f (t1 a1, t2 a2, t3 a3, t4 a4);                    \
+ 327:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __attribute__((always_inline))                                                 \
+ 328:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE   t  __svc##f (t1 a1, t2 a2, t3 a3, t4 a4) {                   \
+ 329:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgF(svcRtx##f);                                                         \
+ 330:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return svc##f(a1,a2,a3,a4);                                                  \
+ 331:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 332:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 333:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else   // !(defined(__CC_ARM) || defined(__ICCARM__))
+ 334:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 335:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //lint -esym(522,__svc*) "Functions '__svc*' are impure (side-effects)"
+ 336:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 337:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if   ((defined(__ARM_ARCH_7M__)      && (__ARM_ARCH_7M__      != 0)) ||       \
+ 338:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****        (defined(__ARM_ARCH_7EM__)     && (__ARM_ARCH_7EM__     != 0)) ||       \
+ 339:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****        (defined(__ARM_ARCH_8M_MAIN__) && (__ARM_ARCH_8M_MAIN__ != 0)))
+ 340:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC_RegF "r12"
+ 341:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #elif ((defined(__ARM_ARCH_6M__)      && (__ARM_ARCH_6M__      != 0)) ||       \
+ 342:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****        (defined(__ARM_ARCH_8M_BASE__) && (__ARM_ARCH_8M_BASE__ != 0)))
+ 343:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC_RegF "r7"
+ 344:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 345:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 346:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC_ArgN(n) \
+ 347:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** register uint32_t __r##n __ASM("r"#n)
+ 348:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 349:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC_ArgR(n,a) \
+ 350:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** register uint32_t __r##n __ASM("r"#n) = (uint32_t)a
+ 351:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 352:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC_ArgF(f) \
+ 353:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** register uint32_t __rf   __ASM(SVC_RegF) = (uint32_t)f
+ 354:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 355:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC_In0 "r"(__rf)
+ 356:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC_In1 "r"(__rf),"r"(__r0)
+ 357:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC_In2 "r"(__rf),"r"(__r0),"r"(__r1)
+ 358:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC_In3 "r"(__rf),"r"(__r0),"r"(__r1),"r"(__r2)
+ 359:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC_In4 "r"(__rf),"r"(__r0),"r"(__r1),"r"(__r2),"r"(__r3)
+ 360:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 361:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC_Out0
+ 362:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC_Out1 "=r"(__r0)
+ 363:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 364:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC_CL0
+ 365:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC_CL1 "r1"
+ 366:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC_CL2 "r0","r1"
+ 367:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 368:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC_Call0(in, out, cl)                                                 \
+ARM GAS  /tmp/ccG96Spd.s 			page 9
+
+
+ 369:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   __ASM volatile ("svc 0" : out : in : cl)
+ 370:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 371:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC0_0N(f,t)                                                           \
+ 372:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __attribute__((always_inline))                                                 \
+ 373:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE t __svc##f (void) {                                            \
+ 374:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgF(svcRtx##f);                                                         \
+ 375:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_Call0(SVC_In0, SVC_Out0, SVC_CL2);                                       \
+ 376:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 377:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 378:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC0_0(f,t)                                                            \
+ 379:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __attribute__((always_inline))                                                 \
+ 380:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE t __svc##f (void) {                                            \
+ 381:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgN(0);                                                                 \
+ 382:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgF(svcRtx##f);                                                         \
+ 383:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_Call0(SVC_In0, SVC_Out1, SVC_CL1);                                       \
+ 384:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return (t) __r0;                                                             \
+ 385:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 386:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 387:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC0_1N(f,t,t1)                                                        \
+ 388:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __attribute__((always_inline))                                                 \
+ 389:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE t __svc##f (t1 a1) {                                           \
+ 390:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgR(0,a1);                                                              \
+ 391:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgF(svcRtx##f);                                                         \
+ 392:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_Call0(SVC_In1, SVC_Out0, SVC_CL1);                                       \
+ 393:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 394:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 395:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC0_1(f,t,t1)                                                         \
+ 396:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __attribute__((always_inline))                                                 \
+ 397:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE t __svc##f (t1 a1) {                                           \
+ 398:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgR(0,a1);                                                              \
+ 399:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgF(svcRtx##f);                                                         \
+ 400:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_Call0(SVC_In1, SVC_Out1, SVC_CL1);                                       \
+ 401:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return (t) __r0;                                                             \
+ 402:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 403:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 404:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC0_2(f,t,t1,t2)                                                      \
+ 405:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __attribute__((always_inline))                                                 \
+ 406:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE t __svc##f (t1 a1, t2 a2) {                                    \
+ 407:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgR(0,a1);                                                              \
+ 408:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgR(1,a2);                                                              \
+ 409:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgF(svcRtx##f);                                                         \
+ 410:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_Call0(SVC_In2, SVC_Out1, SVC_CL0);                                       \
+ 411:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return (t) __r0;                                                             \
+ 412:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 413:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 414:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC0_3(f,t,t1,t2,t3)                                                   \
+ 415:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __attribute__((always_inline))                                                 \
+ 416:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE t __svc##f (t1 a1, t2 a2, t3 a3) {                             \
+ 417:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgR(0,a1);                                                              \
+ 418:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgR(1,a2);                                                              \
+ 419:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgR(2,a3);                                                              \
+ 420:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgF(svcRtx##f);                                                         \
+ 421:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_Call0(SVC_In3, SVC_Out1, SVC_CL0);                                       \
+ 422:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return (t) __r0;                                                             \
+ 423:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 424:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 425:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #define SVC0_4(f,t,t1,t2,t3,t4)                                                \
+ARM GAS  /tmp/ccG96Spd.s 			page 10
+
+
+ 426:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __attribute__((always_inline))                                                 \
+ 427:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE t __svc##f (t1 a1, t2 a2, t3 a3, t4 a4) {                      \
+ 428:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgR(0,a1);                                                              \
+ 429:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgR(1,a2);                                                              \
+ 430:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgR(2,a3);                                                              \
+ 431:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgR(3,a4);                                                              \
+ 432:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_ArgF(svcRtx##f);                                                         \
+ 433:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   SVC_Call0(SVC_In4, SVC_Out1, SVC_CL0);                                       \
+ 434:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return (t) __r0;                                                             \
+ 435:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 436:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 437:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 438:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 439:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //lint -restore [MISRA Note 10]
+ 440:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 441:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 442:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //  ==== Exclusive Access Operation ====
+ 443:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 444:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if (EXCLUSIVE_ACCESS == 1)
+ 445:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 446:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** //lint ++flb "Library Begin" [MISRA Note 12]
+ 447:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 448:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Atomic Access Operation: Write (8-bit)
+ 449:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  mem             Memory address
+ 450:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  val             Value to write
+ 451:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return                     Previous value
+ 452:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if defined(__CC_ARM)
+ 453:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** static __asm    uint8_t atomic_wr8 (uint8_t *mem, uint8_t val) {
+ 454:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   mov    r2,r0
+ 455:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 1
+ 456:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   ldrexb r0,[r2]
+ 457:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   strexb r3,r1,[r2]
+ 458:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   cbz    r3,%F2
+ 459:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   b      %B1
+ 460:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 2
+ 461:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   bx     lr
+ 462:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 463:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+ 464:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE uint8_t atomic_wr8 (uint8_t *mem, uint8_t val) {
+ 465:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+ 466:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_suppress=Pe550
+ 467:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 468:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint32_t res;
+ 469:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+ 470:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_default=Pe550
+ 471:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 472:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint8_t  ret;
+ 473:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 474:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   __ASM volatile (
+ 475:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef __ICCARM__
+ 476:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   ".syntax unified\n\t"
+ 477:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 478:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "1:\n\t"
+ 479:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "ldrexb %[ret],[%[mem]]\n\t"
+ 480:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "strexb %[res],%[val],[%[mem]]\n\t"
+ 481:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "cbz    %[res],2f\n\t"
+ 482:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "b       1b\n"
+ARM GAS  /tmp/ccG96Spd.s 			page 11
+
+
+ 483:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "2:"
+ 484:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : [ret] "=&l" (ret),
+ 485:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [res] "=&l" (res)
+ 486:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : [mem] "l"   (mem),
+ 487:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [val] "l"   (val)
+ 488:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : "memory"
+ 489:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   );
+ 490:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 491:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return ret;
+ 492:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 493:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 494:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 495:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Atomic Access Operation: Set bits (32-bit)
+ 496:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  mem             Memory address
+ 497:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  bits            Bit mask
+ 498:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return                     New value
+ 499:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if defined(__CC_ARM)
+ 500:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** static __asm    uint32_t atomic_set32 (uint32_t *mem, uint32_t bits) {
+ 501:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   mov   r2,r0
+ 502:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 1
+ 503:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   ldrex r0,[r2]
+ 504:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   orr   r0,r0,r1
+ 505:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   strex r3,r0,[r2]
+ 506:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   cbz   r3,%F2
+ 507:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   b     %B1
+ 508:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 2
+ 509:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   bx     lr
+ 510:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 511:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+ 512:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE uint32_t atomic_set32 (uint32_t *mem, uint32_t bits) {
+ 513:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+ 514:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_suppress=Pe550
+ 515:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 516:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint32_t val, res;
+ 517:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+ 518:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_default=Pe550
+ 519:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 520:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint32_t ret;
+ 521:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 522:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   __ASM volatile (
+ 523:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef __ICCARM__
+ 524:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   ".syntax unified\n\t"
+ 525:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 526:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "1:\n\t"
+ 527:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "ldrex %[val],[%[mem]]\n\t"
+ 528:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if (defined(__ARM_ARCH_8M_BASE__) && (__ARM_ARCH_8M_BASE__ != 0))
+ 529:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "mov   %[ret],%[val]\n\t"
+ 530:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "orrs  %[ret],%[bits]\n\t"
+ 531:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+ 532:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "orr   %[ret],%[val],%[bits]\n\t"
+ 533:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 534:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "strex %[res],%[ret],[%[mem]]\n\t"
+ 535:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "cbz   %[res],2f\n\t"
+ 536:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "b     1b\n"
+ 537:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "2:"
+ 538:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : [ret]  "=&l" (ret),
+ 539:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [val]  "=&l" (val),
+ARM GAS  /tmp/ccG96Spd.s 			page 12
+
+
+ 540:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [res]  "=&l" (res)
+ 541:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : [mem]  "l"   (mem),
+ 542:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [bits] "l"   (bits)
+ 543:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if (defined(__ARM_ARCH_8M_BASE__) && (__ARM_ARCH_8M_BASE__ != 0))
+ 544:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : "memory", "cc"
+ 545:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+ 546:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : "memory"
+ 547:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 548:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   );
+ 549:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 550:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return ret;
+ 551:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 552:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 553:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 554:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Atomic Access Operation: Clear bits (32-bit)
+ 555:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  mem             Memory address
+ 556:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  bits            Bit mask
+ 557:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return                     Previous value
+ 558:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if defined(__CC_ARM)
+ 559:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** static __asm    uint32_t atomic_clr32 (uint32_t *mem, uint32_t bits) {
+ 560:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   push  {r4,lr}
+ 561:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   mov   r2,r0
+ 562:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 1
+ 563:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   ldrex r0,[r2]
+ 564:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   bic   r4,r0,r1
+ 565:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   strex r3,r4,[r2]
+ 566:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   cbz   r3,%F2
+ 567:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   b     %B1
+ 568:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 2
+ 569:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   pop   {r4,pc}
+ 570:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 571:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+ 572:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE uint32_t atomic_clr32 (uint32_t *mem, uint32_t bits) {
+ 573:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+ 574:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_suppress=Pe550
+ 575:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 576:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint32_t val, res;
+ 577:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+ 578:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_default=Pe550
+ 579:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 580:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint32_t ret;
+ 581:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 582:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   __ASM volatile (
+ 583:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef __ICCARM__
+ 584:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   ".syntax unified\n\t"
+ 585:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 586:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "1:\n\t"
+ 587:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "ldrex %[ret],[%[mem]]\n\t"
+ 588:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if (defined(__ARM_ARCH_8M_BASE__) && (__ARM_ARCH_8M_BASE__ != 0))
+ 589:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "mov   %[val],%[ret]\n\t"
+ 590:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "bics  %[val],%[bits]\n\t"
+ 591:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+ 592:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "bic   %[val],%[ret],%[bits]\n\t"
+ 593:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 594:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "strex %[res],%[val],[%[mem]]\n\t"
+ 595:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "cbz   %[res],2f\n\t"
+ 596:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "b     1b\n"
+ARM GAS  /tmp/ccG96Spd.s 			page 13
+
+
+ 597:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "2:"
+ 598:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : [ret]  "=&l" (ret),
+ 599:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [val]  "=&l" (val),
+ 600:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [res]  "=&l" (res)
+ 601:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : [mem]  "l"   (mem),
+ 602:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [bits] "l"   (bits)
+ 603:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if (defined(__ARM_ARCH_8M_BASE__) && (__ARM_ARCH_8M_BASE__ != 0))
+ 604:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : "memory", "cc"
+ 605:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+ 606:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : "memory"
+ 607:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 608:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   );
+ 609:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 610:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return ret;
+ 611:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 612:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 613:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 614:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Atomic Access Operation: Check if all specified bits (32-bit) are active and clear them
+ 615:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  mem             Memory address
+ 616:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  bits            Bit mask
+ 617:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return                     Active bits before clearing or 0 if not active
+ 618:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if defined(__CC_ARM)
+ 619:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** static __asm    uint32_t atomic_chk32_all (uint32_t *mem, uint32_t bits) {
+ 620:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   push  {r4,lr}
+ 621:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   mov   r2,r0
+ 622:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 1
+ 623:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   ldrex r0,[r2]
+ 624:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   and   r4,r0,r1
+ 625:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   cmp   r4,r1
+ 626:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   beq   %F2
+ 627:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   clrex
+ 628:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   movs  r0,#0
+ 629:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   pop   {r4,pc}
+ 630:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 2
+ 631:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   bic   r4,r0,r1
+ 632:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   strex r3,r4,[r2]
+ 633:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   cbz   r3,%F3
+ 634:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   b     %B1
+ 635:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 3
+ 636:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   pop   {r4,pc}
+ 637:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 638:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+ 639:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE uint32_t atomic_chk32_all (uint32_t *mem, uint32_t bits) {
+ 640:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+ 641:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_suppress=Pe550
+ 642:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 643:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint32_t val, res;
+ 644:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+ 645:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_default=Pe550
+ 646:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 647:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint32_t ret;
+ 648:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 649:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   __ASM volatile (
+ 650:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef __ICCARM__
+ 651:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   ".syntax unified\n\t"
+ 652:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 653:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "1:\n\t"
+ARM GAS  /tmp/ccG96Spd.s 			page 14
+
+
+ 654:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "ldrex %[ret],[%[mem]]\n\t"
+ 655:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if (defined(__ARM_ARCH_8M_BASE__) && (__ARM_ARCH_8M_BASE__ != 0))
+ 656:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "mov   %[val],%[ret]\n\t"
+ 657:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "ands  %[val],%[bits]\n\t"
+ 658:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+ 659:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "and   %[val],%[ret],%[bits]\n\t"
+ 660:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 661:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "cmp   %[val],%[bits]\n\t"
+ 662:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "beq   2f\n\t"
+ 663:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "clrex\n\t"
+ 664:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "movs  %[ret],#0\n\t"
+ 665:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "b     3f\n"
+ 666:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "2:\n\t"
+ 667:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if (defined(__ARM_ARCH_8M_BASE__) && (__ARM_ARCH_8M_BASE__ != 0))
+ 668:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "mov   %[val],%[ret]\n\t"
+ 669:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "bics  %[val],%[bits]\n\t"
+ 670:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+ 671:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "bic   %[val],%[ret],%[bits]\n\t"
+ 672:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 673:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "strex %[res],%[val],[%[mem]]\n\t"
+ 674:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "cbz   %[res],3f\n\t"
+ 675:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "b     1b\n"
+ 676:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "3:"
+ 677:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : [ret]  "=&l" (ret),
+ 678:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [val]  "=&l" (val),
+ 679:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [res]  "=&l" (res)
+ 680:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : [mem]  "l"   (mem),
+ 681:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [bits] "l"   (bits)
+ 682:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : "cc", "memory"
+ 683:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   );
+ 684:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 685:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return ret;
+ 686:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 687:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 688:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 689:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Atomic Access Operation: Check if any specified bits (32-bit) are active and clear them
+ 690:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  mem             Memory address
+ 691:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  bits            Bit mask
+ 692:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return                     Active bits before clearing or 0 if not active
+ 693:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if defined(__CC_ARM)
+ 694:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** static __asm    uint32_t atomic_chk32_any (uint32_t *mem, uint32_t bits) {
+ 695:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   push  {r4,lr}
+ 696:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   mov   r2,r0
+ 697:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 1
+ 698:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   ldrex r0,[r2]
+ 699:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   tst   r0,r1
+ 700:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   bne   %F2
+ 701:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   clrex
+ 702:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   movs  r0,#0
+ 703:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   pop   {r4,pc}
+ 704:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 2
+ 705:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   bic   r4,r0,r1
+ 706:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   strex r3,r4,[r2]
+ 707:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   cbz   r3,%F3
+ 708:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   b     %B1
+ 709:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 3
+ 710:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   pop   {r4,pc}
+ARM GAS  /tmp/ccG96Spd.s 			page 15
+
+
+ 711:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 712:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+ 713:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE uint32_t atomic_chk32_any (uint32_t *mem, uint32_t bits) {
+ 714:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+ 715:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_suppress=Pe550
+ 716:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 717:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint32_t val, res;
+ 718:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+ 719:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_default=Pe550
+ 720:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 721:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint32_t ret;
+ 722:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 723:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   __ASM volatile (
+ 724:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef __ICCARM__
+ 725:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   ".syntax unified\n\t"
+ 726:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 727:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "1:\n\t"
+ 728:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "ldrex %[ret],[%[mem]]\n\t"
+ 729:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "tst   %[ret],%[bits]\n\t"
+ 730:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "bne   2f\n\t"
+ 731:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "clrex\n\t"
+ 732:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "movs  %[ret],#0\n\t"
+ 733:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "b     3f\n"
+ 734:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "2:\n\t"
+ 735:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if (defined(__ARM_ARCH_8M_BASE__) && (__ARM_ARCH_8M_BASE__ != 0))
+ 736:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "mov   %[val],%[ret]\n\t"
+ 737:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "bics  %[val],%[bits]\n\t"
+ 738:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+ 739:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "bic   %[val],%[ret],%[bits]\n\t"
+ 740:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 741:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "strex %[res],%[val],[%[mem]]\n\t"
+ 742:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "cbz   %[res],3f\n\t"
+ 743:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "b     1b\n"
+ 744:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "3:"
+ 745:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : [ret]  "=&l" (ret),
+ 746:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [val]  "=&l" (val),
+ 747:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [res]  "=&l" (res)
+ 748:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : [mem]  "l"   (mem),
+ 749:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [bits] "l"   (bits)
+ 750:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : "cc", "memory"
+ 751:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   );
+ 752:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 753:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return ret;
+ 754:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 755:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 756:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 757:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Atomic Access Operation: Increment (32-bit)
+ 758:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  mem             Memory address
+ 759:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return                     Previous value
+ 760:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if defined(__CC_ARM)
+ 761:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** static __asm    uint32_t atomic_inc32 (uint32_t *mem) {
+ 762:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   mov   r2,r0
+ 763:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 1
+ 764:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   ldrex r0,[r2]
+ 765:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   adds  r1,r0,#1
+ 766:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   strex r3,r1,[r2]
+ 767:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   cbz   r3,%F2
+ARM GAS  /tmp/ccG96Spd.s 			page 16
+
+
+ 768:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   b     %B1
+ 769:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 2
+ 770:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   bx     lr
+ 771:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 772:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+ 773:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE uint32_t atomic_inc32 (uint32_t *mem) {
+ 774:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+ 775:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_suppress=Pe550
+ 776:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 777:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint32_t val, res;
+ 778:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+ 779:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_default=Pe550
+ 780:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 781:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint32_t ret;
+ 782:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 783:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   __ASM volatile (
+ 784:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef __ICCARM__
+ 785:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   ".syntax unified\n\t"
+ 786:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 787:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "1:\n\t"
+ 788:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "ldrex %[ret],[%[mem]]\n\t"
+ 789:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "adds  %[val],%[ret],#1\n\t"
+ 790:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "strex %[res],%[val],[%[mem]]\n\t"
+ 791:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "cbz   %[res],2f\n\t"
+ 792:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "b     1b\n"
+ 793:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "2:"
+ 794:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : [ret] "=&l" (ret),
+ 795:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [val] "=&l" (val),
+ 796:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [res] "=&l" (res)
+ 797:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : [mem] "l"   (mem)
+ 798:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : "cc", "memory"
+ 799:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   );
+ 800:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 801:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return ret;
+ 802:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 803:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 804:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 805:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Atomic Access Operation: Increment (16-bit) if Less Than
+ 806:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  mem             Memory address
+ 807:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  max             Maximum value
+ 808:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return                     Previous value
+ 809:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if defined(__CC_ARM)
+ 810:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** static __asm    uint16_t atomic_inc16_lt (uint16_t *mem, uint16_t max) {
+ 811:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   push   {r4,lr}
+ 812:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   mov    r2,r0
+ 813:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 1
+ 814:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   ldrexh r0,[r2]
+ 815:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   cmp    r1,r0
+ 816:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   bhi    %F2
+ 817:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   clrex
+ 818:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   pop    {r4,pc}
+ 819:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 2
+ 820:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   adds   r4,r0,#1
+ 821:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   strexh r3,r4,[r2]
+ 822:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   cbz    r3,%F3
+ 823:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   b      %B1
+ 824:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 3
+ARM GAS  /tmp/ccG96Spd.s 			page 17
+
+
+ 825:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   pop    {r4,pc}
+ 826:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 827:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+ 828:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE uint16_t atomic_inc16_lt (uint16_t *mem, uint16_t max) {
+ 829:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+ 830:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_suppress=Pe550
+ 831:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 832:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint32_t val, res;
+ 833:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+ 834:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_default=Pe550
+ 835:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 836:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint16_t ret;
+ 837:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 838:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   __ASM volatile (
+  47              		.loc 2 838 0
+  48 0008 5633     		adds	r3, r3, #86
+  49              		.syntax unified
+  50              	@ 838 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h" 1
+  51              		.syntax unified
+  52              		1:
+  53 000a D3E85F1F 		ldrexh r1,[r3]
+  54 000e 8A42     		cmp    r2,r1
+  55 0010 02D8     		bhi    2f
+  56 0012 BFF32F8F 		clrex
+  57 0016 04E0     		b      3f
+  58              	2:
+  59 0018 4C1C     		adds   r4,r1,#1
+  60 001a C3E8554F 		strexh r5,r4,[r3]
+  61 001e 05B1     		cbz    r5,3f
+  62 0020 F3E7     		b      1b
+  63              	3:
+  64              	@ 0 "" 2
+  65              		.thumb
+  66              		.syntax unified
+  67 0022 8BB2     		uxth	r3, r1
+  68              	.LVL2:
+  69              	.LBE27:
+  70              	.LBE26:
+  44:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+  45:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** #if (EXCLUSIVE_ACCESS == 0)
+  46:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   __disable_irq();
+  47:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+  48:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   if (osRtxInfo.isr_queue.cnt < max) {
+  49:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     osRtxInfo.isr_queue.cnt++;
+  50:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     osRtxInfo.isr_queue.data[osRtxInfo.isr_queue.in] = object;
+  51:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     if (++osRtxInfo.isr_queue.in == max) {
+  52:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****       osRtxInfo.isr_queue.in = 0U;
+  53:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     }
+  54:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     ret = 1U;
+  55:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   } else {
+  56:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     ret = 0U;
+  57:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   }
+  58:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   
+  59:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   if (primask == 0U) {
+  60:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     __enable_irq();
+  61:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   }
+  62:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** #else
+ARM GAS  /tmp/ccG96Spd.s 			page 18
+
+
+  63:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   if (atomic_inc16_lt(&osRtxInfo.isr_queue.cnt, max) < max) {
+  71              		.loc 1 63 0
+  72 0024 9A42     		cmp	r2, r3
+  73 0026 10D9     		bls	.L3
+  74              	.LVL3:
+  75              	.LBB28:
+  76              	.LBB29:
+ 839:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef __ICCARM__
+ 840:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   ".syntax unified\n\t"
+ 841:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 842:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "1:\n\t"
+ 843:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "ldrexh %[ret],[%[mem]]\n\t"
+ 844:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "cmp    %[max],%[ret]\n\t"
+ 845:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "bhi    2f\n\t"
+ 846:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "clrex\n\t"
+ 847:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "b      3f\n"
+ 848:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "2:\n\t"
+ 849:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "adds   %[val],%[ret],#1\n\t"
+ 850:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "strexh %[res],%[val],[%[mem]]\n\t"
+ 851:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "cbz    %[res],3f\n\t"
+ 852:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "b      1b\n"
+ 853:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "3:"
+ 854:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : [ret] "=&l" (ret),
+ 855:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [val] "=&l" (val),
+ 856:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [res] "=&l" (res)
+ 857:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : [mem] "l"   (mem),
+ 858:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [max] "l"   (max)
+ 859:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : "cc", "memory"
+ 860:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   );
+ 861:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 862:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return ret;
+ 863:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 864:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 865:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 866:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Atomic Access Operation: Increment (16-bit) and clear on Limit
+ 867:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  mem             Memory address
+ 868:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  max             Maximum value
+ 869:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return                     Previous value
+ 870:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if defined(__CC_ARM)
+ 871:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** static __asm    uint16_t atomic_inc16_lim (uint16_t *mem, uint16_t lim) {
+ 872:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   push   {r4,lr}
+ 873:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   mov    r2,r0
+ 874:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 1
+ 875:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   ldrexh r0,[r2]
+ 876:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   adds   r4,r0,#1
+ 877:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   cmp    r1,r4
+ 878:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   bhi    %F2
+ 879:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   movs   r4,#0
+ 880:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 2
+ 881:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   strexh r3,r4,[r2]
+ 882:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   cbz    r3,%F3
+ 883:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   b      %B1
+ 884:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 3
+ 885:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   pop    {r4,pc}
+ 886:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 887:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+ 888:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE uint16_t atomic_inc16_lim (uint16_t *mem, uint16_t lim) {
+ARM GAS  /tmp/ccG96Spd.s 			page 19
+
+
+ 889:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+ 890:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_suppress=Pe550
+ 891:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 892:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint32_t val, res;
+ 893:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+ 894:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_default=Pe550
+ 895:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 896:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint16_t ret;
+ 897:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 898:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   __ASM volatile (
+  77              		.loc 2 898 0
+  78 0028 0A4B     		ldr	r3, .L5+4
+  79              	.LVL4:
+  80              		.syntax unified
+  81              	@ 898 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h" 1
+  82              		.syntax unified
+  83              		1:
+  84 002a D3E85F1F 		ldrexh r1,[r3]
+  85 002e 4C1C     		adds   r4,r1,#1
+  86 0030 A242     		cmp    r2,r4
+  87 0032 00D8     		bhi    2f
+  88 0034 0024     		movs   r4,#0
+  89              	2:
+  90 0036 C3E8554F 		strexh r5,r4,[r3]
+  91 003a 05B1     		cbz    r5,3f
+  92 003c F5E7     		b      1b
+  93              	3:
+  94              	@ 0 "" 2
+  95              		.thumb
+  96              		.syntax unified
+  97 003e 8AB2     		uxth	r2, r1
+  98              	.LVL5:
+  99              	.LBE29:
+ 100              	.LBE28:
+  64:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     n = atomic_inc16_lim(&osRtxInfo.isr_queue.in, max);
+  65:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     osRtxInfo.isr_queue.data[n] = object;
+ 101              		.loc 1 65 0
+ 102 0040 5B68     		ldr	r3, [r3, #4]
+ 103 0042 43F82200 		str	r0, [r3, r2, lsl #2]
+ 104              	.LVL6:
+  66:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     ret = 1U;
+ 105              		.loc 1 66 0
+ 106 0046 0120     		movs	r0, #1
+ 107              	.LVL7:
+ 108 0048 00E0     		b	.L2
+ 109              	.LVL8:
+ 110              	.L3:
+  67:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   } else {
+  68:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     ret = 0U;
+ 111              		.loc 1 68 0
+ 112 004a 0020     		movs	r0, #0
+ 113              	.LVL9:
+ 114              	.L2:
+  69:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   }
+  70:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** #endif
+  71:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+  72:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   return ret;
+ARM GAS  /tmp/ccG96Spd.s 			page 20
+
+
+  73:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** }
+ 115              		.loc 1 73 0
+ 116 004c 30BC     		pop	{r4, r5}
+ 117              	.LCFI1:
+ 118              		.cfi_restore 5
+ 119              		.cfi_restore 4
+ 120              		.cfi_def_cfa_offset 0
+ 121 004e 7047     		bx	lr
+ 122              	.L6:
+ 123              		.align	2
+ 124              	.L5:
+ 125 0050 00000000 		.word	osRtxInfo
+ 126 0054 58000000 		.word	osRtxInfo+88
+ 127              		.cfi_endproc
+ 128              	.LFE174:
+ 130              		.section	.text.isr_queue_get,"ax",%progbits
+ 131              		.align	2
+ 132              		.thumb
+ 133              		.thumb_func
+ 135              	isr_queue_get:
+ 136              	.LFB175:
+  74:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+  75:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** /// Get Object from ISR Queue.
+  76:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** /// \return object or NULL.
+  77:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** static os_object_t *isr_queue_get (void) {
+ 137              		.loc 1 77 0
+ 138              		.cfi_startproc
+ 139              		@ args = 0, pretend = 0, frame = 0
+ 140              		@ frame_needed = 0, uses_anonymous_args = 0
+ 141              		@ link register save eliminated.
+ 142 0000 10B4     		push	{r4}
+ 143              	.LCFI2:
+ 144              		.cfi_def_cfa_offset 4
+ 145              		.cfi_offset 4, -4
+  78:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** #if (EXCLUSIVE_ACCESS == 0)
+  79:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   uint32_t     primask = __get_PRIMASK();
+  80:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** #else
+  81:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   uint32_t     n;
+  82:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** #endif
+  83:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   uint16_t     max;
+  84:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   os_object_t *ret;
+  85:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+  86:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   max = osRtxInfo.isr_queue.max;
+ 146              		.loc 1 86 0
+ 147 0002 134B     		ldr	r3, .L11
+ 148 0004 B3F85410 		ldrh	r1, [r3, #84]
+ 149              	.LVL10:
+ 150              	.LBB30:
+ 151              	.LBB31:
+ 899:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef __ICCARM__
+ 900:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   ".syntax unified\n\t"
+ 901:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 902:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "1:\n\t"
+ 903:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "ldrexh %[ret],[%[mem]]\n\t"
+ 904:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "adds   %[val],%[ret],#1\n\t"
+ 905:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "cmp    %[lim],%[val]\n\t"
+ 906:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "bhi    2f\n\t"
+ARM GAS  /tmp/ccG96Spd.s 			page 21
+
+
+ 907:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "movs   %[val],#0\n"
+ 908:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "2:\n\t"
+ 909:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "strexh %[res],%[val],[%[mem]]\n\t"
+ 910:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "cbz    %[res],3f\n\t"
+ 911:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "b      1b\n"
+ 912:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "3:"
+ 913:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : [ret] "=&l" (ret),
+ 914:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [val] "=&l" (val),
+ 915:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [res] "=&l" (res)
+ 916:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : [mem] "l"   (mem),
+ 917:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [lim] "l"   (lim)
+ 918:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : "cc", "memory"
+ 919:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   );
+ 920:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 921:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return ret;
+ 922:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 923:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 924:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 925:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Atomic Access Operation: Decrement (32-bit)
+ 926:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  mem             Memory address
+ 927:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return                     Previous value
+ 928:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if defined(__CC_ARM)
+ 929:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** static __asm    uint32_t atomic_dec32 (uint32_t *mem) {
+ 930:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   mov   r2,r0
+ 931:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 1
+ 932:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   ldrex r0,[r2]
+ 933:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   subs  r1,r0,#1
+ 934:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   strex r3,r1,[r2]
+ 935:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   cbz   r3,%F2
+ 936:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   b     %B1
+ 937:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 2
+ 938:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   bx     lr
+ 939:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 940:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+ 941:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE uint32_t atomic_dec32 (uint32_t *mem) {
+ 942:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+ 943:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_suppress=Pe550
+ 944:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 945:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint32_t val, res;
+ 946:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+ 947:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_default=Pe550
+ 948:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 949:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint32_t ret;
+ 950:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 951:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   __ASM volatile (
+ 952:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef __ICCARM__
+ 953:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   ".syntax unified\n\t"
+ 954:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 955:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "1:\n\t"
+ 956:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "ldrex %[ret],[%[mem]]\n\t"
+ 957:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "subs  %[val],%[ret],#1\n\t"
+ 958:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "strex %[res],%[val],[%[mem]]\n\t"
+ 959:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "cbz   %[res],2f\n\t"
+ 960:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "b     1b\n"
+ 961:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "2:"
+ 962:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : [ret] "=&l" (ret),
+ 963:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [val] "=&l" (val),
+ARM GAS  /tmp/ccG96Spd.s 			page 22
+
+
+ 964:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [res] "=&l" (res)
+ 965:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : [mem] "l"   (mem)
+ 966:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : "cc", "memory"
+ 967:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   );
+ 968:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 969:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return ret;
+ 970:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 971:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 972:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+ 973:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Atomic Access Operation: Decrement (32-bit) if Not Zero
+ 974:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  mem             Memory address
+ 975:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return                     Previous value
+ 976:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if defined(__CC_ARM)
+ 977:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** static __asm    uint32_t atomic_dec32_nz (uint32_t *mem) {
+ 978:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   mov   r2,r0
+ 979:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 1
+ 980:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   ldrex r0,[r2]
+ 981:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   cbnz  r0,%F2
+ 982:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   clrex
+ 983:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   bx    lr
+ 984:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 2
+ 985:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   subs  r1,r0,#1
+ 986:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   strex r3,r1,[r2]
+ 987:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   cbz   r3,%F3
+ 988:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   b     %B1
+ 989:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 3
+ 990:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   bx     lr
+ 991:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 992:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+ 993:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE uint32_t atomic_dec32_nz (uint32_t *mem) {
+ 994:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+ 995:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_suppress=Pe550
+ 996:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+ 997:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint32_t val, res;
+ 998:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+ 999:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_default=Pe550
+1000:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+1001:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint32_t ret;
+1002:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+1003:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   __ASM volatile (
+1004:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef __ICCARM__
+1005:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   ".syntax unified\n\t"
+1006:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+1007:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "1:\n\t"
+1008:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "ldrex %[ret],[%[mem]]\n\t"
+1009:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "cbnz  %[ret],2f\n\t"
+1010:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "clrex\n\t"
+1011:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "b     3f\n"
+1012:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "2:\n\t"
+1013:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "subs  %[val],%[ret],#1\n\t"
+1014:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "strex %[res],%[val],[%[mem]]\n\t"
+1015:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "cbz   %[res],3f\n\t"
+1016:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     "b     1b\n"
+1017:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   "3:"
+1018:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : [ret] "=&l" (ret),
+1019:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [val] "=&l" (val),
+1020:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****     [res] "=&l" (res)
+ARM GAS  /tmp/ccG96Spd.s 			page 23
+
+
+1021:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : [mem] "l"   (mem)
+1022:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   : "cc", "memory"
+1023:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   );
+1024:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+1025:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   return ret;
+1026:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+1027:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+1028:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+1029:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// Atomic Access Operation: Decrement (16-bit) if Not Zero
+1030:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \param[in]  mem             Memory address
+1031:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** /// \return                     Previous value
+1032:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #if defined(__CC_ARM)
+1033:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** static __asm    uint16_t atomic_dec16_nz (uint16_t *mem) {
+1034:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   mov    r2,r0
+1035:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 1
+1036:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   ldrexh r0,[r2]
+1037:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   cbnz   r0,%F2
+1038:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   clrex
+1039:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   bx     lr
+1040:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 2
+1041:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   subs   r1,r0,#1
+1042:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   strexh r3,r1,[r2]
+1043:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   cbz    r3,%F3
+1044:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   b      %B1
+1045:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 3
+1046:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   bx      lr
+1047:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+1048:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #else
+1049:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** __STATIC_INLINE uint16_t atomic_dec16_nz (uint16_t *mem) {
+1050:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+1051:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_suppress=Pe550
+1052:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+1053:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint32_t val, res;
+1054:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifdef  __ICCARM__
+1055:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #pragma diag_default=Pe550
+1056:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #endif
+1057:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   register uint16_t ret;
+1058:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** 
+1059:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h ****   __ASM volatile (
+ 152              		.loc 2 1059 0
+ 153 0008 5633     		adds	r3, r3, #86
+ 154              		.syntax unified
+ 155              	@ 1059 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h" 1
+ 156              		.syntax unified
+ 157              		1:
+ 158 000a D3E85F2F 		ldrexh r2,[r3]
+ 159 000e 12B9     		cbnz   r2,2f
+ 160 0010 BFF32F8F 		clrex
+ 161 0014 04E0     		b      3f
+ 162              	2:
+ 163 0016 501E     		subs   r0,r2,#1
+ 164 0018 C3E8540F 		strexh r4,r0,[r3]
+ 165 001c 04B1     		cbz    r4,3f
+ 166 001e F4E7     		b      1b
+ 167              	3:
+ 168              	@ 0 "" 2
+ 169              		.thumb
+ARM GAS  /tmp/ccG96Spd.s 			page 24
+
+
+ 170              		.syntax unified
+ 171 0020 93B2     		uxth	r3, r2
+ 172              	.LVL11:
+ 173              	.LBE31:
+ 174              	.LBE30:
+  87:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+  88:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** #if (EXCLUSIVE_ACCESS == 0)
+  89:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   __disable_irq();
+  90:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+  91:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   if (osRtxInfo.isr_queue.cnt != 0U) {
+  92:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     osRtxInfo.isr_queue.cnt--;
+  93:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     ret = osRtxObject(osRtxInfo.isr_queue.data[osRtxInfo.isr_queue.out]);
+  94:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     if (++osRtxInfo.isr_queue.out == max) {
+  95:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****       osRtxInfo.isr_queue.out = 0U;
+  96:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     }
+  97:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   } else {
+  98:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     ret = NULL;
+  99:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   }
+ 100:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   
+ 101:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   if (primask == 0U) {
+ 102:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     __enable_irq();
+ 103:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   }
+ 104:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** #else
+ 105:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   if (atomic_dec16_nz(&osRtxInfo.isr_queue.cnt) != 0U) {
+ 175              		.loc 1 105 0
+ 176 0022 83B1     		cbz	r3, .L9
+ 177              	.LVL12:
+ 178              	.LBB32:
+ 179              	.LBB33:
+ 898:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** #ifndef __ICCARM__
+ 180              		.loc 2 898 0
+ 181 0024 0B4B     		ldr	r3, .L11+4
+ 182              	.LVL13:
+ 183              		.syntax unified
+ 184              	@ 898 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h" 1
+ 185              		.syntax unified
+ 186              		1:
+ 187 0026 D3E85F2F 		ldrexh r2,[r3]
+ 188 002a 501C     		adds   r0,r2,#1
+ 189 002c 8142     		cmp    r1,r0
+ 190 002e 00D8     		bhi    2f
+ 191 0030 0020     		movs   r0,#0
+ 192              	2:
+ 193 0032 C3E8540F 		strexh r4,r0,[r3]
+ 194 0036 04B1     		cbz    r4,3f
+ 195 0038 F5E7     		b      1b
+ 196              	3:
+ 197              	@ 0 "" 2
+ 198              		.thumb
+ 199              		.syntax unified
+ 200 003a 92B2     		uxth	r2, r2
+ 201              	.LVL14:
+ 202              	.LBE33:
+ 203              	.LBE32:
+ 106:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     n = atomic_inc16_lim(&osRtxInfo.isr_queue.out, max);
+ 107:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     ret = osRtxObject(osRtxInfo.isr_queue.data[n]);
+ 204              		.loc 1 107 0
+ARM GAS  /tmp/ccG96Spd.s 			page 25
+
+
+ 205 003c D3F80230 		ldr	r3, [r3, #2]
+ 206 0040 53F82200 		ldr	r0, [r3, r2, lsl #2]
+ 207 0044 00E0     		b	.L8
+ 208              	.LVL15:
+ 209              	.L9:
+ 108:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   } else {
+ 109:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     ret = NULL;
+ 210              		.loc 1 109 0
+ 211 0046 0020     		movs	r0, #0
+ 212              	.L8:
+ 213              	.LVL16:
+ 110:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   }
+ 111:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** #endif
+ 112:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+ 113:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   return ret;
+ 114:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** }
+ 214              		.loc 1 114 0
+ 215 0048 5DF8044B 		ldr	r4, [sp], #4
+ 216              	.LCFI3:
+ 217              		.cfi_restore 4
+ 218              		.cfi_def_cfa_offset 0
+ 219 004c 7047     		bx	lr
+ 220              	.L12:
+ 221 004e 00BF     		.align	2
+ 222              	.L11:
+ 223 0050 00000000 		.word	osRtxInfo
+ 224 0054 5A000000 		.word	osRtxInfo+90
+ 225              		.cfi_endproc
+ 226              	.LFE175:
+ 228              		.section	.text.osRtxTick_Handler,"ax",%progbits
+ 229              		.align	2
+ 230              		.global	osRtxTick_Handler
+ 231              		.thumb
+ 232              		.thumb_func
+ 234              	osRtxTick_Handler:
+ 235              	.LFB176:
+ 115:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+ 116:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+ 117:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** //  ==== Library Functions ====
+ 118:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+ 119:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** /// Tick Handler.
+ 120:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** //lint -esym(714,osRtxTick_Handler) "Referenced by Exception handlers"
+ 121:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** //lint -esym(759,osRtxTick_Handler) "Prototype in header"
+ 122:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** //lint -esym(765,osRtxTick_Handler) "Global scope"
+ 123:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** void osRtxTick_Handler (void) {
+ 236              		.loc 1 123 0
+ 237              		.cfi_startproc
+ 238              		@ args = 0, pretend = 0, frame = 0
+ 239              		@ frame_needed = 0, uses_anonymous_args = 0
+ 240 0000 38B5     		push	{r3, r4, r5, lr}
+ 241              	.LCFI4:
+ 242              		.cfi_def_cfa_offset 16
+ 243              		.cfi_offset 3, -16
+ 244              		.cfi_offset 4, -12
+ 245              		.cfi_offset 5, -8
+ 246              		.cfi_offset 14, -4
+ 124:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   os_thread_t *thread;
+ARM GAS  /tmp/ccG96Spd.s 			page 26
+
+
+ 125:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+ 126:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   OS_Tick_AcknowledgeIRQ();
+ 247              		.loc 1 126 0
+ 248 0002 FFF7FEFF 		bl	OS_Tick_AcknowledgeIRQ
+ 249              	.LVL17:
+ 127:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   osRtxInfo.kernel.tick++;
+ 250              		.loc 1 127 0
+ 251 0006 204B     		ldr	r3, .L19
+ 252 0008 DA68     		ldr	r2, [r3, #12]
+ 253 000a 0132     		adds	r2, r2, #1
+ 254 000c DA60     		str	r2, [r3, #12]
+ 128:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+ 129:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   // Process Timers
+ 130:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   if (osRtxInfo.timer.tick != NULL) {
+ 255              		.loc 1 130 0
+ 256 000e 1B6D     		ldr	r3, [r3, #80]
+ 257 0010 03B1     		cbz	r3, .L14
+ 131:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     osRtxInfo.timer.tick();
+ 258              		.loc 1 131 0
+ 259 0012 9847     		blx	r3
+ 260              	.LVL18:
+ 261              	.L14:
+ 132:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   }
+ 133:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+ 134:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   // Process Thread Delays
+ 135:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   osRtxThreadDelayTick();
+ 262              		.loc 1 135 0
+ 263 0014 FFF7FEFF 		bl	osRtxThreadDelayTick
+ 264              	.LVL19:
+ 136:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+ 137:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   osRtxThreadDispatch(NULL);
+ 265              		.loc 1 137 0
+ 266 0018 0020     		movs	r0, #0
+ 267 001a FFF7FEFF 		bl	osRtxThreadDispatch
+ 268              	.LVL20:
+ 138:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+ 139:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   // Check Round Robin timeout
+ 140:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   if (osRtxInfo.thread.robin.timeout != 0U) {
+ 269              		.loc 1 140 0
+ 270 001e 1A4B     		ldr	r3, .L19
+ 271 0020 1B6C     		ldr	r3, [r3, #64]
+ 272 0022 002B     		cmp	r3, #0
+ 273 0024 2ED0     		beq	.L13
+ 141:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     if (osRtxInfo.thread.robin.thread != osRtxInfo.thread.run.next) {
+ 274              		.loc 1 141 0
+ 275 0026 184A     		ldr	r2, .L19
+ 276 0028 916B     		ldr	r1, [r2, #56]
+ 277 002a 9269     		ldr	r2, [r2, #24]
+ 278 002c 9142     		cmp	r1, r2
+ 279 002e 03D0     		beq	.L16
+ 142:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****       // Reset Round Robin
+ 143:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****       osRtxInfo.thread.robin.thread = osRtxInfo.thread.run.next;
+ 280              		.loc 1 143 0
+ 281 0030 1549     		ldr	r1, .L19
+ 282 0032 8A63     		str	r2, [r1, #56]
+ 144:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****       osRtxInfo.thread.robin.tick   = osRtxInfo.thread.robin.timeout;
+ 283              		.loc 1 144 0
+ARM GAS  /tmp/ccG96Spd.s 			page 27
+
+
+ 284 0034 CB63     		str	r3, [r1, #60]
+ 285 0036 38BD     		pop	{r3, r4, r5, pc}
+ 286              	.L16:
+ 145:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     } else {
+ 146:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****       if (osRtxInfo.thread.robin.tick != 0U) {
+ 287              		.loc 1 146 0
+ 288 0038 134B     		ldr	r3, .L19
+ 289 003a DB6B     		ldr	r3, [r3, #60]
+ 290 003c 13B1     		cbz	r3, .L17
+ 147:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****         osRtxInfo.thread.robin.tick--;
+ 291              		.loc 1 147 0
+ 292 003e 013B     		subs	r3, r3, #1
+ 293 0040 114A     		ldr	r2, .L19
+ 294 0042 D363     		str	r3, [r2, #60]
+ 295              	.L17:
+ 148:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****       }
+ 149:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****       if (osRtxInfo.thread.robin.tick == 0U) {
+ 296              		.loc 1 149 0
+ 297 0044 104B     		ldr	r3, .L19
+ 298 0046 DB6B     		ldr	r3, [r3, #60]
+ 299 0048 E3B9     		cbnz	r3, .L13
+ 300              	.LBB34:
+ 301              	.LBB35:
+ 302              		.file 3 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h"
+   1:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** /*
+   2:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  * Copyright (c) 2013-2018 Arm Limited. All rights reserved.
+   3:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  *
+   4:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  * SPDX-License-Identifier: Apache-2.0
+   5:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  *
+   6:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+   7:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  * not use this file except in compliance with the License.
+   8:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  * You may obtain a copy of the License at
+   9:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  *
+  10:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  * www.apache.org/licenses/LICENSE-2.0
+  11:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  *
+  12:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  * Unless required by applicable law or agreed to in writing, software
+  13:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  14:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  15:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  * See the License for the specific language governing permissions and
+  16:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  * limitations under the License.
+  17:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  *
+  18:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  * -----------------------------------------------------------------------------
+  19:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  *
+  20:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  * Project:     CMSIS-RTOS RTX
+  21:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  * Title:       RTX Library definitions
+  22:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  *
+  23:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  * -----------------------------------------------------------------------------
+  24:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****  */
+  25:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** 
+  26:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #ifndef RTX_LIB_H_
+  27:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #define RTX_LIB_H_
+  28:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** 
+  29:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #include <string.h>
+  30:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #include "rtx_core_c.h"                 // Cortex core definitions
+  31:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #if ((defined(__ARM_ARCH_8M_BASE__) && (__ARM_ARCH_8M_BASE__ != 0)) || \
+  32:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****      (defined(__ARM_ARCH_8M_MAIN__) && (__ARM_ARCH_8M_MAIN__ != 0)))
+  33:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #include "tz_context.h"                 // TrustZone Context API
+ARM GAS  /tmp/ccG96Spd.s 			page 28
+
+
+  34:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #endif
+  35:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #include "os_tick.h"                    // CMSIS OS Tick API
+  36:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #include "cmsis_os2.h"                  // CMSIS RTOS API
+  37:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #include "RTX_Config.h"                 // RTX Configuration
+  38:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #include "rtx_os.h"                     // RTX OS definitions
+  39:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #include "rtx_evr.h"                    // RTX Event Recorder definitions
+  40:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** 
+  41:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** 
+  42:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** //  ==== Library defines ====
+  43:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** 
+  44:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #define os_thread_t         osRtxThread_t
+  45:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #define os_timer_t          osRtxTimer_t
+  46:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #define os_timer_finfo_t    osRtxTimerFinfo_t
+  47:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #define os_event_flags_t    osRtxEventFlags_t
+  48:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #define os_mutex_t          osRtxMutex_t
+  49:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #define os_semaphore_t      osRtxSemaphore_t
+  50:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #define os_mp_info_t        osRtxMpInfo_t
+  51:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #define os_memory_pool_t    osRtxMemoryPool_t
+  52:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #define os_message_t        osRtxMessage_t
+  53:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #define os_message_queue_t  osRtxMessageQueue_t
+  54:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** #define os_object_t         osRtxObject_t
+  55:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** 
+  56:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** //  ==== Inline functions ====
+  57:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** 
+  58:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** // Thread ID
+  59:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** __STATIC_INLINE os_thread_t *osRtxThreadId (osThreadId_t thread_id) {
+  60:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   //lint -e{9079} -e{9087} "cast from pointer to void to pointer to object type" [MISRA Note 2]
+  61:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   return ((os_thread_t *)thread_id);
+  62:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** }
+  63:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** // Timer ID
+  64:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** __STATIC_INLINE os_timer_t *osRtxTimerId (osTimerId_t timer_id) {
+  65:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   //lint -e{9079} -e{9087} "cast from pointer to void to pointer to object type" [MISRA Note 2]
+  66:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   return ((os_timer_t *)timer_id);
+  67:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** }
+  68:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** // Event Flags ID
+  69:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** __STATIC_INLINE os_event_flags_t *osRtxEventFlagsId (osEventFlagsId_t ef_id) {
+  70:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   //lint -e{9079} -e{9087} "cast from pointer to void to pointer to object type" [MISRA Note 2]
+  71:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   return ((os_event_flags_t *)ef_id);
+  72:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** }
+  73:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** // Mutex ID
+  74:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** __STATIC_INLINE os_mutex_t *osRtxMutexId (osMutexId_t mutex_id) {
+  75:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   //lint -e{9079} -e{9087} "cast from pointer to void to pointer to object type" [MISRA Note 2]
+  76:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   return ((os_mutex_t *)mutex_id);
+  77:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** }
+  78:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** // Semaphore ID
+  79:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** __STATIC_INLINE os_semaphore_t *osRtxSemaphoreId (osSemaphoreId_t semaphore_id) {
+  80:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   //lint -e{9079} -e{9087} "cast from pointer to void to pointer to object type" [MISRA Note 2]
+  81:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   return ((os_semaphore_t *)semaphore_id);
+  82:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** }
+  83:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** // Memory Pool ID
+  84:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** __STATIC_INLINE os_memory_pool_t *osRtxMemoryPoolId (osMemoryPoolId_t mp_id) {
+  85:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   //lint -e{9079} -e{9087} "cast from pointer to void to pointer to object type" [MISRA Note 2]
+  86:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   return ((os_memory_pool_t *)mp_id);
+  87:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** }
+  88:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** // Message Queue ID
+  89:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** __STATIC_INLINE os_message_queue_t *osRtxMessageQueueId (osMessageQueueId_t mq_id) {
+  90:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   //lint -e{9079} -e{9087} "cast from pointer to void to pointer to object type" [MISRA Note 2]
+ARM GAS  /tmp/ccG96Spd.s 			page 29
+
+
+  91:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   return ((os_message_queue_t *)mq_id);
+  92:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** }
+  93:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** 
+  94:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** // Generic Object
+  95:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** __STATIC_INLINE os_object_t *osRtxObject (void *object) {
+  96:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   //lint -e{9079} -e{9087} "cast from pointer to void to pointer to object type" [MISRA Note 3]
+  97:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   return ((os_object_t *)object);
+  98:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** }
+  99:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** 
+ 100:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** // Thread Object
+ 101:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** __STATIC_INLINE os_thread_t *osRtxThreadObject (os_object_t *object) {
+ 102:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   //lint -e{740} -e{826} -e{9087} "cast from pointer to generic object to specific object" [MISRA N
+ 103:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   return ((os_thread_t *)object);
+ 104:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** }
+ 105:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** // Timer Object
+ 106:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** __STATIC_INLINE os_timer_t *osRtxTimerObject (os_object_t *object) {
+ 107:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   //lint -e{740} -e{826} -e{9087} "cast from pointer to generic object to specific object" [MISRA N
+ 108:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   return ((os_timer_t *)object);
+ 109:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** }
+ 110:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** // Event Flags Object
+ 111:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** __STATIC_INLINE os_event_flags_t *osRtxEventFlagsObject (os_object_t *object) {
+ 112:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   //lint -e{740} -e{826} -e{9087} "cast from pointer to generic object to specific object" [MISRA N
+ 113:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   return ((os_event_flags_t *)object);
+ 114:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** }
+ 115:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** // Mutex Object
+ 116:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** __STATIC_INLINE os_mutex_t *osRtxMutexObject (os_object_t *object) {
+ 117:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   //lint -e{740} -e{826} -e{9087} "cast from pointer to generic object to specific object" [MISRA N
+ 118:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   return ((os_mutex_t *)object);
+ 119:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** }
+ 120:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** // Semaphore Object
+ 121:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** __STATIC_INLINE os_semaphore_t *osRtxSemaphoreObject (os_object_t *object) {
+ 122:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   //lint -e{740} -e{826} -e{9087} "cast from pointer to generic object to specific object" [MISRA N
+ 123:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   return ((os_semaphore_t *)object);
+ 124:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** }
+ 125:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** // Memory Pool Object
+ 126:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** __STATIC_INLINE os_memory_pool_t *osRtxMemoryPoolObject (os_object_t *object) {
+ 127:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   //lint -e{740} -e{826} -e{9087} "cast from pointer to generic object to specific object" [MISRA N
+ 128:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   return ((os_memory_pool_t *)object);
+ 129:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** }
+ 130:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** // Message Queue Object
+ 131:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** __STATIC_INLINE os_message_queue_t *osRtxMessageQueueObject (os_object_t *object) {
+ 132:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   //lint -e{740} -e{826} -e{9087} "cast from pointer to generic object to specific object" [MISRA N
+ 133:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   return ((os_message_queue_t *)object);
+ 134:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** }
+ 135:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** // Message Object
+ 136:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** __STATIC_INLINE os_message_t *osRtxMessageObject (os_object_t *object) {
+ 137:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   //lint -e{740} -e{826} -e{9087} "cast from pointer to generic object to specific object" [MISRA N
+ 138:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   return ((os_message_t *)object);
+ 139:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** }
+ 140:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** 
+ 141:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** // Kernel State
+ 142:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** __STATIC_INLINE osKernelState_t osRtxKernelState (void) {
+ 143:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   //lint -e{9030} -e{9034} "cast to enum"
+ 144:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   return ((osKernelState_t)(osRtxInfo.kernel.state));
+ 145:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** }
+ 146:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** 
+ 147:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** // Thread State
+ARM GAS  /tmp/ccG96Spd.s 			page 30
+
+
+ 148:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** __STATIC_INLINE osThreadState_t osRtxThreadState (const os_thread_t *thread) {
+ 149:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   uint8_t state = thread->state & osRtxThreadStateMask;
+ 150:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   //lint -e{9030} -e{9034} "cast to enum"
+ 151:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   return ((osThreadState_t)state);
+ 152:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** }
+ 153:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** 
+ 154:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** // Thread Priority
+ 155:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** __STATIC_INLINE osPriority_t osRtxThreadPriority (const os_thread_t *thread) {
+ 156:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   //lint -e{9030} -e{9034} "cast to enum"
+ 157:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   return ((osPriority_t)thread->priority);
+ 158:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** }
+ 159:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** 
+ 160:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** // Kernel Get State
+ 161:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h **** __STATIC_INLINE uint8_t osRtxKernelGetState (void) {
+ 162:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_lib.h ****   return osRtxInfo.kernel.state;
+ 303              		.loc 3 162 0
+ 304 004a 0F4B     		ldr	r3, .L19
+ 305 004c 1B7A     		ldrb	r3, [r3, #8]	@ zero_extendqisi2
+ 306              	.LBE35:
+ 307              	.LBE34:
+ 150:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****         // Round Robin Timeout
+ 151:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****         if (osRtxKernelGetState() == osRtxKernelRunning) {
+ 308              		.loc 1 151 0
+ 309 004e 022B     		cmp	r3, #2
+ 310 0050 18D1     		bne	.L13
+ 152:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****           thread = osRtxInfo.thread.ready.thread_list;
+ 311              		.loc 1 152 0
+ 312 0052 0D4B     		ldr	r3, .L19
+ 313 0054 5C6A     		ldr	r4, [r3, #36]
+ 314              	.LVL21:
+ 153:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****           if ((thread != NULL) && (thread->priority == osRtxInfo.thread.robin.thread->priority)) {
+ 315              		.loc 1 153 0
+ 316 0056 ACB1     		cbz	r4, .L13
+ 317              		.loc 1 153 0 is_stmt 0 discriminator 1
+ 318 0058 94F92020 		ldrsb	r2, [r4, #32]
+ 319 005c 91F92030 		ldrsb	r3, [r1, #32]
+ 320 0060 9A42     		cmp	r2, r3
+ 321 0062 0FD1     		bne	.L13
+ 154:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****             osRtxThreadListRemove(thread);
+ 322              		.loc 1 154 0 is_stmt 1
+ 323 0064 2046     		mov	r0, r4
+ 324 0066 FFF7FEFF 		bl	osRtxThreadListRemove
+ 325              	.LVL22:
+ 155:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****             osRtxThreadReadyPut(osRtxInfo.thread.robin.thread);
+ 326              		.loc 1 155 0
+ 327 006a 074D     		ldr	r5, .L19
+ 328 006c A86B     		ldr	r0, [r5, #56]
+ 329 006e FFF7FEFF 		bl	osRtxThreadReadyPut
+ 330              	.LVL23:
+ 156:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****             EvrRtxThreadPreempted(osRtxInfo.thread.robin.thread);
+ 331              		.loc 1 156 0
+ 332 0072 A86B     		ldr	r0, [r5, #56]
+ 333 0074 FFF7FEFF 		bl	EvrRtxThreadPreempted
+ 334              	.LVL24:
+ 157:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****             osRtxThreadSwitch(thread);
+ 335              		.loc 1 157 0
+ 336 0078 2046     		mov	r0, r4
+ARM GAS  /tmp/ccG96Spd.s 			page 31
+
+
+ 337 007a FFF7FEFF 		bl	osRtxThreadSwitch
+ 338              	.LVL25:
+ 158:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****             osRtxInfo.thread.robin.thread = thread;
+ 339              		.loc 1 158 0
+ 340 007e AC63     		str	r4, [r5, #56]
+ 159:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****             osRtxInfo.thread.robin.tick   = osRtxInfo.thread.robin.timeout;
+ 341              		.loc 1 159 0
+ 342 0080 2B6C     		ldr	r3, [r5, #64]
+ 343 0082 EB63     		str	r3, [r5, #60]
+ 344              	.LVL26:
+ 345              	.L13:
+ 346 0084 38BD     		pop	{r3, r4, r5, pc}
+ 347              	.L20:
+ 348 0086 00BF     		.align	2
+ 349              	.L19:
+ 350 0088 00000000 		.word	osRtxInfo
+ 351              		.cfi_endproc
+ 352              	.LFE176:
+ 354              		.section	.text.osRtxPendSV_Handler,"ax",%progbits
+ 355              		.align	2
+ 356              		.global	osRtxPendSV_Handler
+ 357              		.thumb
+ 358              		.thumb_func
+ 360              	osRtxPendSV_Handler:
+ 361              	.LFB177:
+ 160:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****           }
+ 161:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****         }
+ 162:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****       }
+ 163:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     }
+ 164:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   }
+ 165:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** }
+ 166:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+ 167:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** /// Pending Service Call Handler.
+ 168:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** //lint -esym(714,osRtxPendSV_Handler) "Referenced by Exception handlers"
+ 169:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** //lint -esym(759,osRtxPendSV_Handler) "Prototype in header"
+ 170:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** //lint -esym(765,osRtxPendSV_Handler) "Global scope"
+ 171:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** void osRtxPendSV_Handler (void) {
+ 362              		.loc 1 171 0
+ 363              		.cfi_startproc
+ 364              		@ args = 0, pretend = 0, frame = 0
+ 365              		@ frame_needed = 0, uses_anonymous_args = 0
+ 366 0000 08B5     		push	{r3, lr}
+ 367              	.LCFI5:
+ 368              		.cfi_def_cfa_offset 8
+ 369              		.cfi_offset 3, -8
+ 370              		.cfi_offset 14, -4
+ 371              	.L23:
+ 172:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   os_object_t *object;
+ 173:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+ 174:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   for (;;) {
+ 175:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     object = isr_queue_get();
+ 372              		.loc 1 175 0
+ 373 0002 FFF7FEFF 		bl	isr_queue_get
+ 374              	.LVL27:
+ 176:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     if (object == NULL) {
+ 375              		.loc 1 176 0
+ 376 0006 48B3     		cbz	r0, .L24
+ARM GAS  /tmp/ccG96Spd.s 			page 32
+
+
+ 177:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****       break;
+ 178:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     }
+ 179:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     switch (object->id) {
+ 377              		.loc 1 179 0
+ 378 0008 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 379 000a 013B     		subs	r3, r3, #1
+ 380 000c 062B     		cmp	r3, #6
+ 381 000e F8D8     		bhi	.L23
+ 382 0010 01A1     		adr	r1, .L26
+ 383 0012 51F823F0 		ldr	pc, [r1, r3, lsl #2]
+ 384 0016 00BF     		.p2align 2
+ 385              	.L26:
+ 386 0018 35000000 		.word	.L25+1
+ 387 001c 03000000 		.word	.L23+1
+ 388 0020 3D000000 		.word	.L27+1
+ 389 0024 03000000 		.word	.L23+1
+ 390 0028 45000000 		.word	.L28+1
+ 391 002c 4D000000 		.word	.L29+1
+ 392 0030 55000000 		.word	.L30+1
+ 393              		.p2align 1
+ 394              	.L25:
+ 180:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****       case osRtxIdThread:
+ 181:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****         osRtxInfo.post_process.thread(osRtxThreadObject(object));
+ 395              		.loc 1 181 0
+ 396 0034 0B4B     		ldr	r3, .L33
+ 397 0036 1B6E     		ldr	r3, [r3, #96]
+ 398 0038 9847     		blx	r3
+ 399              	.LVL28:
+ 182:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****         break;
+ 400              		.loc 1 182 0
+ 401 003a E2E7     		b	.L23
+ 402              	.LVL29:
+ 403              	.L27:
+ 183:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****       case osRtxIdEventFlags:
+ 184:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****         osRtxInfo.post_process.event_flags(osRtxEventFlagsObject(object));
+ 404              		.loc 1 184 0
+ 405 003c 094B     		ldr	r3, .L33
+ 406 003e 5B6E     		ldr	r3, [r3, #100]
+ 407 0040 9847     		blx	r3
+ 408              	.LVL30:
+ 185:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****         break;
+ 409              		.loc 1 185 0
+ 410 0042 DEE7     		b	.L23
+ 411              	.LVL31:
+ 412              	.L28:
+ 186:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****       case osRtxIdSemaphore:
+ 187:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****         osRtxInfo.post_process.semaphore(osRtxSemaphoreObject(object));
+ 413              		.loc 1 187 0
+ 414 0044 074B     		ldr	r3, .L33
+ 415 0046 9B6E     		ldr	r3, [r3, #104]
+ 416 0048 9847     		blx	r3
+ 417              	.LVL32:
+ 188:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****         break;
+ 418              		.loc 1 188 0
+ 419 004a DAE7     		b	.L23
+ 420              	.LVL33:
+ 421              	.L29:
+ARM GAS  /tmp/ccG96Spd.s 			page 33
+
+
+ 189:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****       case osRtxIdMemoryPool:
+ 190:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****         osRtxInfo.post_process.memory_pool(osRtxMemoryPoolObject(object));
+ 422              		.loc 1 190 0
+ 423 004c 054B     		ldr	r3, .L33
+ 424 004e DB6E     		ldr	r3, [r3, #108]
+ 425 0050 9847     		blx	r3
+ 426              	.LVL34:
+ 191:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****         break;
+ 427              		.loc 1 191 0
+ 428 0052 D6E7     		b	.L23
+ 429              	.LVL35:
+ 430              	.L30:
+ 192:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****       case osRtxIdMessage:
+ 193:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****         osRtxInfo.post_process.message(osRtxMessageObject(object));
+ 431              		.loc 1 193 0
+ 432 0054 034B     		ldr	r3, .L33
+ 433 0056 1B6F     		ldr	r3, [r3, #112]
+ 434 0058 9847     		blx	r3
+ 435              	.LVL36:
+ 194:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****         break;
+ 436              		.loc 1 194 0
+ 437 005a D2E7     		b	.L23
+ 438              	.LVL37:
+ 439              	.L24:
+ 195:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****       default:
+ 196:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****         // Should never come here
+ 197:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****         break;
+ 198:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     }
+ 199:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   }
+ 200:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+ 201:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   osRtxThreadDispatch(NULL);
+ 440              		.loc 1 201 0
+ 441 005c 0020     		movs	r0, #0
+ 442              	.LVL38:
+ 443 005e FFF7FEFF 		bl	osRtxThreadDispatch
+ 444              	.LVL39:
+ 445 0062 08BD     		pop	{r3, pc}
+ 446              	.L34:
+ 447              		.align	2
+ 448              	.L33:
+ 449 0064 00000000 		.word	osRtxInfo
+ 450              		.cfi_endproc
+ 451              	.LFE177:
+ 453              		.section	.text.osRtxPostProcess,"ax",%progbits
+ 454              		.align	2
+ 455              		.global	osRtxPostProcess
+ 456              		.thumb
+ 457              		.thumb_func
+ 459              	osRtxPostProcess:
+ 460              	.LFB178:
+ 202:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** }
+ 203:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+ 204:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** /// Register post ISR processing.
+ 205:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** /// \param[in]  object          generic object.
+ 206:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** void osRtxPostProcess (os_object_t *object) {
+ 461              		.loc 1 206 0
+ 462              		.cfi_startproc
+ARM GAS  /tmp/ccG96Spd.s 			page 34
+
+
+ 463              		@ args = 0, pretend = 0, frame = 0
+ 464              		@ frame_needed = 0, uses_anonymous_args = 0
+ 465              	.LVL40:
+ 466 0000 10B5     		push	{r4, lr}
+ 467              	.LCFI6:
+ 468              		.cfi_def_cfa_offset 8
+ 469              		.cfi_offset 4, -8
+ 470              		.cfi_offset 14, -4
+ 471 0002 0446     		mov	r4, r0
+ 207:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c **** 
+ 208:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   if (isr_queue_put(object) != 0U) {
+ 472              		.loc 1 208 0
+ 473 0004 FFF7FEFF 		bl	isr_queue_put
+ 474              	.LVL41:
+ 475 0008 68B1     		cbz	r0, .L36
+ 209:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     if (osRtxInfo.kernel.blocked == 0U) {
+ 476              		.loc 1 209 0
+ 477 000a 094B     		ldr	r3, .L40
+ 478 000c 5B7A     		ldrb	r3, [r3, #9]	@ zero_extendqisi2
+ 479 000e 13F0FF0F 		tst	r3, #255
+ 480 0012 04D1     		bne	.L37
+ 481              	.LBB36:
+ 482              	.LBB37:
+ 187:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_core_cm.h **** }
+ 483              		.loc 2 187 0
+ 484 0014 4FF08052 		mov	r2, #268435456
+ 485 0018 064B     		ldr	r3, .L40+4
+ 486 001a 5A60     		str	r2, [r3, #4]
+ 487 001c 10BD     		pop	{r4, pc}
+ 488              	.LVL42:
+ 489              	.L37:
+ 490              	.LBE37:
+ 491              	.LBE36:
+ 210:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****       SetPendSV();
+ 211:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     } else {
+ 212:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****       osRtxInfo.kernel.pendSV = 1U;
+ 492              		.loc 1 212 0
+ 493 001e 0122     		movs	r2, #1
+ 494 0020 034B     		ldr	r3, .L40
+ 495 0022 9A72     		strb	r2, [r3, #10]
+ 496 0024 10BD     		pop	{r4, pc}
+ 497              	.LVL43:
+ 498              	.L36:
+ 213:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     }
+ 214:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****   } else {
+ 215:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_system.c ****     (void)osRtxErrorNotify(osRtxErrorISRQueueOverflow, object);
+ 499              		.loc 1 215 0
+ 500 0026 2146     		mov	r1, r4
+ 501 0028 0220     		movs	r0, #2
+ 502 002a FFF7FEFF 		bl	osRtxErrorNotify
+ 503              	.LVL44:
+ 504 002e 10BD     		pop	{r4, pc}
+ 505              	.LVL45:
+ 506              	.L41:
+ 507              		.align	2
+ 508              	.L40:
+ 509 0030 00000000 		.word	osRtxInfo
+ARM GAS  /tmp/ccG96Spd.s 			page 35
+
+
+ 510 0034 00ED00E0 		.word	-536810240
+ 511              		.cfi_endproc
+ 512              	.LFE178:
+ 514              		.text
+ 515              	.Letext0:
+ 516              		.file 4 "/usr/include/newlib/machine/_default_types.h"
+ 517              		.file 5 "/usr/include/newlib/sys/_stdint.h"
+ 518              		.file 6 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/core_cm4.h"
+ 519              		.file 7 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/Include/cmsis_os2.h"
+ 520              		.file 8 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Include/rtx_os.h"
+ 521              		.file 9 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/Include/os_tick.h"
+ 522              		.file 10 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Include/rtx_evr.h"
+ARM GAS  /tmp/ccG96Spd.s 			page 36
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 rtx_system.c
+     /tmp/ccG96Spd.s:22     .text.isr_queue_put:0000000000000000 $t
+     /tmp/ccG96Spd.s:26     .text.isr_queue_put:0000000000000000 isr_queue_put
+     /tmp/ccG96Spd.s:125    .text.isr_queue_put:0000000000000050 $d
+     /tmp/ccG96Spd.s:131    .text.isr_queue_get:0000000000000000 $t
+     /tmp/ccG96Spd.s:135    .text.isr_queue_get:0000000000000000 isr_queue_get
+     /tmp/ccG96Spd.s:223    .text.isr_queue_get:0000000000000050 $d
+     /tmp/ccG96Spd.s:229    .text.osRtxTick_Handler:0000000000000000 $t
+     /tmp/ccG96Spd.s:234    .text.osRtxTick_Handler:0000000000000000 osRtxTick_Handler
+     /tmp/ccG96Spd.s:350    .text.osRtxTick_Handler:0000000000000088 $d
+     /tmp/ccG96Spd.s:355    .text.osRtxPendSV_Handler:0000000000000000 $t
+     /tmp/ccG96Spd.s:360    .text.osRtxPendSV_Handler:0000000000000000 osRtxPendSV_Handler
+     /tmp/ccG96Spd.s:386    .text.osRtxPendSV_Handler:0000000000000018 $d
+     /tmp/ccG96Spd.s:393    .text.osRtxPendSV_Handler:0000000000000034 $t
+     /tmp/ccG96Spd.s:449    .text.osRtxPendSV_Handler:0000000000000064 $d
+     /tmp/ccG96Spd.s:454    .text.osRtxPostProcess:0000000000000000 $t
+     /tmp/ccG96Spd.s:459    .text.osRtxPostProcess:0000000000000000 osRtxPostProcess
+     /tmp/ccG96Spd.s:509    .text.osRtxPostProcess:0000000000000030 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+osRtxInfo
+OS_Tick_AcknowledgeIRQ
+osRtxThreadDelayTick
+osRtxThreadDispatch
+osRtxThreadListRemove
+osRtxThreadReadyPut
+EvrRtxThreadPreempted
+osRtxThreadSwitch
+osRtxErrorNotify

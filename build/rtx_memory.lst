@@ -1,0 +1,664 @@
+ARM GAS  /tmp/ccX9zTIz.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.syntax unified
+  17              		.file	"rtx_memory.c"
+  18              		.text
+  19              	.Ltext0:
+  20              		.cfi_sections	.debug_frame
+  21              		.section	.text.osRtxMemoryInit,"ax",%progbits
+  22              		.align	2
+  23              		.weak	osRtxMemoryInit
+  24              		.thumb
+  25              		.thumb_func
+  27              	osRtxMemoryInit:
+  28              	.LFB176:
+  29              		.file 1 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c"
+   1:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** /*
+   2:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  * Copyright (c) 2013-2018 Arm Limited. All rights reserved.
+   3:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  *
+   4:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  * SPDX-License-Identifier: Apache-2.0
+   5:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  *
+   6:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+   7:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  * not use this file except in compliance with the License.
+   8:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  * You may obtain a copy of the License at
+   9:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  *
+  10:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  * www.apache.org/licenses/LICENSE-2.0
+  11:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  *
+  12:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  * Unless required by applicable law or agreed to in writing, software
+  13:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  14:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  15:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  * See the License for the specific language governing permissions and
+  16:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  * limitations under the License.
+  17:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  *
+  18:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  * -----------------------------------------------------------------------------
+  19:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  *
+  20:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  * Project:     CMSIS-RTOS RTX
+  21:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  * Title:       Memory functions
+  22:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  *
+  23:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  * -----------------------------------------------------------------------------
+  24:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****  */
+  25:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+  26:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** #include "rtx_lib.h"
+  27:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+  28:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+  29:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** //  Memory Pool Header structure
+ARM GAS  /tmp/ccX9zTIz.s 			page 2
+
+
+  30:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** typedef struct {
+  31:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   uint32_t size;                // Memory Pool size
+  32:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   uint32_t used;                // Used Memory
+  33:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** } mem_head_t;
+  34:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+  35:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** //  Memory Block Header structure
+  36:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** typedef struct mem_block_s {
+  37:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   struct mem_block_s *next;     // Next Memory Block in list
+  38:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   uint32_t            info;     // Block Info or max used Memory (in last block)
+  39:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** } mem_block_t;
+  40:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+  41:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** //  Memory Block Info: Length = <31:2>:'00', Type = <1:0>
+  42:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** #define MB_INFO_LEN_MASK        0xFFFFFFFCU     // Length mask
+  43:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** #define MB_INFO_TYPE_MASK       0x00000003U     // Type mask
+  44:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+  45:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** //  Memory Head Pointer
+  46:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** __STATIC_INLINE mem_head_t *MemHeadPtr (void *mem) {
+  47:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   //lint -e{9079} -e{9087} "conversion from pointer to void to pointer to other type" [MISRA Note 6
+  48:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   return ((mem_head_t *)mem);
+  49:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** }
+  50:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+  51:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** //  Memory Block Pointer
+  52:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** __STATIC_INLINE mem_block_t *MemBlockPtr (void *mem, uint32_t offset) {
+  53:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   uint32_t     addr;
+  54:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   mem_block_t *ptr;
+  55:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+  56:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   //lint --e{923} --e{9078} "cast between pointer and unsigned int" [MISRA Note 8]
+  57:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   addr = (uint32_t)mem + offset;
+  58:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   ptr  = (mem_block_t *)addr;
+  59:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+  60:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   return ptr;
+  61:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** }
+  62:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+  63:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+  64:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** //  ==== Library functions ====
+  65:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+  66:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** /// Initialize Memory Pool with variable block size.
+  67:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** /// \param[in]  mem             pointer to memory pool.
+  68:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** /// \param[in]  size            size of a memory pool in bytes.
+  69:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** /// \return 1 - success, 0 - failure.
+  70:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** __WEAK uint32_t osRtxMemoryInit (void *mem, uint32_t size) {
+  30              		.loc 1 70 0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              	.LVL0:
+  35 0000 38B5     		push	{r3, r4, r5, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 16
+  38              		.cfi_offset 3, -16
+  39              		.cfi_offset 4, -12
+  40              		.cfi_offset 5, -8
+  41              		.cfi_offset 14, -4
+  71:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   mem_head_t  *head;
+  72:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   mem_block_t *ptr;
+  73:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+  74:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   // Check parameters
+ARM GAS  /tmp/ccX9zTIz.s 			page 3
+
+
+  75:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   //lint -e{923} "cast from pointer to unsigned int" [MISRA Note 7]
+  76:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   if ((mem == NULL) || (((uint32_t)mem & 7U) != 0U) || ((size & 7U) != 0U) ||
+  42              		.loc 1 76 0
+  43 0002 0346     		mov	r3, r0
+  44 0004 38B1     		cbz	r0, .L2
+  45              		.loc 1 76 0 is_stmt 0 discriminator 1
+  46 0006 10F0070F 		tst	r0, #7
+  47 000a 04D1     		bne	.L2
+  48              		.loc 1 76 0 discriminator 2
+  49 000c 11F0070F 		tst	r1, #7
+  50 0010 01D1     		bne	.L2
+  51              		.loc 1 76 0 discriminator 3
+  52 0012 1729     		cmp	r1, #23
+  53 0014 05D8     		bhi	.L3
+  54              	.L2:
+  77:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****       (size < (sizeof(mem_head_t) + (2U*sizeof(mem_block_t))))) {
+  78:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     EvrRtxMemoryInit(mem, size, 0U);
+  55              		.loc 1 78 0 is_stmt 1
+  56 0016 0022     		movs	r2, #0
+  57 0018 1846     		mov	r0, r3
+  58              	.LVL1:
+  59 001a FFF7FEFF 		bl	EvrRtxMemoryInit
+  60              	.LVL2:
+  79:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     //lint -e{904} "Return statement before end of function" [MISRA Note 1]
+  80:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     return 0U;
+  61              		.loc 1 80 0
+  62 001e 0020     		movs	r0, #0
+  63 0020 38BD     		pop	{r3, r4, r5, pc}
+  64              	.LVL3:
+  65              	.L3:
+  81:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   }
+  82:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+  83:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   // Initialize memory pool header
+  84:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   head = MemHeadPtr(mem);
+  85:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   head->size = size;
+  66              		.loc 1 85 0
+  67 0022 0160     		str	r1, [r0]
+  86:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   head->used = sizeof(mem_head_t) + sizeof(mem_block_t);
+  68              		.loc 1 86 0
+  69 0024 1020     		movs	r0, #16
+  70              	.LVL4:
+  71 0026 5860     		str	r0, [r3, #4]
+  72              	.LVL5:
+  87:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+  88:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   // Initialize first and last block header
+  89:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   ptr = MemBlockPtr(mem, sizeof(mem_head_t));
+  90:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   ptr->next = MemBlockPtr(mem, size - sizeof(mem_block_t));
+  73              		.loc 1 90 0
+  74 0028 A1F10804 		sub	r4, r1, #8
+  75              	.LVL6:
+  76              	.LBB32:
+  77              	.LBB33:
+  57:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   ptr  = (mem_block_t *)addr;
+  78              		.loc 1 57 0
+  79 002c 1A19     		adds	r2, r3, r4
+  80              	.LVL7:
+  81              	.LBE33:
+ARM GAS  /tmp/ccX9zTIz.s 			page 4
+
+
+  82              	.LBE32:
+  83              		.loc 1 90 0
+  84 002e 9A60     		str	r2, [r3, #8]
+  91:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   ptr->next->next = NULL;
+  85              		.loc 1 91 0
+  86 0030 0022     		movs	r2, #0
+  87 0032 1A51     		str	r2, [r3, r4]
+  92:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   ptr->next->info = sizeof(mem_head_t) + sizeof(mem_block_t);
+  88              		.loc 1 92 0
+  89 0034 9C68     		ldr	r4, [r3, #8]
+  90 0036 6060     		str	r0, [r4, #4]
+  93:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   ptr->info = 0U;
+  91              		.loc 1 93 0
+  92 0038 DA60     		str	r2, [r3, #12]
+  94:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+  95:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   EvrRtxMemoryInit(mem, size, 1U);
+  93              		.loc 1 95 0
+  94 003a 0122     		movs	r2, #1
+  95 003c 1846     		mov	r0, r3
+  96 003e FFF7FEFF 		bl	EvrRtxMemoryInit
+  97              	.LVL8:
+  96:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+  97:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   return 1U;
+  98              		.loc 1 97 0
+  99 0042 0120     		movs	r0, #1
+  98:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** }
+ 100              		.loc 1 98 0
+ 101 0044 38BD     		pop	{r3, r4, r5, pc}
+ 102              		.cfi_endproc
+ 103              	.LFE176:
+ 105 0046 00BF     		.section	.text.osRtxMemoryAlloc,"ax",%progbits
+ 106              		.align	2
+ 107              		.weak	osRtxMemoryAlloc
+ 108              		.thumb
+ 109              		.thumb_func
+ 111              	osRtxMemoryAlloc:
+ 112              	.LFB177:
+  99:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+ 100:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** /// Allocate a memory block from a Memory Pool.
+ 101:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** /// \param[in]  mem             pointer to memory pool.
+ 102:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** /// \param[in]  size            size of a memory block in bytes.
+ 103:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** /// \param[in]  type            memory block type: 0 - generic, 1 - control block
+ 104:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** /// \return allocated memory block or NULL in case of no memory is available.
+ 105:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** __WEAK void *osRtxMemoryAlloc (void *mem, uint32_t size, uint32_t type) {
+ 113              		.loc 1 105 0
+ 114              		.cfi_startproc
+ 115              		@ args = 0, pretend = 0, frame = 0
+ 116              		@ frame_needed = 0, uses_anonymous_args = 0
+ 117              	.LVL9:
+ 118 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 119              	.LCFI1:
+ 120              		.cfi_def_cfa_offset 24
+ 121              		.cfi_offset 3, -24
+ 122              		.cfi_offset 4, -20
+ 123              		.cfi_offset 5, -16
+ 124              		.cfi_offset 6, -12
+ 125              		.cfi_offset 7, -8
+ARM GAS  /tmp/ccX9zTIz.s 			page 5
+
+
+ 126              		.cfi_offset 14, -4
+ 106:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   mem_block_t *ptr;
+ 107:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   mem_block_t *p, *p_new;
+ 108:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   uint32_t     block_size;
+ 109:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   uint32_t     hole_size;
+ 110:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+ 111:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   // Check parameters
+ 112:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   if ((mem == NULL) || (size == 0U) || ((type & ~MB_INFO_TYPE_MASK) != 0U)) {
+ 127              		.loc 1 112 0
+ 128 0002 0746     		mov	r7, r0
+ 129 0004 18B1     		cbz	r0, .L7
+ 130              		.loc 1 112 0 is_stmt 0 discriminator 1
+ 131 0006 11B1     		cbz	r1, .L7
+ 132              		.loc 1 112 0 discriminator 2
+ 133 0008 32F00303 		bics	r3, r2, #3
+ 134 000c 05D0     		beq	.L8
+ 135              	.L7:
+ 113:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     EvrRtxMemoryAlloc(mem, size, type, NULL);
+ 136              		.loc 1 113 0 is_stmt 1
+ 137 000e 0023     		movs	r3, #0
+ 138 0010 3846     		mov	r0, r7
+ 139              	.LVL10:
+ 140 0012 FFF7FEFF 		bl	EvrRtxMemoryAlloc
+ 141              	.LVL11:
+ 114:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     //lint -e{904} "Return statement before end of function" [MISRA Note 1]
+ 115:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     return NULL;
+ 142              		.loc 1 115 0
+ 143 0016 0020     		movs	r0, #0
+ 144 0018 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 145              	.LVL12:
+ 146              	.L8:
+ 116:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   }
+ 117:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+ 118:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   // Add block header to size
+ 119:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   block_size = size + sizeof(mem_block_t);
+ 120:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   // Make sure that block is 8-byte aligned
+ 121:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   block_size = (block_size + 7U) & ~((uint32_t)7U);
+ 147              		.loc 1 121 0
+ 148 001a 01F10F06 		add	r6, r1, #15
+ 149 001e 26F00706 		bic	r6, r6, #7
+ 150              	.LVL13:
+ 151              	.LBB34:
+ 152              	.LBB35:
+  57:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   ptr  = (mem_block_t *)addr;
+ 153              		.loc 1 57 0
+ 154 0022 00F10803 		add	r3, r0, #8
+ 155              	.LVL14:
+ 156              	.L11:
+ 157              	.LBE35:
+ 158              	.LBE34:
+ 122:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+ 123:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   // Search for hole big enough
+ 124:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   p = MemBlockPtr(mem, sizeof(mem_head_t));
+ 125:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   for (;;) {
+ 126:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     //lint -e{923} -e{9078} "cast from pointer to unsigned int"
+ 127:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     hole_size  = (uint32_t)p->next - (uint32_t)p;
+ 159              		.loc 1 127 0
+ARM GAS  /tmp/ccX9zTIz.s 			page 6
+
+
+ 160 0026 1D68     		ldr	r5, [r3]
+ 161 0028 9E46     		mov	lr, r3
+ 162 002a EC1A     		subs	r4, r5, r3
+ 163              	.LVL15:
+ 128:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     hole_size -= p->info & MB_INFO_LEN_MASK;
+ 164              		.loc 1 128 0
+ 165 002c 5868     		ldr	r0, [r3, #4]
+ 166 002e 20F00300 		bic	r0, r0, #3
+ 167 0032 201A     		subs	r0, r4, r0
+ 168              	.LVL16:
+ 129:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     if (hole_size >= block_size) {
+ 169              		.loc 1 129 0
+ 170 0034 8642     		cmp	r6, r0
+ 171 0036 09D9     		bls	.L10
+ 172              	.LVL17:
+ 130:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****       // Hole found
+ 131:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****       break;
+ 132:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     }
+ 133:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     p = p->next;
+ 134:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     if (p->next == NULL) {
+ 173              		.loc 1 134 0
+ 174 0038 2868     		ldr	r0, [r5]
+ 175              	.LVL18:
+ 133:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     if (p->next == NULL) {
+ 176              		.loc 1 133 0
+ 177 003a 2B46     		mov	r3, r5
+ 178              	.LVL19:
+ 179              		.loc 1 134 0
+ 180 003c 0028     		cmp	r0, #0
+ 181 003e F2D1     		bne	.L11
+ 135:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****       // Failed (end of list)
+ 136:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****       EvrRtxMemoryAlloc(mem, size, type, NULL);
+ 182              		.loc 1 136 0
+ 183 0040 0023     		movs	r3, #0
+ 184 0042 3846     		mov	r0, r7
+ 185 0044 FFF7FEFF 		bl	EvrRtxMemoryAlloc
+ 186              	.LVL20:
+ 137:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****       //lint -e{904} "Return statement before end of function" [MISRA Note 1]
+ 138:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****       return NULL;
+ 187              		.loc 1 138 0
+ 188 0048 0020     		movs	r0, #0
+ 189 004a F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 190              	.LVL21:
+ 191              	.L10:
+ 139:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     }
+ 140:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   }
+ 141:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+ 142:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   // Update used memory
+ 143:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   (MemHeadPtr(mem))->used += block_size;
+ 192              		.loc 1 143 0
+ 193 004c 7D68     		ldr	r5, [r7, #4]
+ 194 004e 3544     		add	r5, r5, r6
+ 195 0050 7D60     		str	r5, [r7, #4]
+ 144:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+ 145:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   // Update max used memory
+ 146:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   p_new = MemBlockPtr(mem, (MemHeadPtr(mem))->size - sizeof(mem_block_t));
+ 196              		.loc 1 146 0
+ARM GAS  /tmp/ccX9zTIz.s 			page 7
+
+
+ 197 0052 3868     		ldr	r0, [r7]
+ 198              	.LVL22:
+ 199 0054 0838     		subs	r0, r0, #8
+ 200              	.LVL23:
+ 201              	.LBB36:
+ 202              	.LBB37:
+  57:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   ptr  = (mem_block_t *)addr;
+ 203              		.loc 1 57 0
+ 204 0056 3844     		add	r0, r0, r7
+ 205              	.LVL24:
+ 206              	.LBE37:
+ 207              	.LBE36:
+ 147:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   if (p_new->info < (MemHeadPtr(mem))->used) {
+ 208              		.loc 1 147 0
+ 209 0058 4468     		ldr	r4, [r0, #4]
+ 210 005a A542     		cmp	r5, r4
+ 211 005c 00D9     		bls	.L12
+ 148:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     p_new->info = (MemHeadPtr(mem))->used;
+ 212              		.loc 1 148 0
+ 213 005e 4560     		str	r5, [r0, #4]
+ 214              	.L12:
+ 149:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   }
+ 150:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+ 151:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   // Allocate block
+ 152:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   if (p->info == 0U) {
+ 215              		.loc 1 152 0
+ 216 0060 5868     		ldr	r0, [r3, #4]
+ 217 0062 20B9     		cbnz	r0, .L13
+ 153:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     // No block allocated, set info of first element
+ 154:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     p->info = block_size | type;
+ 218              		.loc 1 154 0
+ 219 0064 1643     		orrs	r6, r6, r2
+ 220              	.LVL25:
+ 221 0066 5E60     		str	r6, [r3, #4]
+ 222              	.LVL26:
+ 223              	.LBB38:
+ 224              	.LBB39:
+  57:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   ptr  = (mem_block_t *)addr;
+ 225              		.loc 1 57 0
+ 226 0068 0EF10804 		add	r4, lr, #8
+ 227              	.LVL27:
+ 228              	.LBE39:
+ 229              	.LBE38:
+ 230 006c 0BE0     		b	.L14
+ 231              	.LVL28:
+ 232              	.L13:
+ 155:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     ptr = MemBlockPtr(p, sizeof(mem_block_t));
+ 156:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   } else {
+ 157:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     // Insert new element into the list
+ 158:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     p_new = MemBlockPtr(p, p->info & MB_INFO_LEN_MASK);
+ 233              		.loc 1 158 0
+ 234 006e 20F00305 		bic	r5, r0, #3
+ 235              	.LVL29:
+ 236              	.LBB40:
+ 237              	.LBB41:
+  57:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   ptr  = (mem_block_t *)addr;
+ 238              		.loc 1 57 0
+ARM GAS  /tmp/ccX9zTIz.s 			page 8
+
+
+ 239 0072 0EEB0500 		add	r0, lr, r5
+ 240              	.LVL30:
+ 241              	.LBE41:
+ 242              	.LBE40:
+ 159:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     p_new->next = p->next;
+ 243              		.loc 1 159 0
+ 244 0076 1C68     		ldr	r4, [r3]
+ 245 0078 4EF80540 		str	r4, [lr, r5]
+ 160:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     p_new->info = block_size | type;
+ 246              		.loc 1 160 0
+ 247 007c 1643     		orrs	r6, r6, r2
+ 248              	.LVL31:
+ 249 007e 4660     		str	r6, [r0, #4]
+ 161:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     p->next = p_new;
+ 250              		.loc 1 161 0
+ 251 0080 1860     		str	r0, [r3]
+ 252              	.LVL32:
+ 253              	.LBB42:
+ 254              	.LBB43:
+  57:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   ptr  = (mem_block_t *)addr;
+ 255              		.loc 1 57 0
+ 256 0082 00F10804 		add	r4, r0, #8
+ 257              	.LVL33:
+ 258              	.L14:
+ 259              	.LBE43:
+ 260              	.LBE42:
+ 162:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     ptr = MemBlockPtr(p_new, sizeof(mem_block_t));
+ 163:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   }
+ 164:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+ 165:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   EvrRtxMemoryAlloc(mem, size, type, ptr);
+ 261              		.loc 1 165 0
+ 262 0086 2346     		mov	r3, r4
+ 263 0088 3846     		mov	r0, r7
+ 264 008a FFF7FEFF 		bl	EvrRtxMemoryAlloc
+ 265              	.LVL34:
+ 166:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+ 167:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   return ptr;
+ 266              		.loc 1 167 0
+ 267 008e 2046     		mov	r0, r4
+ 168:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** }
+ 268              		.loc 1 168 0
+ 269 0090 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 270              		.cfi_endproc
+ 271              	.LFE177:
+ 273 0092 00BF     		.section	.text.osRtxMemoryFree,"ax",%progbits
+ 274              		.align	2
+ 275              		.weak	osRtxMemoryFree
+ 276              		.thumb
+ 277              		.thumb_func
+ 279              	osRtxMemoryFree:
+ 280              	.LFB178:
+ 169:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+ 170:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** /// Return an allocated memory block back to a Memory Pool.
+ 171:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** /// \param[in]  mem             pointer to memory pool.
+ 172:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** /// \param[in]  block           memory block to be returned to the memory pool.
+ 173:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** /// \return 1 - success, 0 - failure.
+ 174:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** __WEAK uint32_t osRtxMemoryFree (void *mem, void *block) {
+ARM GAS  /tmp/ccX9zTIz.s 			page 9
+
+
+ 281              		.loc 1 174 0
+ 282              		.cfi_startproc
+ 283              		@ args = 0, pretend = 0, frame = 0
+ 284              		@ frame_needed = 0, uses_anonymous_args = 0
+ 285              	.LVL35:
+ 286 0000 38B5     		push	{r3, r4, r5, lr}
+ 287              	.LCFI2:
+ 288              		.cfi_def_cfa_offset 16
+ 289              		.cfi_offset 3, -16
+ 290              		.cfi_offset 4, -12
+ 291              		.cfi_offset 5, -8
+ 292              		.cfi_offset 14, -4
+ 175:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   const mem_block_t *ptr;
+ 176:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****         mem_block_t *p, *p_prev;
+ 177:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+ 178:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   // Check parameters
+ 179:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   if ((mem == NULL) || (block == NULL)) {
+ 293              		.loc 1 179 0
+ 294 0002 0546     		mov	r5, r0
+ 295 0004 00B1     		cbz	r0, .L17
+ 296              		.loc 1 179 0 is_stmt 0 discriminator 1
+ 297 0006 29B9     		cbnz	r1, .L18
+ 298              	.L17:
+ 180:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     EvrRtxMemoryFree(mem, block, 0U);
+ 299              		.loc 1 180 0 is_stmt 1
+ 300 0008 0022     		movs	r2, #0
+ 301 000a 2846     		mov	r0, r5
+ 302              	.LVL36:
+ 303 000c FFF7FEFF 		bl	EvrRtxMemoryFree
+ 304              	.LVL37:
+ 181:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     //lint -e{904} "Return statement before end of function" [MISRA Note 1]
+ 182:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     return 0U;
+ 305              		.loc 1 182 0
+ 306 0010 0020     		movs	r0, #0
+ 307 0012 38BD     		pop	{r3, r4, r5, pc}
+ 308              	.LVL38:
+ 309              	.L18:
+ 183:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   }
+ 184:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+ 185:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   // Memory block header
+ 186:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   ptr = MemBlockPtr(block, 0U);
+ 187:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   ptr--;
+ 310              		.loc 1 187 0
+ 311 0014 A1F10804 		sub	r4, r1, #8
+ 312              	.LVL39:
+ 313              	.LBB44:
+ 314              	.LBB45:
+  57:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   ptr  = (mem_block_t *)addr;
+ 315              		.loc 1 57 0
+ 316 0018 00F10803 		add	r3, r0, #8
+ 317              	.LVL40:
+ 318              	.LBE45:
+ 319              	.LBE44:
+ 188:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+ 189:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   // Search for block header
+ 190:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   p_prev = NULL;
+ 320              		.loc 1 190 0
+ARM GAS  /tmp/ccX9zTIz.s 			page 10
+
+
+ 321 001c 0020     		movs	r0, #0
+ 322              	.LVL41:
+ 191:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   p = MemBlockPtr(mem, sizeof(mem_head_t));
+ 192:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   while (p != ptr) {
+ 323              		.loc 1 192 0
+ 324 001e 08E0     		b	.L20
+ 325              	.LVL42:
+ 326              	.L21:
+ 193:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     p_prev = p;
+ 194:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     p = p->next;
+ 327              		.loc 1 194 0
+ 328 0020 1A68     		ldr	r2, [r3]
+ 329              	.LVL43:
+ 193:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     p_prev = p;
+ 330              		.loc 1 193 0
+ 331 0022 1846     		mov	r0, r3
+ 195:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     if (p == NULL) {
+ 332              		.loc 1 195 0
+ 333 0024 22B9     		cbnz	r2, .L24
+ 334              	.LVL44:
+ 196:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****       // Not found
+ 197:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****       EvrRtxMemoryFree(mem, block, 0U);
+ 335              		.loc 1 197 0
+ 336 0026 2846     		mov	r0, r5
+ 337              	.LVL45:
+ 338 0028 FFF7FEFF 		bl	EvrRtxMemoryFree
+ 339              	.LVL46:
+ 198:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****       //lint -e{904} "Return statement before end of function" [MISRA Note 1]
+ 199:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****       return 0U;
+ 340              		.loc 1 199 0
+ 341 002c 0020     		movs	r0, #0
+ 342 002e 38BD     		pop	{r3, r4, r5, pc}
+ 343              	.LVL47:
+ 344              	.L24:
+ 194:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     if (p == NULL) {
+ 345              		.loc 1 194 0
+ 346 0030 1346     		mov	r3, r2
+ 347              	.LVL48:
+ 348              	.L20:
+ 192:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     p_prev = p;
+ 349              		.loc 1 192 0
+ 350 0032 A342     		cmp	r3, r4
+ 351 0034 F4D1     		bne	.L21
+ 200:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     }
+ 201:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   }
+ 202:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+ 203:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   // Update used memory
+ 204:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   (MemHeadPtr(mem))->used -= p->info & MB_INFO_LEN_MASK;
+ 352              		.loc 1 204 0
+ 353 0036 5A68     		ldr	r2, [r3, #4]
+ 354 0038 22F00304 		bic	r4, r2, #3
+ 355              	.LVL49:
+ 356 003c 6A68     		ldr	r2, [r5, #4]
+ 357 003e 121B     		subs	r2, r2, r4
+ 358 0040 6A60     		str	r2, [r5, #4]
+ 205:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+ 206:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   // Free block
+ARM GAS  /tmp/ccX9zTIz.s 			page 11
+
+
+ 207:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   if (p_prev == NULL) {
+ 359              		.loc 1 207 0
+ 360 0042 10B9     		cbnz	r0, .L22
+ 208:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     // Release first block, only set info to 0
+ 209:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     p->info = 0U;
+ 361              		.loc 1 209 0
+ 362 0044 0022     		movs	r2, #0
+ 363 0046 5A60     		str	r2, [r3, #4]
+ 364 0048 01E0     		b	.L23
+ 365              	.L22:
+ 210:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   } else {
+ 211:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     // Discard block from chained list
+ 212:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****     p_prev->next = p->next;
+ 366              		.loc 1 212 0
+ 367 004a 1B68     		ldr	r3, [r3]
+ 368              	.LVL50:
+ 369 004c 0360     		str	r3, [r0]
+ 370              	.L23:
+ 213:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   }
+ 214:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+ 215:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   EvrRtxMemoryFree(mem, block, 1U);
+ 371              		.loc 1 215 0
+ 372 004e 0122     		movs	r2, #1
+ 373 0050 2846     		mov	r0, r5
+ 374              	.LVL51:
+ 375 0052 FFF7FEFF 		bl	EvrRtxMemoryFree
+ 376              	.LVL52:
+ 216:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** 
+ 217:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c ****   return 1U;
+ 377              		.loc 1 217 0
+ 378 0056 0120     		movs	r0, #1
+ 218:/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Source/rtx_memory.c **** }
+ 379              		.loc 1 218 0
+ 380 0058 38BD     		pop	{r3, r4, r5, pc}
+ 381              		.cfi_endproc
+ 382              	.LFE178:
+ 384 005a 00BF     		.text
+ 385              	.Letext0:
+ 386              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 387              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 388              		.file 4 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/Include/cmsis_os2.h"
+ 389              		.file 5 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Include/rtx_os.h"
+ 390              		.file 6 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/Core/Include/core_cm4.h"
+ 391              		.file 7 "/usr/local/lib/ARM/CMSIS/5.4.0/CMSIS/RTOS2/RTX/Include/rtx_evr.h"
+ARM GAS  /tmp/ccX9zTIz.s 			page 12
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 rtx_memory.c
+     /tmp/ccX9zTIz.s:22     .text.osRtxMemoryInit:0000000000000000 $t
+     /tmp/ccX9zTIz.s:27     .text.osRtxMemoryInit:0000000000000000 osRtxMemoryInit
+     /tmp/ccX9zTIz.s:106    .text.osRtxMemoryAlloc:0000000000000000 $t
+     /tmp/ccX9zTIz.s:111    .text.osRtxMemoryAlloc:0000000000000000 osRtxMemoryAlloc
+     /tmp/ccX9zTIz.s:274    .text.osRtxMemoryFree:0000000000000000 $t
+     /tmp/ccX9zTIz.s:279    .text.osRtxMemoryFree:0000000000000000 osRtxMemoryFree
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+EvrRtxMemoryInit
+EvrRtxMemoryAlloc
+EvrRtxMemoryFree
